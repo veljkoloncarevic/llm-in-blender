@@ -1,0 +1,36 @@
+# --- Secrets (never commit API keys) ---
+.env
+.env.*
+*.key
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Experiment output ---
+# Smoke tests are pipeline checks, not paper data
+results/smoke/
+
+# Keep the paper data (records, scripts, result.json, report, galleries),
+# but drop per-attempt renders and logs: ~1,000 PNGs + logs = hundreds of MB.
+results/main/runs/**/view_*.png
+results/main/runs/**/blender_log.txt
+results/main/runs/**/settings.json
+results/main/runs/**/exec_done
+
+# Any earlier pilot runs
+results/pilot*/
