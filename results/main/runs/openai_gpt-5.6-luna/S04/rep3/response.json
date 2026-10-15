@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\nfor datablocks in (bpy.data.meshes, bpy.data.curves, bpy.data.materials, bpy.data.cameras, bpy.data.lights):\n    if datablocks != bpy.data.materials:\n        for datablock in list(datablocks):\n            if datablock.users == 0:\n                datablocks.remove(datablock)\n\n# Create blue ground plane\nground_mesh = bpy.data.meshes.new(\"GroundPlaneMesh\")\nground_mesh.from_pydata(\n    [(-10, -10, 0), (10, -10, 0), (10, 10, 0), (-10, 10, 0)],\n    [],\n    [(0, 1, 2, 3)]\n)\nground_mesh.update()\n\nground = bpy.data.objects.new(\"Blue Ground Plane\", ground_mesh)\nbpy.context.collection.objects.link(ground)\n\nground_material = bpy.data.materials.new(\"Blue Ground Material\")\nground_material.use_nodes = True\nground_bsdf = ground_material.node_tree.nodes.get(\"Principled BSDF\")\nground_bsdf.inputs[\"Base Color\"].default_value = (0.015, 0.12, 0.8, 1.0)\nground_bsdf.inputs[\"Roughness\"].default_value = 0.32\nground_bsdf.inputs[\"Metallic\"].default_value = 0.0\nground.data.materials.append(ground_material)\n\n# Create glass sphere resting on the plane\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=64,\n    ring_count=32,\n    radius=1.0,\n    location=(0.0, 0.0, 1.0)\n)\nsphere = bpy.context.object\nsphere.name = \"Clear Glass Sphere\"\n\nbpy.ops.object.shade_smooth()\n\nglass_material = bpy.data.materials.new(\"Clear Glass Material\")\nglass_material.use_nodes = True\nglass_bsdf = glass_material.node_tree.nodes.get(\"Principled BSDF\")\nglass_bsdf.inputs[\"Base Color\"].default_value = (1.0, 1.0, 1.0, 1.0)\nglass_bsdf.inputs[\"Metallic\"].default_value = 0.0\nglass_bsdf.inputs[\"Roughness\"].default_value = 0.01\nglass_bsdf.inputs[\"IOR\"].default_value = 1.45\n\nif \"Transmission Weight\" in glass_bsdf.inputs:\n    glass_bsdf.inputs[\"Transmission Weight\"].default_value = 1.0\nelif \"Transmission\" in glass_bsdf.inputs:\n    glass_bsdf.inputs[\"Transmission\"].default_value = 1.0\n\nsphere.data.materials.append(glass_material)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 150,
+  "completion_tokens": 890,
+  "reasoning_tokens": 312,
+  "cost_usd_est": 0.001098,
+  "latency_s": 8.53,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

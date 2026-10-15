@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport mathutils\nfrom mathutils import noise\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Terrain grid parameters\nnx = 128\nny = 128\nsize = 20.0\nheight_scale = 2.0\nseed = 42\nnoise.seed_set(seed)\n\n# Build mesh data with bmesh\nbm = bmesh.new()\nverts = []\n\n# Generate grid vertices with noise-based heights\nfor j in range(ny + 1):\n    y = (j / ny - 0.5) * size\n    for i in range(nx + 1):\n        x = (i / nx - 0.5) * size\n        pos = mathutils.Vector((x, y, 0.0))\n\n        # Combine two noise frequencies to create hilly terrain\n        h = noise.noise(pos * 0.5) * height_scale + 0.5 * noise.noise(pos * 2.0) * height_scale * 0.5\n\n        vert = bm.verts.new((x, y, h))\n        verts.append(vert)\n\n# Create quad faces\nfor j in range(ny):\n    for i in range(nx):\n        i1 = j * (nx + 1) + i\n        i2 = i1 + 1\n        i3 = i1 + (nx + 1) + 1\n        i4 = i1 + (nx + 1)\n        try:\n            bm.faces.new((verts[i1], verts[i2], verts[i3], verts[i4]))\n        except ValueError:\n            pass\n\n# Recalculate face normals for consistent shading\nbmesh.ops.recalc_face_normals(bm, faces=bm.faces)\n\n# Transfer to mesh\nmesh = bpy.data.meshes.new(\"HillyTerrain\")\nbm.to_mesh(mesh)\nbm.free()\n\n# Create and link object\nobj = bpy.data.objects.new(\"HillyTerrain\", mesh)\nbpy.context.collection.objects.link(obj)\n\n# Optional: smooth shading looks better on terrain\nfor poly in mesh.polygons:\n    poly.use_smooth = True\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 252,
+  "completion_tokens": 4023,
+  "reasoning_tokens": 3526,
+  "cost_usd_est": 0.005421240000000001,
+  "latency_s": 38.72,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a sphere\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(0, 0, 0))\nsphere = bpy.context.active_object\n\n# Create a new material\nmaterial = bpy.data.materials.new(name=\"CarPaint\")\nmaterial.use_nodes = True\n\n# Clear default nodes\nmaterial.node_tree.nodes.clear()\n\n# Create nodes\nnodes = material.node_tree.nodes\nlinks = material.node_tree.links\n\n# Add Principled BSDF\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\nprincipled.location = (0, 0)\n\n# Set base color to deep red\nprincipled.inputs['Base Color'].default_value = (0.5, 0.02, 0.02, 1.0)\n\n# Set metallic to 0.5\nprincipled.inputs['Metallic'].default_value = 0.5\n\n# Set roughness for a car paint look\nprincipled.inputs['Roughness'].default_value = 0.15\n\n# Enable and configure the coat weight (clear coat)\nprincipled.inputs['Coat Weight'].default_value = 0.85\n\n# Set coat roughness for a glossy clear coat\nprincipled.inputs['Coat Roughness'].default_value = 0.1\n\n# Add Material Output node\nmaterial_output = nodes.new(type='ShaderNodeOutputMaterial')\nmaterial_output.location = (400, 0)\n\n# Connect Principled BSDF to Material Output\nlinks.new(principled.outputs['BSDF'], material_output.inputs['Surface'])\n\n# Assign material to sphere\nsphere.data.materials.append(material)\n\n# Set viewport shading to show materials\nfor area in bpy.context.screen.areas:\n    if area.type == 'VIEW_3D':\n        for space in area.spaces:\n            if space.type == 'VIEW_3D':\n                space.shading.type = 'MATERIAL'\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 171,
+  "completion_tokens": 544,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.002891,
+  "latency_s": 4.16,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

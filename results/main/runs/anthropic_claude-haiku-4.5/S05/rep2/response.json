@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a torus (neon ring)\nbpy.ops.mesh.primitive_torus_add(\n    radius1=2.0,\n    radius2=0.3,\n    location=(0, 0, 1.5)\n)\ntorus = bpy.context.active_object\n\n# Create material for the torus\nmat = bpy.data.materials.new(name=\"CyanNeon\")\nmat.use_nodes = True\nmat.shadow_method = 'NONE'\n\n# Clear default nodes\nmat.node_tree.nodes.clear()\n\n# Create shader nodes for emissive material\nnodes = mat.node_tree.nodes\nlinks = mat.node_tree.links\n\n# Create emission shader\nemission_node = nodes.new(type='ShaderNodeEmission')\nemission_node.inputs['Strength'].default_value = 5.0\n\n# Set emission color to cyan\nemission_node.inputs['Color'].default_value = (0.0, 1.0, 1.0, 1.0)\n\n# Create output node\noutput_node = nodes.new(type='ShaderNodeOutputMaterial')\n\n# Connect nodes\nlinks.new(emission_node.outputs['Emission'], output_node.inputs['Surface'])\n\n# Assign material to torus\ntorus.data.materials.append(mat)\n\n# Create ground plane\nbpy.ops.mesh.primitive_plane_add(\n    size=10.0,\n    location=(0, 0, 0)\n)\nground = bpy.context.active_object\nground.name = \"GroundPlane\"\n\n# Create dark material for ground plane\nground_mat = bpy.data.materials.new(name=\"DarkGround\")\nground_mat.use_nodes = True\n\n# Set ground material to dark\nground_mat.node_tree.nodes[\"Principled BSDF\"].inputs['Base Color'].default_value = (0.05, 0.05, 0.05, 1.0)\nground.data.materials.append(ground_mat)\n\n# Set viewport shading to show emission\nfor area in bpy.context.screen.areas:\n    if area.type == 'VIEW_3D':\n        for space in area.spaces:\n            if space.type == 'VIEW_3D':\n                space.shading.type = 'MATERIAL'\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 160,
+  "completion_tokens": 613,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.003225,
+  "latency_s": 6.07,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

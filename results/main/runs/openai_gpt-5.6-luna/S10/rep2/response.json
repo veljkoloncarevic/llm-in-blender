@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create cube mesh\nvertices = [\n    (-1, -1, -1),\n    ( 1, -1, -1),\n    ( 1,  1, -1),\n    (-1,  1, -1),\n    (-1, -1,  1),\n    ( 1, -1,  1),\n    ( 1,  1,  1),\n    (-1,  1,  1),\n]\n\nfaces = [\n    (0, 1, 2, 3),  # Bottom\n    (4, 7, 6, 5),  # Top\n    (0, 4, 5, 1),  # Front\n    (1, 5, 6, 2),  # Right\n    (2, 6, 7, 3),  # Back\n    (4, 0, 3, 7),  # Left\n]\n\nmesh = bpy.data.meshes.new(\"ThreeColorCubeMesh\")\nmesh.from_pydata(vertices, [], faces)\nmesh.update()\n\ncube = bpy.data.objects.new(\"ThreeColorCube\", mesh)\nbpy.context.collection.objects.link(cube)\n\n# Create materials\nred_material = bpy.data.materials.new(\"Red\")\nred_material.diffuse_color = (1.0, 0.0, 0.0, 1.0)\n\ngreen_material = bpy.data.materials.new(\"Green\")\ngreen_material.diffuse_color = (0.0, 1.0, 0.0, 1.0)\n\nblue_material = bpy.data.materials.new(\"Blue\")\nblue_material.diffuse_color = (0.0, 0.0, 1.0, 1.0)\n\n# Add materials as mesh slots\ncube.data.materials.append(red_material)\ncube.data.materials.append(green_material)\ncube.data.materials.append(blue_material)\n\n# Assign material indices to different faces\n# Bottom and top: red\n# Front and back: green\n# Right and left: blue\nmaterial_indices = [0, 0, 1, 2, 1, 2]\n\nfor polygon, material_index in zip(cube.data.polygons, material_indices):\n    polygon.material_index = material_index\n\n# Make the cube the active selected object\nbpy.context.view_layer.objects.active = cube\ncube.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 147,
+  "completion_tokens": 735,
+  "reasoning_tokens": 197,
+  "cost_usd_est": 0.0009113999999999999,
+  "latency_s": 6.66,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

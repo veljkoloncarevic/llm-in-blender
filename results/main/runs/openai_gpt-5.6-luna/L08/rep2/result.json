@@ -1,0 +1,100 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.007,
+  "scene": {
+    "faces": 1490,
+    "triangles": 3068,
+    "vertices": 1536,
+    "n_geometry_objects": 2,
+    "objects": [
+      {
+        "name": "MugBody",
+        "type": "MESH",
+        "modifiers": [
+          "SOLIDIFY",
+          "BEVEL"
+        ],
+        "materials": [
+          "Ceramic"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "MugHandle",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Ceramic"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "BEVEL",
+      "SOLIDIFY"
+    ],
+    "materials": [
+      {
+        "name": "Ceramic",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 1,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.0,
+      -1.0,
+      -0.8999999761581421
+    ],
+    "bbox_max": [
+      1.7517402172088623,
+      1.0,
+      1.6317402124404907
+    ]
+  },
+  "render_time_s": 6.829,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

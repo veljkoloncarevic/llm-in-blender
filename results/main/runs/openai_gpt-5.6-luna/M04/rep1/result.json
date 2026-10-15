@@ -1,0 +1,80 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.019,
+  "scene": {
+    "faces": 4096,
+    "triangles": 8192,
+    "vertices": 4096,
+    "n_geometry_objects": 1,
+    "objects": [
+      {
+        "name": "TorusKnot_2_3_Tube",
+        "type": "MESH",
+        "modifiers": [
+          "WEIGHTED_NORMAL"
+        ],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "WEIGHTED_NORMAL"
+    ],
+    "materials": [
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 0,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -3.6148858070373535,
+      -4.165792942047119,
+      -1.3796427249908447
+    ],
+    "bbox_max": [
+      4.380000114440918,
+      4.163768291473389,
+      1.3799999952316284
+    ]
+  },
+  "render_time_s": 5.396,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

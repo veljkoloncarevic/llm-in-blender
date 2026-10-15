@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create ground plane\nbpy.ops.mesh.primitive_plane_add(size=20.0, location=(0, 0, 0))\nground_plane = bpy.object.active if hasattr(bpy, 'object') else bpy.context.active_object\nground_plane.name = \"GroundPlane\"\n\n# Create dark material for ground plane\nground_mat = bpy.data.materials.new(name=\"GroundMaterial\")\nground_mat.use_nodes = True\nground_nodes = ground_mat.node_tree.nodes\nground_nodes.clear()\n\n# Setup Principled BSDF for dark, slightly reflective ground\nground_principled = ground_nodes.new(type='ShaderNodeBsdfPrincipled')\nground_principled.inputs['Base Color'].default_value = (0.02, 0.02, 0.02, 1.0)\nground_principled.inputs['Roughness'].default_value = 0.2\n\nground_output = ground_nodes.new(type='ShaderNodeOutputMaterial')\nground_mat.node_tree.links.new(ground_principled.outputs['BSDF'], ground_output.inputs['Surface'])\nground_plane.data.materials.append(ground_mat)\n\n# Create torus (neon ring)\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=2.0,\n    minor_radius=0.15,\n    major_segments=64,\n    minor_segments=32,\n    location=(0, 0, 1.5),\n    rotation=(1.5708, 0, 0) # Rotate to stand upright facing forward/up\n)\nneon_ring = bpy.context.active_object\nneon_ring.name = \"NeonRing\"\n\n# Create glowing cyan emission material\nneon_mat = bpy.data.materials.new(name=\"CyanNeonMaterial\")\nneon_mat.use_nodes = True\nneon_nodes = neon_mat.node_tree.nodes\nneon_nodes.clear()\n\n# Emission Node\nemission_node = neon_nodes.new(type='ShaderNodeEmission')\n# Cyan color with high intensity\nemission_node.inputs['Color'].default_value = (0.0, 1.0, 1.0, 1.0)\nemission_node.inputs['Strength'].default_value = 25.0\n\n# Material Output Node\nneon_output = neon_nodes.new(type='ShaderNodeOutputMaterial')\n\n# Link Emission to Output\nneon_mat.node_tree.links.new(emission_node.outputs['Emission'], neon_output.inputs['Surface'])\n\n# Assign material to torus\nneon_ring.data.materials.append(neon_mat)\n\n# Set world background to dark to let the neon glow pop\nworld = bpy.context.scene.world\nif world is None:\n    world = bpy.data.worlds.new(\"World\")\n    bpy.context.scene.world = world\n\nworld.use_nodes = True\nworld_nodes = world.node_tree.nodes\nworld_nodes.clear()\nbg_node = world_nodes.new(type='ShaderNodeBackground')\nbg_node.inputs['Color'].default_value = (0.01, 0.01, 0.01, 1.0)\nbg_node.inputs['Strength'].default_value = 1.0\nworld_output = world_nodes.new(type='ShaderNodeOutputWorld')\nworld.node_tree.links.new(bg_node.outputs['Background'], world_output.inputs['Surface'])\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 140,
+  "completion_tokens": 857,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0021845,
+  "latency_s": -19.58,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

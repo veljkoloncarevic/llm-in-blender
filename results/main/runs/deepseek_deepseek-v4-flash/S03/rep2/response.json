@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Add Suzanne\nbpy.ops.mesh.primitive_monkey_add(size=2, location=(0, 0, 0))\nmonkey = bpy.context.object\nmonkey.name = \"Suzanne\"\nbpy.ops.object.shade_smooth()\n\n# Create marble material\nmat = bpy.data.materials.new(name=\"White_Marble\")\nmat.use_nodes = True\nnodes = mat.node_tree.nodes\nlinks = mat.node_tree.links\nnodes.clear()\n\n# Add nodes\noutput = nodes.new(type='ShaderNodeOutputMaterial')\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\nnoise = nodes.new(type='ShaderNodeTexNoise')\ncolor_ramp = nodes.new(type='ShaderNodeValToRGB')\n\n# Position nodes (for clarity)\noutput.location = (300, 0)\nprincipled.location = (100, 0)\ncolor_ramp.location = (-100, 0)\nnoise.location = (-300, 0)\n\n# Configure noise\nnoise.noise_dimensions = '3D'\nnoise.scale = 3.0\nnoise.detail = 8.0\n\n# Configure color ramp: dark veins to white\ncolor_ramp.color_ramp.elements[0].position = 0.0\ncolor_ramp.color_ramp.elements[0].color = (0.05, 0.05, 0.05, 1.0)\ncolor_ramp.color_ramp.elements[1].position = 1.0\ncolor_ramp.color_ramp.elements[1].color = (1.0, 1.0, 1.0, 1.0)\n\n# Configure Principled BSDF for marble look\nprincipled.inputs['Roughness'].default_value = 0.25\nprincipled.inputs['Specular IOR Level'].default_value = 0.5\n\n# Link nodes\nlinks.new(noise.outputs['Fac'], color_ramp.inputs['Fac'])\nlinks.new(color_ramp.outputs['Color'], principled.inputs['Base Color'])\nlinks.new(principled.outputs['BSDF'], output.inputs['Surface'])\n\n# Assign material to Suzanne\nif monkey.data.materials:\n    monkey.data.materials[0] = mat\nelse:\n    monkey.data.materials.append(mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 230,
+  "completion_tokens": 1282,
+  "reasoning_tokens": 736,
+  "cost_usd_est": 0.00179344,
+  "latency_s": 15.18,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

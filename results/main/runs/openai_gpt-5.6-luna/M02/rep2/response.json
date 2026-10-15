@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\nfrom mathutils import Vector\nfrom mathutils.noise import noise\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Terrain resolution: 120 x 120 faces, 121 x 121 vertices\nsubdivisions = 120\nsize = 24.0\nstep = size / subdivisions\n\nvertices = []\nfaces = []\n\ndef terrain_height(x, y):\n    # Layered procedural noise for broad hills and smaller detail\n    p = Vector((x * 0.075, y * 0.075, 0.0))\n    broad = noise(p, noise_basis='PERLIN_ORIGINAL')\n    medium = noise(p * 2.4 + Vector((17.3, -9.1, 4.7)),\n                   noise_basis='PERLIN_ORIGINAL')\n    detail = noise(p * 6.0 + Vector((-5.2, 13.7, 21.4)),\n                   noise_basis='PERLIN_ORIGINAL')\n\n    height = (\n        broad * 4.2 +\n        medium * 1.35 +\n        detail * 0.35\n    )\n\n    # Gentle falloff near the outer boundary\n    edge_distance = min(\n        (size * 0.5 - abs(x)) / (size * 0.5),\n        (size * 0.5 - abs(y)) / (size * 0.5)\n    )\n    edge_factor = min(1.0, max(0.0, edge_distance * 5.0))\n\n    return height * (0.75 + 0.25 * edge_factor)\n\n# Create the grid vertices\nfor row in range(subdivisions + 1):\n    y = -size * 0.5 + row * step\n    for column in range(subdivisions + 1):\n        x = -size * 0.5 + column * step\n        z = terrain_height(x, y)\n        vertices.append((x, y, z))\n\n# Create quad faces\nrow_width = subdivisions + 1\nfor row in range(subdivisions):\n    for column in range(subdivisions):\n        a = row * row_width + column\n        b = a + 1\n        d = (row + 1) * row_width + column\n        c = d + 1\n        faces.append((a, b, c, d))\n\n# Build the mesh\nmesh = bpy.data.meshes.new(\"Procedural_Hilly_Terrain\")\nmesh.from_pydata(vertices, [], faces)\nmesh.update()\n\nterrain = bpy.data.objects.new(\"Hilly_Terrain\", mesh)\nbpy.context.collection.objects.link(terrain)\n\n# Smooth shading for a natural terrain appearance\nfor polygon in mesh.polygons:\n    polygon.use_smooth = True\n\n# Add a simple terrain material\nmaterial = bpy.data.materials.new(\"Terrain_Material\")\nmaterial.diffuse_color = (0.22, 0.38, 0.12, 1.0)\nterrain.data.materials.append(material)\n\n# Make the terrain the active object\nbpy.context.view_layer.objects.active = terrain\nterrain.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 175,
+  "completion_tokens": 1190,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.001463,
+  "latency_s": 11.76,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

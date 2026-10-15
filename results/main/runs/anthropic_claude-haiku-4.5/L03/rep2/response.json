@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create trunk (8-sided cylinder)\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=8,\n    radius=0.3,\n    depth=2.0,\n    location=(0, 0, 1.0)\n)\ntrunk = bpy.context.active_object\ntrunk.name = \"Trunk\"\n\n# Create canopy (icosphere with 1 subdivision for low-poly)\nbpy.ops.mesh.primitive_uv_sphere_add(\n    radius=1.5,\n    location=(0, 0, 3.0)\n)\ncanopy = bpy.context.active_object\ncanopy.name = \"Canopy\"\n\n# Delete the default sphere and create icosphere instead\nbpy.ops.object.delete(use_global=False)\n\n# Create icosphere with 1 subdivision\nbpy.ops.mesh.primitive_ico_sphere_add(\n    subdivisions=1,\n    radius=1.5,\n    location=(0, 0, 3.0)\n)\ncanopy = bpy.context.active_object\ncanopy.name = \"Canopy\"\n\n# Verify face counts\ntrunk_obj = bpy.data.objects[\"Trunk\"]\ncanopy_obj = bpy.data.objects[\"Canopy\"]\n\ntrunk_data = trunk_obj.data\ncanopy_data = canopy_obj.data\n\ntrunk_faces = len(trunk_data.polygons)\ncanopy_faces = len(canopy_data.polygons)\ntotal_faces = trunk_faces + canopy_faces\n\n# If total is still too high, reduce canopy subdivisions further by using a simpler approach\nif total_faces > 400:\n    # Remove canopy and create a simpler one\n    bpy.data.objects.remove(canopy_obj, do_unlink=True)\n    \n    # Create icosphere with 0 subdivisions (12 faces)\n    bpy.ops.mesh.primitive_ico_sphere_add(\n        subdivisions=0,\n        radius=1.5,\n        location=(0, 0, 3.0)\n    )\n    canopy = bpy.context.active_object\n    canopy.name = \"Canopy\"\n\n# Apply smooth shading for better appearance\nfor obj in [trunk_obj, canopy]:\n    bpy.context.view_layer.objects.active = obj\n    bpy.ops.object.shade_smooth()\n\n# Final verification\ntrunk_faces = len(bpy.data.objects[\"Trunk\"].data.polygons)\ncanopy_faces = len(bpy.data.objects[\"Canopy\"].data.polygons)\ntotal_faces = trunk_faces + canopy_faces\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 170,
+  "completion_tokens": 704,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.00369,
+  "latency_s": 5.03,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

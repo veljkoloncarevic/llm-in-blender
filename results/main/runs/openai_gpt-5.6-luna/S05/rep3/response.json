@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Remove unused datablocks\nfor mesh in list(bpy.data.meshes):\n    if mesh.users == 0:\n        bpy.data.meshes.remove(mesh)\nfor material in list(bpy.data.materials):\n    if material.users == 0:\n        bpy.data.materials.remove(material)\n\n# Dark ground plane\nbpy.ops.mesh.primitive_plane_add(size=20.0, location=(0.0, 0.0, 0.0))\nground = bpy.context.object\nground.name = \"Dark Ground\"\n\nground_material = bpy.data.materials.new(\"Dark Ground Material\")\nground_material.use_nodes = True\nground_nodes = ground_material.node_tree.nodes\nground_links = ground_material.node_tree.links\nground_nodes.clear()\n\nground_output = ground_nodes.new(\"ShaderNodeOutputMaterial\")\nground_shader = ground_nodes.new(\"ShaderNodeBsdfPrincipled\")\nground_shader.inputs[\"Base Color\"].default_value = (0.003, 0.006, 0.01, 1.0)\nground_shader.inputs[\"Roughness\"].default_value = 0.82\nground_shader.inputs[\"Metallic\"].default_value = 0.05\nground_links.new(ground_shader.outputs[\"BSDF\"], ground_output.inputs[\"Surface\"])\nground.data.materials.append(ground_material)\n\n# Cyan neon torus hovering above the ground\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=2.0,\n    minor_radius=0.13,\n    major_segments=96,\n    minor_segments=32,\n    location=(0.0, 0.0, 1.2)\n)\nring = bpy.context.object\nring.name = \"Cyan Neon Ring\"\n\n# Smooth shading\nfor polygon in ring.data.polygons:\n    polygon.use_smooth = True\n\n# Emissive cyan material\nemission_material = bpy.data.materials.new(\"Cyan Neon Emission\")\nemission_material.use_nodes = True\nnodes = emission_material.node_tree.nodes\nlinks = emission_material.node_tree.links\nnodes.clear()\n\noutput_node = nodes.new(\"ShaderNodeOutputMaterial\")\nemission_node = nodes.new(\"ShaderNodeEmission\")\nemission_node.inputs[\"Color\"].default_value = (0.0, 1.0, 1.0, 1.0)\nemission_node.inputs[\"Strength\"].default_value = 10.0\nlinks.new(emission_node.outputs[\"Emission\"], output_node.inputs[\"Surface\"])\n\nring.data.materials.append(emission_material)\n\n# Dark world background\nworld = bpy.context.scene.world\nif world is None:\n    world = bpy.data.worlds.new(\"Dark World\")\n    bpy.context.scene.world = world\n\nworld.use_nodes = True\nworld_nodes = world.node_tree.nodes\nbackground = world_nodes.get(\"Background\")\nif background:\n    background.inputs[\"Color\"].default_value = (0.001, 0.002, 0.004, 1.0)\n    background.inputs[\"Strength\"].default_value = 0.03\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 145,
+  "completion_tokens": 980,
+  "reasoning_tokens": 334,
+  "cost_usd_est": 0.001205,
+  "latency_s": 8.75,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

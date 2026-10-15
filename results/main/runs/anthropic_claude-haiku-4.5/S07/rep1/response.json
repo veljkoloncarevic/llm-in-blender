@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a cylinder\nbpy.ops.mesh.primitive_cylinder_add(radius=1, depth=2, location=(0, 0, 0))\ncylinder = bpy.context.active_object\n\n# Create a new material\nmat = bpy.data.materials.new(name=\"RustyMetal\")\nmat.use_nodes = True\nmat.diffuse_color = (0.5, 0.5, 0.5, 1.0)\n\n# Clear default nodes\nnodes = mat.node_tree.nodes\nnodes.clear()\n\n# Create shader nodes\nlinks = mat.node_tree.links\n\n# Main output node\noutput_node = nodes.new(type='ShaderNodeOutputMaterial')\noutput_node.location = (600, 0)\n\n# Mix shader for blending metallic and rust\nmix_shader = nodes.new(type='ShaderNodeMix')\nmix_shader.location = (400, 0)\nmix_shader.data_type = 'SHADER'\n\n# Metallic shader (grey)\nmetallic_shader = nodes.new(type='ShaderNodeBsdfPrincipled')\nmetallic_shader.location = (200, 100)\nmetallic_shader.inputs['Base Color'].default_value = (0.4, 0.4, 0.45, 1.0)\nmetallic_shader.inputs['Metallic'].default_value = 1.0\nmetallic_shader.inputs['Roughness'].default_value = 0.3\n\n# Rust shader (orange-brown)\nrust_shader = nodes.new(type='ShaderNodeBsdfPrincipled')\nrust_shader.location = (200, -150)\nrust_shader.inputs['Base Color'].default_value = (0.7, 0.4, 0.1, 1.0)\nrust_shader.inputs['Metallic'].default_value = 0.2\nrust_shader.inputs['Roughness'].default_value = 0.8\n\n# Noise texture for mask\nnoise_texture = nodes.new(type='ShaderNodeTexNoise')\nnoise_texture.location = (-200, -100)\nnoise_texture.inputs['Detail'].default_value = 5.0\nnoise_texture.inputs['Roughness'].default_value = 0.6\nnoise_texture.inputs['Scale'].default_value = 5.0\n\n# Coordinate mapping for texture\ntex_coord = nodes.new(type='ShaderNodeTexCoord')\ntex_coord.location = (-400, -100)\n\n# Connect nodes\nlinks.new(tex_coord.outputs['Generated'], noise_texture.inputs['Vector'])\nlinks.new(noise_texture.outputs['Fac'], mix_shader.inputs['Factor'])\n\nlinks.new(metallic_shader.outputs['BSDF'], mix_shader.inputs[1])\nlinks.new(rust_shader.outputs['BSDF'], mix_shader.inputs[2])\n\nlinks.new(mix_shader.outputs['Result'], output_node.inputs['Surface'])\n\n# Assign material to cylinder\ncylinder.data.materials.append(mat)\n\n# Set viewport shading to Material Preview or Rendered to see the result\nfor area in bpy.context.screen.areas:\n    if area.type == 'VIEW_3D':\n        for space in area.spaces:\n            if space.type == 'VIEW_3D':\n                space.shading.type = 'MATERIAL'\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 168,
+  "completion_tokens": 877,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004553,
+  "latency_s": 6.04,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

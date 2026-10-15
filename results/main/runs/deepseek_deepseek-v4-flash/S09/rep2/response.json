@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a UV sphere\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1.0, location=(0.0, 0.0, 0.0))\nobj = bpy.context.active_object\n\n# Create a deep red car-paint material\nmat = bpy.data.materials.new(name=\"DeepRedCarPaint\")\nmat.use_nodes = True\nnodes = mat.node_tree.nodes\nlinks = mat.node_tree.links\n\n# Get the Principled BSDF node\nprincipled = nodes.get(\"Principled BSDF\")\nif principled is None:\n    # Fallback if not found\n    principled = nodes.new(type=\"ShaderNodeBsdfPrincipled\")\n\n# Set base color (deep red)\nprincipled.inputs[\"Base Color\"].default_value = (0.55, 0.0, 0.0, 1.0)\n\n# Metallic around 0.5\nprincipled.inputs[\"Metallic\"].default_value = 0.5\n\n# Low roughness for a polished base coat\nprincipled.inputs[\"Roughness\"].default_value = 0.3\n\n# Strong clear coat\nprincipled.inputs[\"Coat Weight\"].default_value = 0.9\nprincipled.inputs[\"Coat Roughness\"].default_value = 0.1\nprincipled.inputs[\"Coat IOR\"].default_value = 1.5\n\n# Ensure Principled BSDF is connected to the Material Output\nmaterial_output = nodes.get(\"Material Output\")\nif material_output is None:\n    material_output = nodes.new(type=\"ShaderNodeOutputMaterial\")\n\nif not principled.outputs[\"BSDF\"].links:\n    links.new(principled.outputs[\"BSDF\"], material_output.inputs[\"Surface\"])\n\n# Assign material to the sphere\nif obj.data.materials:\n    obj.data.materials[0] = mat\nelse:\n    obj.data.materials.append(mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 232,
+  "completion_tokens": 846,
+  "reasoning_tokens": 395,
+  "cost_usd_est": 0.0012188,
+  "latency_s": 10.5,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

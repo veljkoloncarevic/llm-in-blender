@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create the main cube for walls\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 1))\nwalls = bpy.context.active_object\nwalls.name = \"Walls\"\n\n# Create a pyramid roof (cone with 4 vertices)\nbpy.ops.mesh.primitive_cone_add(vertices=4, radius=1.5, depth=1.5, location=(0, 0, 2.75))\nroof = bpy.context.active_object\nroof.name = \"Roof\"\n\n# Create door (simple plane)\nbpy.ops.mesh.primitive_plane_add(size=0.8, location=(0, -1.01, 0.5))\ndoor = bpy.context.active_object\ndoor.name = \"Door\"\ndoor.scale = (0.4, 0.8, 1)\n\n# Create a window (simple plane)\nbpy.ops.mesh.primitive_plane_add(size=0.4, location=(0.7, -1.01, 1.5))\nwindow = bpy.context.active_object\nwindow.name = \"Window\"\n\n# Apply mirror modifier to window for symmetry\nmirror_mod = window.modifiers.new(name=\"Mirror\", type='MIRROR')\nmirror_mod.axis = {'X'}\nmirror_mod.use_clip = True\n\n# Apply mirror modifier to door for symmetry (optional - creates double doors)\ndoor_mirror = door.modifiers.new(name=\"Mirror\", type='MIRROR')\ndoor_mirror.axis = {'X'}\ndoor_mirror.use_clip = True\n\n# Join all objects into one for cleaner scene\nbpy.context.view_layer.objects.active = walls\nwalls.select_set(True)\nroof.select_set(True)\ndoor.select_set(True)\nwindow.select_set(True)\n\nbpy.ops.object.join()\n\n# Select the final object and apply modifiers to keep face count low\nfinal_object = bpy.context.active_object\nfinal_object.name = \"House\"\n\n# Apply modifiers\nfor mod in final_object.modifiers:\n    bpy.ops.object.modifier_apply(modifier=mod.name)\n\n# Center the object\nbpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 180,
+  "completion_tokens": 612,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.00324,
+  "latency_s": 4.86,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

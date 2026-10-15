@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Parameters\nrows = 10\ncols = 10\ncell_radius = 0.47\ngrid_radius = 0.50\ncell_depth = 0.28\ngap = 0.03\n\n# Pointy-top hexagon grid spacing\nx_spacing = 1.5 * grid_radius\ny_spacing = math.sqrt(3.0) * grid_radius\n\nvertices = []\nfaces = []\n\n# Center the staggered grid around the origin\nrow_y_values = [\n    (row - (rows - 1) / 2.0) * y_spacing\n    for row in range(rows)\n]\n\nfor row in range(rows):\n    # Alternate row offset, producing a correctly staggered honeycomb layout\n    row_offset = 0.5 * x_spacing if row % 2 else 0.0\n\n    for col in range(cols):\n        cx = (col - (cols - 1) / 2.0) * x_spacing + row_offset\n        cy = row_y_values[row]\n\n        base_index = len(vertices)\n\n        # Bottom ring\n        for i in range(6):\n            angle = math.radians(i * 60.0)\n            vertices.append((\n                cx + cell_radius * math.cos(angle),\n                cy + cell_radius * math.sin(angle),\n                -cell_depth / 2.0\n            ))\n\n        # Top ring\n        for i in range(6):\n            angle = math.radians(i * 60.0)\n            vertices.append((\n                cx + cell_radius * math.cos(angle),\n                cy + cell_radius * math.sin(angle),\n                cell_depth / 2.0\n            ))\n\n        # Bottom cap, reversed for outward-facing normals\n        faces.append(tuple(base_index + i for i in reversed(range(6))))\n\n        # Top cap\n        faces.append(tuple(base_index + 6 + i for i in range(6)))\n\n        # Six side faces\n        for i in range(6):\n            j = (i + 1) % 6\n            faces.append((\n                base_index + i,\n                base_index + j,\n                base_index + 6 + j,\n                base_index + 6 + i\n            ))\n\n# Create the mesh and object\nmesh = bpy.data.meshes.new(\"HoneycombPanelMesh\")\nmesh.from_pydata(vertices, [], faces)\nmesh.update()\n\npanel = bpy.data.objects.new(\"HoneycombPanel\", mesh)\nbpy.context.collection.objects.link(panel)\n\n# Assign a warm honey-colored material\nmaterial = bpy.data.materials.new(\"HoneycombHoney\")\nmaterial.diffuse_color = (0.9, 0.42, 0.06, 1.0)\nmaterial.metallic = 0.0\nmaterial.roughness = 0.38\npanel.data.materials.append(material)\n\n# Ensure flat, crisp prism faces\nfor polygon in mesh.polygons:\n    polygon.use_smooth = False\n\n# Make the generated panel the active selection\nbpy.context.view_layer.objects.active = panel\npanel.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 161,
+  "completion_tokens": 1185,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0014542000000000001,
+  "latency_s": 11.82,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

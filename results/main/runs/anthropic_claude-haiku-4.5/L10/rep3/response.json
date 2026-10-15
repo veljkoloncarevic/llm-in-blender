@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create the main house body (cube)\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 1))\nhouse_body = bpy.context.active_object\nhouse_body.name = \"HouseBody\"\n\n# Scale the cube to be more house-like (wider, shorter)\nhouse_body.scale = (1.5, 1.5, 1.2)\n\n# Create the pyramid roof\nbpy.ops.mesh.primitive_cone_add(vertices=4, radius=1.8, depth=1.2, location=(0, 0, 2.6))\nroof = bpy.context.active_object\nroof.name = \"Roof\"\nroof.rotation_euler = (0, 0, 0.785)  # Rotate 45 degrees to align with house\n\n# Create door (simple cube, scaled to door shape)\nbpy.ops.mesh.primitive_cube_add(size=1, location=(0, 1.5, 0.5))\ndoor = bpy.context.active_object\ndoor.name = \"Door\"\ndoor.scale = (0.4, 0.1, 0.8)\n\n# Create a window on the left side (will be mirrored to right)\nbpy.ops.mesh.primitive_cube_add(size=0.5, location=(-0.6, 1.5, 1.5))\nwindow_left = bpy.context.active_object\nwindow_left.name = \"WindowLeft\"\nwindow_left.scale = (0.35, 0.1, 0.35)\n\n# Add Mirror modifier to the left window to create right window\nmirror_mod = window_left.modifiers.new(name=\"Mirror\", type='MIRROR')\nmirror_mod.use_axis[0] = True  # Mirror on X axis\nmirror_mod.use_clip = False\n\n# Create another window on the front-left side\nbpy.ops.mesh.primitive_cube_add(size=0.5, location=(-0.6, 1.5, 1.8))\nwindow_front_left = bpy.context.active_object\nwindow_front_left.name = \"WindowFrontLeft\"\nwindow_front_left.scale = (0.35, 0.1, 0.35)\n\n# Add Mirror modifier to front-left window\nmirror_mod2 = window_front_left.modifiers.new(name=\"Mirror\", type='MIRROR')\nmirror_mod2.use_axis[0] = True  # Mirror on X axis\nmirror_mod2.use_clip = False\n\n# Select all objects and apply modifiers to ensure they're baked in\nfor obj in bpy.context.scene.objects:\n    if obj.type == 'MESH':\n        bpy.context.view_layer.objects.active = obj\n        obj.select_set(True)\n        # Apply modifiers\n        for mod in obj.modifiers:\n            bpy.ops.object.modifier_apply(modifier=mod.name)\n        obj.select_set(False)\n\n# Verify face count\ntotal_faces = 0\nfor obj in bpy.context.scene.objects:\n    if obj.type == 'MESH':\n        total_faces += len(obj.data.polygons)\n\nprint(f\"Total faces in scene: {total_faces}\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 180,
+  "completion_tokens": 858,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.00447,
+  "latency_s": 6.21,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

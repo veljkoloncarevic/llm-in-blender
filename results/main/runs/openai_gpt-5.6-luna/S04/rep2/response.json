@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Create blue ground plane\nbpy.ops.mesh.primitive_plane_add(size=20.0, location=(0.0, 0.0, 0.0))\nground = bpy.context.object\nground.name = \"Blue Ground Plane\"\n\nground_material = bpy.data.materials.new(\"Blue Ground Material\")\nground_material.use_nodes = True\nground_bsdf = ground_material.node_tree.nodes.get(\"Principled BSDF\")\nground_bsdf.inputs[\"Base Color\"].default_value = (0.015, 0.12, 0.8, 1.0)\nground_bsdf.inputs[\"Roughness\"].default_value = 0.4\nground_bsdf.inputs[\"Metallic\"].default_value = 0.0\nground.data.materials.append(ground_material)\n\n# Create clear glass sphere resting on the plane\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=96,\n    ring_count=64,\n    radius=1.0,\n    location=(0.0, 0.0, 1.0)\n)\nsphere = bpy.context.object\nsphere.name = \"Clear Glass Sphere\"\n\nfor polygon in sphere.data.polygons:\n    polygon.use_smooth = True\n\nglass_material = bpy.data.materials.new(\"Clear Glass Material\")\nglass_material.use_nodes = True\nglass_bsdf = glass_material.node_tree.nodes.get(\"Principled BSDF\")\n\nglass_bsdf.inputs[\"Base Color\"].default_value = (1.0, 1.0, 1.0, 1.0)\nglass_bsdf.inputs[\"Metallic\"].default_value = 0.0\nglass_bsdf.inputs[\"Roughness\"].default_value = 0.01\nglass_bsdf.inputs[\"IOR\"].default_value = 1.45\n\nif \"Transmission Weight\" in glass_bsdf.inputs:\n    glass_bsdf.inputs[\"Transmission Weight\"].default_value = 1.0\nelif \"Transmission\" in glass_bsdf.inputs:\n    glass_bsdf.inputs[\"Transmission\"].default_value = 1.0\n\nglass_bsdf.inputs[\"Alpha\"].default_value = 1.0\nsphere.data.materials.append(glass_material)\n\n# Neutral world background for visibility\nworld = bpy.context.scene.world\nif world is None:\n    world = bpy.data.worlds.new(\"World\")\n    bpy.context.scene.world = world\n\nworld.use_nodes = True\nworld_background = world.node_tree.nodes.get(\"Background\")\nworld_background.inputs[\"Color\"].default_value = (0.035, 0.035, 0.035, 1.0)\nworld_background.inputs[\"Strength\"].default_value = 0.3\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 150,
+  "completion_tokens": 1093,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0013415999999999999,
+  "latency_s": 10.51,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

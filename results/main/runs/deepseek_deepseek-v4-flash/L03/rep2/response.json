@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create the low-poly trunk (8-sided cylinder)\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=8,\n    radius=0.3,\n    depth=2.0,\n    location=(0.0, 0.0, 0.0)\n)\ntrunk = bpy.context.active_object\ntrunk.name = \"Trunk\"\n\n# Create the low-poly canopy (icosphere, 2 subdivisions)\nbpy.ops.mesh.primitive_ico_sphere_add(\n    subdivisions=2,\n    radius=1.2,\n    location=(0.0, 0.0, 2.0)\n)\ncanopy = bpy.context.active_object\ncanopy.name = \"Canopy\"\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 230,
+  "completion_tokens": 2152,
+  "reasoning_tokens": 1958,
+  "cost_usd_est": 0.0029418400000000003,
+  "latency_s": -0.01,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

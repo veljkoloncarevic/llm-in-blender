@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects from the scene\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Parameters\nhelix_radius = 1.0\nheight = 4.0\nturns = 8\nwire_radius = 0.15\nsegments = 256          # number of intervals along the helix\ncircle_verts = 32       # number of vertices in the circular cross-section\n\n# Create new mesh and object\nmesh = bpy.data.meshes.new(\"CoilSpringMesh\")\nobj = bpy.data.objects.new(\"CoilSpring\", mesh)\nbpy.context.collection.objects.link(obj)\n\n# Prepare bmesh\nbm = bmesh.new()\n\ntotal_angle = turns * 2.0 * math.pi\np = height / total_angle  # dz per radian\n\n# Build rings of vertices\nrings = []\nfor i in range(segments + 1):\n    theta = total_angle * i / segments\n\n    # Helix point\n    pos = Vector((\n        helix_radius * math.cos(theta),\n        helix_radius * math.sin(theta),\n        p * theta\n    ))\n\n    # Tangent vector\n    tangent = Vector((\n        -helix_radius * math.sin(theta),\n        helix_radius * math.cos(theta),\n        p\n    )).normalized()\n\n    # Frenet-like frame (perpendicular to tangent)\n    normal = tangent.cross(Vector((0.0, 0.0, 1.0))).normalized()\n    binormal = tangent.cross(normal).normalized()\n\n    # Circular cross-section vertices\n    ring_verts = []\n    for j in range(circle_verts):\n        phi = 2.0 * math.pi * j / circle_verts\n        offset = normal * (wire_radius * math.cos(phi)) + binormal * (wire_radius * math.sin(phi))\n        ring_verts.append(bm.verts.new(pos + offset))\n    rings.append(ring_verts)\n\n# Create quad faces between consecutive rings\nfor i in range(segments):\n    current_ring = rings[i]\n    next_ring = rings[i + 1]\n    for j in range(circle_verts):\n        j_next = (j + 1) % circle_verts\n        v0 = current_ring[j]\n        v1 = next_ring[j]\n        v2 = next_ring[j_next]\n        v3 = current_ring[j_next]\n        bm.faces.new((v0, v1, v2, v3))\n\n# Recalculate consistent outward normals\nbmesh.ops.recalc_face_normals(bm, faces=bm.faces)\n\n# Write bmesh to mesh\nbm.to_mesh(mesh)\nbm.free()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 241,
+  "completion_tokens": 6597,
+  "reasoning_tokens": 5979,
+  "cost_usd_est": 0.008814080000000002,
+  "latency_s": 71.63,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

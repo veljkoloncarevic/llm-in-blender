@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Parameters\nturns = 8\nradius = 1.0\nheight = 4.0\nwire_radius = 0.15\nsegments_per_turn = 64\nwire_segments = 24\n\n# Create helix curve\ncurve_data = bpy.data.curves.new(name=\"HelixCurve\", type='CURVE')\ncurve_data.dimensions = '3D'\ncurve_data.resolution_u = 12\n\n# Create spline\nspline = curve_data.splines.new(type='BEZIER')\nspline.use_smooth = True\n\n# Calculate number of points needed\ntotal_points = turns * segments_per_turn + 1\nspline.points.add(total_points - 1)\n\n# Generate helix points\nfor i in range(total_points):\n    t = i / (total_points - 1)\n    angle = t * turns * 2 * math.pi\n    z = t * height\n    x = radius * math.cos(angle)\n    y = radius * math.sin(angle)\n    \n    point = spline.points[i]\n    point.co = (x, y, z, 1.0)\n\n# Create circle for bevel\ncircle_curve_data = bpy.data.curves.new(name=\"WireCircle\", type='CURVE')\ncircle_curve_data.dimensions = '3D'\ncircle_spline = circle_curve_data.splines.new(type='BEZIER')\ncircle_spline.use_smooth = True\n\n# Create circle points\ncircle_points = wire_segments\ncircle_spline.points.add(circle_points)\n\nfor i in range(circle_points):\n    angle = (i / circle_points) * 2 * math.pi\n    x = wire_radius * math.cos(angle)\n    y = wire_radius * math.sin(angle)\n    point = circle_spline.points[i]\n    point.co = (x, y, 0, 1.0)\n\n# Close the circle\ncircle_spline.use_cyclic_u = True\n\n# Create objects\nhelix_obj = bpy.data.objects.new(\"Helix\", curve_data)\ncircle_obj = bpy.data.objects.new(\"WireCircle\", circle_curve_data)\n\n# Link to scene\nscene = bpy.context.scene\nscene.collection.objects.link(helix_obj)\nscene.collection.objects.link(circle_obj)\n\n# Set bevel object\ncurve_data.bevel_object = circle_obj\n\n# Convert to mesh for final result\nbpy.context.view_layer.objects.active = helix_obj\nhelix_obj.select_set(True)\n\n# Apply modifiers by converting curve to mesh\nbpy.ops.object.convert(target='MESH')\n\n# Verify face count\nmesh = helix_obj.data\nface_count = len(mesh.polygons)\n\n# Clean up circle object\nbpy.data.objects.remove(circle_obj, do_unlink=True)\nbpy.data.curves.remove(circle_curve_data, do_unlink=True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 182,
+  "completion_tokens": 811,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004237,
+  "latency_s": 6.34,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

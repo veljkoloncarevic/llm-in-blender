@@ -1,0 +1,128 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.005,
+  "scene": {
+    "faces": 60,
+    "triangles": 120,
+    "vertices": 80,
+    "n_geometry_objects": 3,
+    "objects": [
+      {
+        "name": "Post",
+        "type": "MESH",
+        "modifiers": [
+          "ARRAY"
+        ],
+        "materials": [
+          "Wood"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Rail_Top",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Wood"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Rail_Bottom",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Wood"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "ARRAY"
+    ],
+    "materials": [
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Wood",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 1,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -0.05000000074505806,
+      -0.07500000298023224,
+      0.0
+    ],
+    "bbox_max": [
+      7.050000190734863,
+      0.07500000298023224,
+      1.5
+    ]
+  },
+  "render_time_s": 5.717,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.005,
+  "scene": {
+    "faces": 90,
+    "triangles": 108,
+    "vertices": 58,
+    "n_geometry_objects": 2,
+    "objects": [
+      {
+        "name": "Eight-Sided Trunk",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Trunk Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Low-Poly Canopy",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Canopy Material"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [],
+    "materials": [
+      {
+        "name": "Canopy Material",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Trunk Material",
+        "assigned": true,
+        "use_nodes": false
+      }
+    ],
+    "n_materials_assigned": 2,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.9021157026290894,
+      -1.9999998807907104,
+      0.0
+    ],
+    "bbox_max": [
+      1.9021157026290894,
+      1.9999998807907104,
+      6.0
+    ]
+  },
+  "render_time_s": 5.922,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

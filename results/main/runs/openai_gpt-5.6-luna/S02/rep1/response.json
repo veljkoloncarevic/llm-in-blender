@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create checkerboard floor\nbpy.ops.mesh.primitive_plane_add(size=12, location=(0, 0, 0))\nfloor = bpy.context.object\nfloor.name = \"Checkerboard Floor\"\n\nfloor_material = bpy.data.materials.new(\"Checkerboard Floor Material\")\nfloor_material.use_nodes = True\n\nfloor_nodes = floor_material.node_tree.nodes\nfloor_links = floor_material.node_tree.links\nfloor_nodes.clear()\n\nfloor_output = floor_nodes.new(\"ShaderNodeOutputMaterial\")\nfloor_output.location = (420, 0)\n\nfloor_bsdf = floor_nodes.new(\"ShaderNodeBsdfPrincipled\")\nfloor_bsdf.location = (120, 0)\nfloor_bsdf.inputs[\"Roughness\"].default_value = 0.32\n\nfloor_texture = floor_nodes.new(\"ShaderNodeTexCoord\")\nfloor_texture.location = (-620, 0)\n\nchecker = floor_nodes.new(\"ShaderNodeTexChecker\")\nchecker.location = (-220, 0)\nchecker.name = \"Black and White Checker Texture\"\nchecker.inputs[\"Color1\"].default_value = (0.0, 0.0, 0.0, 1.0)\nchecker.inputs[\"Color2\"].default_value = (1.0, 1.0, 1.0, 1.0)\nchecker.inputs[\"Scale\"].default_value = 8.0\n\nfloor_links.new(floor_texture.outputs[\"Generated\"], checker.inputs[\"Vector\"])\nfloor_links.new(checker.outputs[\"Color\"], floor_bsdf.inputs[\"Base Color\"])\nfloor_links.new(floor_bsdf.outputs[\"BSDF\"], floor_output.inputs[\"Surface\"])\n\nfloor.data.materials.append(floor_material)\n\n# Create glossy red cube\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 1))\ncube = bpy.context.object\ncube.name = \"Glossy Red Cube\"\n\ncube_material = bpy.data.materials.new(\"Glossy Red Material\")\ncube_material.use_nodes = True\n\ncube_bsdf = cube_material.node_tree.nodes.get(\"Principled BSDF\")\ncube_bsdf.inputs[\"Base Color\"].default_value = (0.8, 0.008, 0.01, 1.0)\ncube_bsdf.inputs[\"Roughness\"].default_value = 0.08\ncube_bsdf.inputs[\"Metallic\"].default_value = 0.15\n\nif \"Coat Weight\" in cube_bsdf.inputs:\n    cube_bsdf.inputs[\"Coat Weight\"].default_value = 0.35\nif \"Coat Roughness\" in cube_bsdf.inputs:\n    cube_bsdf.inputs[\"Coat Roughness\"].default_value = 0.04\n\ncube.data.materials.append(cube_material)\n\n# Slightly soften the cube edges while preserving its cube shape\nbevel = cube.modifiers.new(\"Subtle Edge Bevel\", \"BEVEL\")\nbevel.width = 0.06\nbevel.segments = 3\n\nbpy.context.view_layer.objects.active = cube\ncube.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 142,
+  "completion_tokens": 1047,
+  "reasoning_tokens": 399,
+  "cost_usd_est": 0.0012848,
+  "latency_s": 10.23,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

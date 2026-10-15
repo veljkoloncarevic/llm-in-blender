@@ -1,0 +1,136 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.008,
+  "scene": {
+    "faces": 577,
+    "triangles": 1154,
+    "vertices": 580,
+    "n_geometry_objects": 2,
+    "objects": [
+      {
+        "name": "Dark_Ground",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Ground_Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Neon_Cyan_Ring",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Neon_Cyan_Material"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [],
+    "materials": [
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Ground_Material",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.6000000238418579,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Neon_Cyan_Material",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeEmission",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeEmission",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [],
+        "emission_nodes": [
+          5.0
+        ]
+      }
+    ],
+    "n_materials_assigned": 2,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -10.0,
+      -10.0,
+      0.0
+    ],
+    "bbox_max": [
+      10.0,
+      10.0,
+      0.550000011920929
+    ]
+  },
+  "render_time_s": 7.281,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

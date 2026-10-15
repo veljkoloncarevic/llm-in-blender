@@ -1,0 +1,368 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.009,
+  "scene": {
+    "faces": 5860,
+    "triangles": 11820,
+    "vertices": 5962,
+    "n_geometry_objects": 26,
+    "objects": [
+      {
+        "name": "Central Cylindrical Column",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Column Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 01",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 02",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 03",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 04",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 05",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 06",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 07",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 08",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 09",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 10",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 11",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 12",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 13",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 14",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 15",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 16",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 17",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 18",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 19",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 20",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 21",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 22",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 23",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Spiral Step 24",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Outer Helical Handrail",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "BEVEL"
+    ],
+    "materials": [
+      {
+        "name": "Column Material",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Handrail Material",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Step Material",
+        "assigned": true,
+        "use_nodes": false
+      }
+    ],
+    "n_materials_assigned": 3,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -2.3649649620056152,
+      -2.3648085594177246,
+      -0.09000015258789062
+    ],
+    "bbox_max": [
+      2.365000009536743,
+      2.3646092414855957,
+      16.014589309692383
+    ]
+  },
+  "render_time_s": 4.933,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

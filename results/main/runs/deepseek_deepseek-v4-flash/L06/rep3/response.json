@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector, Matrix\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create the cube (die body)\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 0))\ndie = bpy.context.object\ndie.name = \"Die\"\n\n# Store face information from the original cube before adding the bevel\nmesh = die.data\nface_data = []\nfor f in mesh.polygons:\n    n = f.normal.copy()\n    center = f.center.copy()\n\n    # Map normals to pip values (opposite faces sum to 7)\n    if abs(n.x) > 0.5:\n        value = 1 if n.x > 0 else 6\n    elif abs(n.y) > 0.5:\n        value = 2 if n.y > 0 else 5\n    elif abs(n.z) > 0.5:\n        value = 3 if n.z > 0 else 4\n    else:\n        continue\n\n    # Build two tangent vectors inside the face plane\n    axis = Vector((1, 0, 0))\n    if abs(n.x) >= 0.999:\n        axis = Vector((0, 1, 0))\n    t1 = n.cross(axis)\n    if t1.length_squared < 1e-12:\n        t1 = n.cross(Vector((0, 1, 0)))\n    t1.normalize()\n    t2 = n.cross(t1).normalize()\n\n    face_data.append((center, n, t1, t2, value))\n\n# Add and keep the Bevel modifier with 3 segments\nbevel = die.modifiers.new(name=\"Bevel\", type='BEVEL')\nbevel.segments = 3\nbevel.width = 0.15\nbevel.limit_method = 'NONE'\n\n# Pip patterns for faces 1..6 (grid coordinates -1, 0, 1)\npatterns = {\n    1: ((0, 0),),\n    2: ((-1, -1), (1, 1)),\n    3: ((-1, -1), (0, 0), (1, 1)),\n    4: ((-1, -1), (1, 1), (1, -1), (-1, 1)),\n    5: ((-1, -1), (1, 1), (1, -1), (-1, 1), (0, 0)),\n    6: ((-1, -1), (-1, 0), (-1, 1), (1, -1), (1, 0), (1, 1)),\n}\n\n# Build all pips as one mesh\npip_mesh = bpy.data.meshes.new(\"Pips\")\nbm = bmesh.new()\n\nspacing = 0.6\npip_radius = 0.08\npip_depth = 0.03\npip_segments = 8\nbase_inset = 0.002  # slightly embed bases to avoid z-fighting\n\nfor center, n, t1, t2, value in face_data:\n    for du, dv in patterns[value]:\n        loc = center + t1 * (du * spacing) + t2 * (dv * spacing) - n * base_inset\n        q = n.normalized().to_track_quat('Z', 'Y')\n        mat = Matrix.Translation(loc) @ q.to_matrix().to_4x4()\n        bmesh.ops.create_cone(\n            bm,\n            cap_ends=True,\n            cap_tris=False,\n            segments=pip_segments,\n            radius1=pip_radius,\n            radius2=pip_radius,\n            depth=pip_depth,\n            matrix=mat,\n        )\n\nbm.to_mesh(pip_mesh)\nbm.free()\n\n# Link the pips object to the scene\npip_obj = bpy.data.objects.new(\"Pips\", pip_mesh)\nbpy.context.collection.objects.link(pip_obj)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 244,
+  "completion_tokens": 23393,
+  "reasoning_tokens": 22502,
+  "cost_usd_est": 0.030986120000000002,
+  "latency_s": 253.41,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "status": "exec_error",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": false,
+  "error_type": "SyntaxError",
+  "error_message": "invalid syntax. Perhaps you forgot a comma? (llm_script.py, line 12)",
+  "error_line": 12,
+  "traceback": "Traceback (most recent call last):\n  File \"/app/src/blender_harness.py\", line 59, in <module>\n    compiled = compile(code, \"llm_script.py\", \"exec\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"llm_script.py\", line 12\n    canopy_mat.diffuse_color = (0.08, 0. thirty, 0.06, 1.0)\n                                      ^^^^^^^^^\nSyntaxError: invalid syntax. Perhaps you forgot a comma?\n",
+  "exec_time_s": 0.001
+}

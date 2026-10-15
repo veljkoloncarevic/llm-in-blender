@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Matrix, Vector\nimport math\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create rocket body (cylinder)\nbpy.ops.mesh.primitive_cylinder_add(\n    radius=0.5,\n    depth=3,\n    vertices=8,  # Low-poly: 8 vertices around\n    location=(0, 0, 0)\n)\nbody = bpy.context.active_object\nbody.name = \"RocketBody\"\n\n# Create nose cone\nbpy.ops.mesh.primitive_cone_add(\n    radius1=0.5,\n    radius2=0,\n    depth=1,\n    vertices=8,  # Low-poly: 8 vertices around\n    location=(0, 0, 2)\n)\nnose = bpy.context.active_object\nnose.name = \"RocketNose\"\n\n# Create three fins from scaled cubes arranged 120 degrees apart\nfor i in range(3):\n    angle = (i * 120) * math.pi / 180  # 120 degrees apart\n    \n    # Create a cube for the fin\n    bpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, 0))\n    fin = bpy.context.active_object\n    fin.name = f\"RocketFin{i}\"\n    \n    # Scale the cube to make it fin-shaped: thin, tall, and narrow\n    fin.scale = (0.15, 0.6, 0.3)  # thin in X, tall in Y, narrow in Z\n    \n    # Position fin away from body\n    fin.location = (0.5 * math.cos(angle), 0.5 * math.sin(angle), -0.8)\n    \n    # Rotate fin to point outward and angle it\n    fin.rotation_euler = (0, 0.3, angle)\n\n# Join all objects into one mesh\nbpy.ops.object.select_all(action='SELECT')\nbpy.context.view_layer.objects.active = body\nbpy.ops.object.join()\n\n# Final object is now the combined rocket\nrocket = bpy.context.active_object\nrocket.name = \"Rocket\"\n\n# Smooth shading for better appearance\nbpy.context.view_layer.objects.active = rocket\nbpy.ops.object.shade_smooth()\n\n# Verify face count is under 800\nmesh = rocket.data\nface_count = len(mesh.polygons)\nprint(f\"Total faces in rocket: {face_count}\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 173,
+  "completion_tokens": 650,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.003423,
+  "latency_s": 4.98,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

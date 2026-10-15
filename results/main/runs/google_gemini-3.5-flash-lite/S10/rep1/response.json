@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects in the scene\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create a new mesh and object for the cube\nmesh = bpy.data.meshes.new(name=\"ColoredCubeMesh\")\ncube_obj = bpy.data.objects.new(name=\"ColoredCube\", object_data=mesh)\n\n# Link the object to the active collection\nbpy.context.collection.objects.link(cube_obj)\n\n# Create 3 distinct materials: Red, Green, Blue\nmat_red = bpy.data.materials.new(name=\"RedMaterial\")\nmat_red.use_nodes = True\nmat_red.node_tree.nodes[\"Principled BSDF\"].inputs[\"Base Color\"].default_value = (1.0, 0.0, 0.0, 1.0)\n\nmat_green = bpy.data.materials.new(name=\"GreenMaterial\")\nmat_green.use_nodes = True\nmat_green.node_tree.nodes[\"Principled BSDF\"].inputs[\"Base Color\"].default_value = (0.0, 1.0, 0.0, 1.0)\n\nmat_blue = bpy.data.materials.new(name=\"BlueMaterial\")\nmat_blue.use_nodes = True\nmat_blue.node_tree.nodes[\"Principled BSDF\"].inputs[\"Base Color\"].default_value = (0.0, 0.0, 1.0, 1.0)\n\n# Add materials to the object's material slots (Indices: 0=Red, 1=Green, 2=Blue)\ncube_obj.data.materials.append(mat_red)\ncube_obj.data.materials.append(mat_green)\ncube_obj.data.materials.append(mat_blue)\n\n# Define geometry data for a primitive cube\nvertices = [\n    (-1.0, -1.0, -1.0),\n    ( 1.0, -1.0, -1.0),\n    ( 1.0,  1.0, -1.0),\n    (-1.0,  1.0, -1.0),\n    (-1.0, -1.0,  1.0),\n    ( 1.0, -1.0,  1.0),\n    ( 1.0,  1.0,  1.0),\n    (-1.0,  1.0,  1.0)\n]\n\nfaces = [\n    (0, 1, 2, 3), # Bottom\n    (4, 7, 6, 5), # Top\n    (0, 4, 5, 1), # Front\n    (1, 5, 6, 2), # Right\n    (2, 6, 7, 3), # Back\n    (3, 7, 4, 0)  # Left\n]\n\n# Build the mesh from vertices and faces\nmesh.from_pydata(vertices, [], faces)\nmesh.update()\n\n# Assign material indices to individual faces\n# We will cycle through the 3 materials (0, 1, 2) across the 6 faces\nfor face_index, poly in enumerate(mesh.polygons):\n    poly.material_index = face_index % 3\n\n# Set the active object to our cube and make it active in the viewport\nbpy.context.view_layer.objects.active = cube_obj\ncube_obj.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 143,
+  "completion_tokens": 810,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0020679,
+  "latency_s": 2.56,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

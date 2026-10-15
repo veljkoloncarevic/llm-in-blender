@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# 1. Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# 2. Create a UV Sphere\nbpy.ops.mesh.primitive_uv_sphere_add(\n    radius=2.0, \n    segments=64, \n    ring_count=32, \n    location=(0, 0, 0)\n)\nsphere_obj = bpy.active_object\nsphere_obj.name = \"CarPaintSphere\"\n\n# Smooth shading for the sphere\nfor polygon in sphere_obj.data.polygons:\n    polygon.use_smooth = True\n\n# 3. Create Deep Red Car-Paint Material\nmaterial = bpy.data.materials.new(name=\"DeepRedCarPaint\")\nmaterial.use_nodes = True\nnodes = material.node_tree.nodes\nlinks = material.node_tree.links\n\n# Clear default nodes to build cleanly\nnodes.clear()\n\n# Create Principled BSDF node\nprincipled_node = nodes.new(type='ShaderNodeBsdfPrincipled')\nprincipled_node.location = (0, 0)\n\n# Configure Car-Paint properties\n# Deep red base color\nprincipled_node.inputs['Base Color'].default_value = (0.15, 0.01, 0.01, 1.0)\n# Metallic finish\nprincipled_node.inputs['Metallic'].default_value = 0.5\n# Slight roughness for the metallic flake appearance beneath\nprincipled_node.inputs['Roughness'].default_value = 0.25\n# Strong clear coat layer\nprincipled_node.inputs['Coat Weight'].default_value = 1.0\nprincipled_node.inputs['Coat Roughness'].default_value = 0.03\nprincipled_node.inputs['Coat IOR'].default_value = 1.5\n\n# Create Material Output node\noutput_node = nodes.new(type='ShaderNodeOutputMaterial')\noutput_node.location = (300, 0)\n\n# Link Principled BSDF to Material Output\nlinks.new(principled_node.outputs['BSDF'], output_node.inputs['Surface'])\n\n# Assign material to the sphere\nif sphere_obj.data.materials:\n    sphere_obj.data.materials[0] = material\nelse:\n    sphere_obj.data.materials.append(material)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 150,
+  "completion_tokens": 554,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.00143,
+  "latency_s": 2.35,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

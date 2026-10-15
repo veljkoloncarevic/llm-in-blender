@@ -1,0 +1,87 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.048,
+  "scene": {
+    "faces": 57600,
+    "triangles": 115200,
+    "vertices": 58081,
+    "n_geometry_objects": 1,
+    "objects": [
+      {
+        "name": "Hilly_Terrain",
+        "type": "MESH",
+        "modifiers": [
+          "SUBSURF"
+        ],
+        "materials": [
+          "Terrain_Material"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "SUBSURF"
+    ],
+    "materials": [
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Terrain_Material",
+        "assigned": true,
+        "use_nodes": false
+      }
+    ],
+    "n_materials_assigned": 1,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -12.000000953674316,
+      -12.000000953674316,
+      -2.937871217727661
+    ],
+    "bbox_max": [
+      12.000000953674316,
+      12.000000953674316,
+      2.8942208290100098
+    ]
+  },
+  "render_time_s": 6.012,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

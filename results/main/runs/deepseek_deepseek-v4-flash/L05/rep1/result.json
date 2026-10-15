@@ -1,0 +1,147 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.008,
+  "scene": {
+    "faces": 258,
+    "triangles": 516,
+    "vertices": 344,
+    "n_geometry_objects": 10,
+    "objects": [
+      {
+        "name": "LeftPanel",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "RightPanel",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "TopPanel",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "BottomPanel",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Shelf1",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Shelf2",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Shelf3",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "BookRow_1",
+        "type": "MESH",
+        "modifiers": [
+          "ARRAY"
+        ],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "BookRow_2",
+        "type": "MESH",
+        "modifiers": [
+          "ARRAY"
+        ],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "BookRow_3",
+        "type": "MESH",
+        "modifiers": [
+          "ARRAY"
+        ],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "ARRAY"
+    ],
+    "materials": [
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 0,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.0,
+      -0.25,
+      0.0
+    ],
+    "bbox_max": [
+      1.0,
+      0.25,
+      3.0
+    ]
+  },
+  "render_time_s": 6.525,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

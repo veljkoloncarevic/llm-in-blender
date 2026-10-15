@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Switch to object mode if needed, then delete all existing objects\nif bpy.context.active_object and bpy.context.active_object.mode != 'OBJECT':\n    bpy.ops.object.mode_set(mode='OBJECT')\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# --- Dark ground plane ---\nbpy.ops.mesh.primitive_plane_add(size=20, location=(0, 0, 0))\nground = bpy.context.active_object\nground.name = \"Dark_Ground\"\n\nground_mat = bpy.data.materials.new(\"Ground_Material\")\nground_mat.use_nodes = True\nnt = ground_mat.node_tree\nfor node in nt.nodes:\n    if node.type == 'BSDF_PRINCIPLED':\n        node.inputs['Base Color'].default_value = (0.02, 0.02, 0.02, 1.0)\n        node.inputs['Roughness'].default_value = 0.6\n        break\nground.data.materials.append(ground_mat)\n\n# --- Cyan neon ring (torus) ---\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=1.0,\n    minor_radius=0.05,\n    location=(0, 0, 0.5),\n)\nring = bpy.context.active_object\nring.name = \"Neon_Cyan_Ring\"\n\nring_mat = bpy.data.materials.new(\"Neon_Cyan_Material\")\nring_mat.use_nodes = True\nnt = ring_mat.node_tree\n\n# Remove default nodes\nfor node in list(nt.nodes):\n    nt.nodes.remove(node)\n\n# Create emission shader\nemission = nt.nodes.new('ShaderNodeEmission')\nemission.inputs['Color'].default_value = (0.0, 1.0, 1.0, 1.0)\nemission.inputs['Strength'].default_value = 5.0\noutput = nt.nodes.new('ShaderNodeOutputMaterial')\nnt.links.new(emission.outputs[0], output.inputs['Surface'])\n\nring.data.materials.append(ring_mat)\n\n# Smooth shading on the ring\nbpy.ops.object.select_all(action='DESELECT')\nring.select_set(True)\nbpy.context.view_layer.objects.active = ring\nbpy.ops.object.shade_smooth()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 222,
+  "completion_tokens": 2861,
+  "reasoning_tokens": 2356,
+  "cost_usd_est": 0.0038742,
+  "latency_s": 31.42,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

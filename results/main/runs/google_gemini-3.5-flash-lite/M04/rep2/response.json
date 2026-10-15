@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport math\nimport bpy\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# --- Parameters for (2,3) Torus Knot ---\np = 2\nq = 3\nmajor_radius = 2.0\nminor_radius = 0.7\ntube_radius = 0.25\n\n# Resolution settings to meet the 2,000 - 60,000 face count rule\n# Curve resolution (steps along the knot): 250\n# Bevel resolution (vertices around the tube): 20\n# Total quads roughly = 250 * 20 = 5,000 faces (well within 2k-60k range)\nresolution_u = 250\nresolution_v = 20\n\n# Create a Curve object\ncurve_data = bpy.data.curves.new(name=\"TorusKnotCurve\", type='CURVE')\ncurve_data.dimensions = '3D'\ncurve_data.resolution_u = resolution_u\ncurve_data.bevel_resolution = resolution_v\ncurve_data.fill_mode = 'FULL'\ncurve_data.bevel_depth = tube_radius\n\n# Create a Spline in the curve data\npolyline = curve_data.splines.new(type='POLY')\n\n# Generate points for the (2,3) torus knot\n# Parametric equations:\n# x(t) = (R + r * cos(q*t)) * cos(p*t)\n# y(t) = (R + r * cos(q*t)) * sin(p*t)\n# z(t) = r * sin(q*t)\npoints = []\nfor i in range(resolution_u):\n    t = (i / resolution_u) * (2.0 * math.pi)\n    \n    r_cos_qt = minor_radius * math.cos(q * t)\n    x = (major_radius + r_cos_qt) * math.cos(p * t)\n    y = (major_radius + r_cos_qt) * math.sin(p * t)\n    z = minor_radius * math.sin(q * t)\n    \n    points.append((x, y, z))\n\n# Set the points on the polyline\n# The first point is already created by default, so we resize and set coordinates.\npolyline.points.add(len(points) - 1)\nfor i, coord in enumerate(points):\n    polyline.points[i].co = (coord[0], coord[1], coord[2], 1.0)\n\n# Make the curve cyclic (closed loop)\npolyline.use_cyclic_u = True\n\n# Create the curve object in the scene\ncurve_obj = bpy.data.objects.new(\"TorusKnot\", curve_data)\nbpy.context.collection.objects.link(curve_obj)\n\n# Optional: Convert to mesh to ensure exact face count and apply modifiers if needed,\n# though curve with bevel depth generates clean geometry automatically.\nbpy.context.view_layer.objects.active = curve_obj\ncurve_obj.select_set(True)\n\n# Convert curve to mesh to guarantee geometry structure\nbpy.ops.object.convert(target='MESH')\n\n# Smooth shading for the tube mesh\nmesh_obj = bpy.context.active_object\nfor polygon in mesh_obj.data.polygons:\n    polygon.use_smooth = True\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 166,
+  "completion_tokens": 799,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0020473,
+  "latency_s": 2.75,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

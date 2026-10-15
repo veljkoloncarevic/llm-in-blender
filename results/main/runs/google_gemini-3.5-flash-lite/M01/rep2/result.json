@@ -1,0 +1,10 @@
+{
+  "status": "exec_error",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": false,
+  "error_type": "SyntaxError",
+  "error_message": "invalid syntax (llm_script.py, line 265)",
+  "error_line": 265,
+  "traceback": "Traceback (most recent call last):\n  File \"/app/src/blender_harness.py\", line 59, in <module>\n    compiled = compile(code, \"llm_script.py\", \"exec\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"llm_script.py\", line 265\n    for i in range(0, num_steps, 2):  .\n                                      ^\nSyntaxError: invalid syntax\n",
+  "exec_time_s": 0.004
+}

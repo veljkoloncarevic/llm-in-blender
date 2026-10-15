@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create trunk: cylinder with 8 sides\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=8,\n    radius=0.3,\n    depth=2,\n    location=(0, 0, 1)\n)\ntrunk = bpy.context.active_object\ntrunk.name = \"Trunk\"\n\n# Create canopy: icosphere with 2 subdivisions\nbpy.ops.mesh.primitive_ico_sphere_add(\n    subdivisions=2,\n    radius=1.5,\n    location=(0, 0, 2.5)\n)\ncanopy = bpy.context.active_object\ncanopy.name = \"Canopy\"\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 230,
+  "completion_tokens": 1431,
+  "reasoning_tokens": 1255,
+  "cost_usd_est": 0.00199012,
+  "latency_s": 15.01,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

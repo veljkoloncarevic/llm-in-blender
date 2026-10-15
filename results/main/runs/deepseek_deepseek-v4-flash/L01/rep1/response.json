@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\ndef create_box(name, center, size):\n    cx, cy, cz = center\n    sx, sy, sz = size\n    hx, hy, hz = sx / 2, sy / 2, sz / 2\n\n    verts = [\n        (cx - hx, cy - hy, cz - hz),\n        (cx + hx, cy - hy, cz - hz),\n        (cx + hx, cy + hy, cz - hz),\n        (cx - hx, cy + hy, cz - hz),\n        (cx - hx, cy - hy, cz + hz),\n        (cx + hx, cy - hy, cz + hz),\n        (cx + hx, cy + hy, cz + hz),\n        (cx - hx, cy + hy, cz + hz),\n    ]\n    faces = [\n        (0, 1, 2, 3),\n        (4, 5, 6, 7),\n        (0, 1, 5, 4),\n        (1, 2, 6, 5),\n        (2, 3, 7, 6),\n        (3, 0, 4, 7),\n    ]\n\n    mesh = bpy.data.meshes.new(name)\n    mesh.from_pydata(verts, [], faces)\n    mesh.update()\n\n    obj = bpy.data.objects.new(name, mesh)\n    bpy.context.scene.collection.objects.link(obj)\n    return obj\n\n# Tabletop\ntabletop = create_box(\"Tabletop\", (0.0, 0.0, 0.725), (1.2, 0.8, 0.05))\n\n# Four legs\nleg_positions = [\n    (-0.575, -0.375),\n    (0.575, -0.375),\n    (0.575, 0.375),\n    (-0.575, 0.375),\n]\nfor i, (x, y) in enumerate(leg_positions, start=1):\n    create_box(f\"Leg_{i}\", (x, y, 0.35), (0.05, 0.05, 0.7))\n\n# Add Bevel modifier to the tabletop\nbevel_mod = tabletop.modifiers.new(name=\"Bevel\", type='BEVEL')\nbevel_mod.width = 0.02\nbevel_mod.segments = 1\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 229,
+  "completion_tokens": 5992,
+  "reasoning_tokens": 5431,
+  "cost_usd_est": 0.0080102,
+  "latency_s": 62.96,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

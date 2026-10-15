@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\n\n# Switch to Object Mode if necessary\nif bpy.context.mode != 'OBJECT':\n    bpy.ops.object.mode_set(mode='OBJECT')\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# --- Wide cylinder base ---\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=24,\n    radius=1.0,\n    depth=0.3,\n    location=(0.0, 0.0, 0.15)\n)\nbase = bpy.context.object\nbase.name = \"Pawn_Base\"\n\n# --- Torus collar ---\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=0.5,\n    minor_radius=0.15,\n    major_segments=24,\n    minor_segments=12,\n    location=(0.0, 0.0, 0.45)\n)\ncollar = bpy.context.object\ncollar.name = \"Pawn_Collar\"\n\n# --- Tapered body (cylinder edited into a frustum) ---\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=24,\n    radius=0.5,\n    depth=1.0,\n    location=(0.0, 0.0, 1.1)\n)\nbody = bpy.context.object\nbody.name = \"Pawn_Body\"\n\n# Enter edit mode and scale the top ring down\nbpy.ops.object.mode_set(mode='EDIT')\nbm = bmesh.from_edit_mesh(body.data)\nmax_z = max(v.co.z for v in bm.verts)\nfor v in bm.verts:\n    if v.co.z > max_z - 0.001:\n        v.co.x *= 0.6\n        v.co.y *= 0.6\nbmesh.update_edit_mesh(body.data)\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# --- Sphere head ---\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=24,\n    ring_count=12,\n    radius=0.4,\n    location=(0.0, 0.0, 1.85)\n)\nhead = bpy.context.object\nhead.name = \"Pawn_Head\"\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 241,
+  "completion_tokens": 10652,
+  "reasoning_tokens": 10146,
+  "cost_usd_est": 0.014166680000000003,
+  "latency_s": 134.0,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

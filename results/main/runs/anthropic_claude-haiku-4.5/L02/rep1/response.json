@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create material for snowman body (white)\nwhite_mat = bpy.data.materials.new(name=\"Snow\")\nwhite_mat.use_nodes = True\nwhite_mat.node_tree.nodes[\"Principled BSDF\"].inputs[0].default_value = (1.0, 1.0, 1.0, 1.0)\n\n# Create material for eyes (black)\nblack_mat = bpy.data.materials.new(name=\"Eyes\")\nblack_mat.use_nodes = True\nblack_mat.node_tree.nodes[\"Principled BSDF\"].inputs[0].default_value = (0.0, 0.0, 0.0, 1.0)\n\n# Create material for carrot nose (orange)\norange_mat = bpy.data.materials.new(name=\"Carrot\")\norange_mat.use_nodes = True\norange_mat.node_tree.nodes[\"Principled BSDF\"].inputs[0].default_value = (1.0, 0.5, 0.0, 1.0)\n\n# Bottom sphere (largest)\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1.0, location=(0, 0, 1.0), segments=16, ring_count=8)\nbottom_sphere = bpy.context.active_object\nbottom_sphere.data.materials.append(white_mat)\n\n# Middle sphere (medium)\nbpy.ops.mesh.primitive_uv_sphere_add(radius=0.65, location=(0, 0, 2.65), segments=16, ring_count=8)\nmiddle_sphere = bpy.context.active_object\nmiddle_sphere.data.materials.append(white_mat)\n\n# Top sphere (smallest)\nbpy.ops.mesh.primitive_uv_sphere_add(radius=0.4, location=(0, 0, 3.95), segments=16, ring_count=8)\ntop_sphere = bpy.context.active_object\ntop_sphere.data.materials.append(white_mat)\n\n# Carrot nose (cone)\nbpy.ops.mesh.primitive_cone_add(radius1=0.15, radius2=0.0, depth=0.4, vertices=8, location=(0.4, 0, 3.95), rotation=(0, math.pi/2, 0))\ncarrot = bpy.context.active_object\ncarrot.data.materials.append(orange_mat)\n\n# Left eye\nbpy.ops.mesh.primitive_uv_sphere_add(radius=0.1, location=(-0.15, 0.35, 4.15), segments=8, ring_count=4)\nleft_eye = bpy.context.active_object\nleft_eye.data.materials.append(black_mat)\n\n# Right eye\nbpy.ops.mesh.primitive_uv_sphere_add(radius=0.1, location=(0.15, 0.35, 4.15), segments=8, ring_count=4)\nright_eye = bpy.context.active_object\nright_eye.data.materials.append(black_mat)\n\n# Select all and set origin to world origin for better viewing\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 175,
+  "completion_tokens": 868,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004515,
+  "latency_s": 5.17,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

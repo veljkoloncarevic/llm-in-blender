@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create floor plane\nbpy.ops.mesh.primitive_plane_add(size=10.0, location=(0, 0, 0))\nfloor = bpy.context.active_object\nfloor.name = \"CheckerFloor\"\n\n# Create red cube sitting on the floor\nbpy.ops.mesh.primitive_cube_add(size=2.0, location=(0, 0, 1.0))\ncube = bpy.context.active_object\ncube.name = \"GlossyCube\"\n\n# --- Material for Floor: Checker Texture driving Base Color ---\nfloor_mat = bpy.data.materials.new(name=\"FloorMaterial\")\nfloor_mat.use_nodes = True\nfloor_nodes = floor_mat.node_tree.nodes\nfloor_links = floor_mat.node_tree.links\n\n# Clear default nodes\nfloor_nodes.clear()\n\n# Create nodes\nnode_output = floor_nodes.new(type='ShaderNodeOutputMaterial')\nnode_output.location = (400, 0)\n\nnode_principled = floor_nodes.new(type='ShaderNodeBsdfPrincipled')\nnode_principled.location = (100, 0)\n\nnode_checker = floor_nodes.new(type='ShaderNodeTexChecker')\nnode_checker.location = (-200, 0)\nnode_checker.inputs['Scale'].default_value = 5.0\n\n# Link Checker Color to Principled Base Color, and Principled BSDF to Output\nfloor_links.new(node_checker.outputs['Color'], node_principled.inputs['Base Color'])\nfloor_links.new(node_principled.outputs['BSDF'], node_output.inputs['Surface'])\n\n# Assign material to floor\nfloor.data.materials.append(floor_mat)\n\n\n# --- Material for Cube: Glossy Red ---\ncube_mat = bpy.data.materials.new(name=\"GlossyRedMaterial\")\ncube_mat.use_nodes = True\ncube_nodes = cube_mat.node_tree.nodes\ncube_links = cube_mat.node_tree.links\n\n# Clear default nodes\ncube_nodes.clear()\n\n# Create nodes\ncube_output = cube_nodes.new(type='ShaderNodeOutputMaterial')\ncube_output.location = (300, 0)\n\ncube_principled = cube_nodes.new(type='ShaderNodeBsdfPrincipled')\ncube_principled.location = (0, 0)\n\n# Set properties for glossy red\ncube_principled.inputs['Base Color'].default_value = (0.8, 0.05, 0.05, 1.0)\ncube_principled.inputs['Roughness'].default_value = 0.1  # Make it glossy/shiny\n\n# Link Principled BSDF to Output\ncube_links.new(cube_principled.outputs['BSDF'], cube_output.inputs['Surface'])\n\n# Assign material to cube\ncube.data.materials.append(cube_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 140,
+  "completion_tokens": 718,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.001837,
+  "latency_s": 2.24,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create a new mesh and object for the vase profile/lathe\nmesh = bpy.data.meshes.new(\"VaseMesh\")\nobj = bpy.data.objects.new(\"Vase\", mesh)\nbpy.context.collection.objects.link(obj)\n\nbm = bmesh.new()\n\n# Define a 2D profile (X, Z coordinates) for a vase:\n# Flat base -> wide body -> narrow neck -> flared rim\nprofile_points = [\n    (0.0, 0.0),    # Center bottom (flat base)\n    (1.2, 0.0),    # Outer bottom edge\n    (1.5, 0.2),    # Lower body outward curve\n    (1.8, 0.8),    # Widest body point\n    (1.2, 1.8),    # Tapering up to shoulder\n    (0.5, 2.2),    # Narrow neck\n    (0.5, 2.8),    # Neck straight section\n    (0.8, 3.0)     # Flared rim\n]\n\n# Number of segments for the revolution around the Z axis\nsegments = 32\n\n# Rotate the profile points around the Z axis to build the mesh\nverts = []\nfor i in range(segments):\n    angle = 2.0 * math.pi * i / segments\n    cos_a = math.cos(angle)\n    sin_a = math.sin(angle)\n    \n    col_verts = []\n    for x, z in profile_points:\n        # If x == 0, it's on the axis of rotation, avoid duplicate central vertices per slice\n        v = bm.verts.new((x * cos_a, x * sin_a, z))\n        col_verts.append(v)\n    verts.append(col_verts)\n\n# Build faces connecting the vertices\nfor i in range(segments):\n    next_i = (i + 1) % segments\n    current_col = verts[i]\n    next_col = verts[next_i]\n    \n    for j in range(len(profile_points) - 1):\n        v1 = current_col[j]\n        v2 = next_col[j]\n        v3 = next_col[j + 1]\n        v4 = current_col[j + 1]\n        \n        # Skip faces at the exact center bottom if x=0 to avoid degenerate geometry\n        if profile_points[j][0] == 0.0 and profile_points[j+1][0] == 0.0:\n            continue\n            \n        bm.faces.new((v1, v2, v3, v4))\n\n# Fill the bottom center if needed, or let subsurf handle/close it.\n# Clean up and ensure normals point outward\nbm.normal_update()\n\n# Write the bmesh back to the mesh\nbm.to_mesh(mesh)\nbm.free()\n\n# Set smooth shading for all faces\nfor poly in mesh.polygons:\n    poly.use_smooth = True\n\n# Add a Subdivision Surface modifier to smooth the vase\nsubsurf = obj.modifiers.new(name=\"Subdivision\", type='SUBSURF')\nsubsurf.levels = 2\nsubsurf.render_levels = 2\n\n# Select and set active\nbpy.context.view_layer.objects.active = obj\nobj.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 183,
+  "completion_tokens": 824,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0021149000000000003,
+  "latency_s": 3.24,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

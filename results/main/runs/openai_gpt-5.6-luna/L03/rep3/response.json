@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create trunk material\ntrunk_material = bpy.data.materials.new(\"Trunk Material\")\ntrunk_material.diffuse_color = (0.24, 0.09, 0.035, 1.0)\ntrunk_material.roughness = 1.0\n\n# Create canopy material\ncanopy_material = bpy.data.materials.new(\"Canopy Material\")\ncanopy_material.diffuse_color = (0.08, 0.38, 0.10, 1.0)\ncanopy_material.roughness = 1.0\n\n# Low-poly eight-sided cylindrical trunk\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=8,\n    radius=0.6,\n    depth=3.0,\n    end_fill_type='NGON',\n    location=(0.0, 0.0, 1.5)\n)\ntrunk = bpy.context.object\ntrunk.name = \"Eight-Sided Trunk\"\ntrunk.data.materials.append(trunk_material)\n\nfor polygon in trunk.data.polygons:\n    polygon.use_smooth = False\n\n# Low-poly icosphere canopy, subdivision level 2\nbpy.ops.mesh.primitive_ico_sphere_add(\n    subdivisions=2,\n    radius=2.0,\n    location=(0.0, 0.0, 4.0)\n)\ncanopy = bpy.context.object\ncanopy.name = \"Low-Poly Canopy\"\ncanopy.data.materials.append(canopy_material)\n\nfor polygon in canopy.data.polygons:\n    polygon.use_smooth = False\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 153,
+  "completion_tokens": 698,
+  "reasoning_tokens": 338,
+  "cost_usd_est": 0.0008682000000000001,
+  "latency_s": 9.36,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

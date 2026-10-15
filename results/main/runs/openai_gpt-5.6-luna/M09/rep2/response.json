@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a high-resolution icosphere\nbpy.ops.mesh.primitive_ico_sphere_add(\n    subdivisions=5,\n    radius=1.0,\n    location=(0.0, 0.0, 0.0)\n)\nrock = bpy.context.active_object\nrock.name = \"Natural_Rock\"\n\n# Irregular non-uniform scale and slight rotation\nrock.scale = (1.35, 1.05, 0.78)\nrock.rotation_euler = (\n    math.radians(-7.0),\n    math.radians(11.0),\n    math.radians(18.0),\n)\n\n# Noise texture for displacement\nnoise_texture = bpy.data.textures.new(\n    name=\"Rock_Noise\",\n    type='CLOUDS'\n)\nnoise_texture.noise_scale = 0.58\nnoise_texture.noise_depth = 3\nnoise_texture.noise_type = 'SOFT_NOISE'\nnoise_texture.contrast = 1.35\nnoise_texture.intensity = 1.0\n\n# Primary natural rock displacement\ndisplace = rock.modifiers.new(name=\"Natural Noise Displacement\", type='DISPLACE')\ndisplace.texture = noise_texture\ndisplace.texture_coords = 'GLOBAL'\ndisplace.strength = 0.32\ndisplace.mid_level = 0.48\n\n# Add subtle secondary variation using the same noise-driven displacement\nfine_texture = bpy.data.textures.new(\n    name=\"Fine_Rock_Noise\",\n    type='CLOUDS'\n)\nfine_texture.noise_scale = 0.18\nfine_texture.noise_depth = 2\nfine_texture.noise_type = 'SOFT_NOISE'\nfine_texture.contrast = 1.2\n\nfine_displace = rock.modifiers.new(name=\"Fine Surface Variation\", type='DISPLACE')\nfine_displace.texture = fine_texture\nfine_displace.texture_coords = 'GLOBAL'\nfine_displace.strength = 0.055\nfine_displace.mid_level = 0.5\n\n# Slightly flatten the underside for a naturally resting rock\nmesh = rock.data\nfor vertex in mesh.vertices:\n    if vertex.co.z < -0.72:\n        factor = max(0.0, min(1.0, (-vertex.co.z - 0.72) / 0.28))\n        vertex.co.z = vertex.co.z * (1.0 - factor) + (-0.72) * factor\n\n# Smooth shading while preserving the irregular silhouette\nfor polygon in mesh.polygons:\n    polygon.use_smooth = True\n\n# Rock material\nmaterial = bpy.data.materials.new(name=\"Rock Material\")\nmaterial.diffuse_color = (0.22, 0.19, 0.15, 1.0)\nmaterial.roughness = 0.92\nmaterial.metallic = 0.0\nrock.data.materials.append(material)\n\n# Ensure the object is active and selected\nbpy.context.view_layer.objects.active = rock\nrock.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 170,
+  "completion_tokens": 1178,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0014475999999999998,
+  "latency_s": 34.57,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

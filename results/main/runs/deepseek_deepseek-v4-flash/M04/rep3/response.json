@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Torus knot parameters\np = 2\nq = 3\nR = 2.0          # major radius of the torus\nr = 0.5          # minor radius of the torus on which the knot lies\ntube_radius = 0.1\nsegments = 1000  # number of rings along the curve\ncircle_segments = 16  # number of vertices around the tube\n\ndef knot_point(t):\n    \"\"\"Evaluate the (p,q) torus knot at parameter t in [0, 2\u03c0].\"\"\"\n    x = (R + r * math.cos(q * t)) * math.cos(p * t)\n    y = (R + r * math.cos(q * t)) * math.sin(p * t)\n    z = r * math.sin(q * t)\n    return Vector((x, y, z))\n\ndef knot_tangent(t):\n    \"\"\"Derivative of the torus knot curve.\"\"\"\n    cp = p * t\n    cq = q * t\n    dx = -p * (R + r * math.cos(cq)) * math.sin(cp) - r * q * math.sin(cq) * math.cos(cp)\n    dy =  p * (R + r * math.cos(cq)) * math.cos(cp) - r * q * math.sin(cq) * math.sin(cp)\n    dz =  r * q * math.cos(cq)\n    return Vector((dx, dy, dz))\n\n# Precompute frames: position, normal, binormal\nframes = []\nfor i in range(segments):\n    t = i * 2.0 * math.pi / segments\n    T = knot_tangent(t)\n    T.normalize()\n\n    # Use global Z as reference; it is never parallel to T for this knot.\n    N = T.cross(Vector((0.0, 0.0, 1.0)))\n    if N.length_squared < 1e-12:\n        N = T.cross(Vector((0.0, 1.0, 0.0)))\n    N.normalize()\n\n    B = T.cross(N)\n    frames.append((knot_point(t), N, B))\n\n# Build mesh with bmesh\nbm = bmesh.new()\n\nrings = []\nfor i in range(segments):\n    center, N, B = frames[i]\n    ring = []\n    for j in range(circle_segments):\n        angle = j * 2.0 * math.pi / circle_segments\n        offset = N * math.cos(angle) + B * math.sin(angle)\n        vert = bm.verts.new(center + offset * tube_radius)\n        ring.append(vert)\n    rings.append(ring)\n\n# Create quad faces between consecutive rings\nfor i in range(segments):\n    i_next = (i + 1) % segments\n    for j in range(circle_segments):\n        j_next = (j + 1) % circle_segments\n        v1 = rings[i][j]\n        v2 = rings[i][j_next]\n        v3 = rings[i_next][j_next]\n        v4 = rings[i_next][j]\n        bm.faces.new((v1, v2, v3, v4))\n\n# Create mesh object\nmesh = bpy.data.meshes.new(\"TorusKnot\")\nbm.to_mesh(mesh)\nbm.free()\n\nobj = bpy.data.objects.new(\"TorusKnot\", mesh)\nbpy.context.collection.objects.link(obj)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 243,
+  "completion_tokens": 8773,
+  "reasoning_tokens": 7972,
+  "cost_usd_est": 0.011687280000000001,
+  "latency_s": 98.05,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.027,
+  "scene": {
+    "faces": 1145,
+    "triangles": 2078,
+    "vertices": 1051,
+    "n_geometry_objects": 6,
+    "objects": [
+      {
+        "name": "Bottom Snowball",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Snow"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Middle Snowball",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Snow"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Head",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Snow"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Left Eye",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Coal"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Right Eye",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Coal"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Carrot Nose",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Carrot"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [],
+    "materials": [
+      {
+        "name": "Carrot",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.75,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Coal",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.699999988079071,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Snow",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.8999999761581421,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 3,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.049999475479126,
+      -1.0800000429153442,
+      0.0
+    ],
+    "bbox_max": [
+      1.0499998331069946,
+      1.0499999523162842,
+      4.480000019073486
+    ]
+  },
+  "render_time_s": 6.59,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

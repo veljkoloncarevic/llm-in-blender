@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create cube mesh data\nmesh = bpy.data.meshes.new(\"Cube\")\nbm = bmesh.new()\nbmesh.ops.create_cube(bm, size=2)\nbmesh.ops.recalc_face_normals(bm, faces=bm.faces)\nbm.to_mesh(mesh)\nbm.free()\n\n# Create object and link to scene\nobj = bpy.data.objects.new(\"Cube\", mesh)\nbpy.context.collection.objects.link(obj)\n\n# Helper to create a material with a given base color\ndef create_material(name, color):\n    mat = bpy.data.materials.new(name)\n    mat.use_nodes = True\n    principled = None\n    for node in mat.node_tree.nodes:\n        if node.type == 'BSDF_PRINCIPLED':\n            principled = node\n            break\n    if principled is not None:\n        principled.inputs['Base Color'].default_value = color\n    mat.diffuse_color = color  # fallback / viewport color\n    return mat\n\n# Create three materials\nred = create_material(\"Red\", (1, 0, 0, 1))\ngreen = create_material(\"Green\", (0, 1, 0, 1))\nblue = create_material(\"Blue\", (0, 0, 1, 1))\n\n# Add material slots\nobj.data.materials.append(red)\nobj.data.materials.append(green)\nobj.data.materials.append(blue)\n\n# Assign materials to faces based on face normals\nfor poly in obj.data.polygons:\n    n = poly.normal\n    if abs(n.x) > 0.9:\n        poly.material_index = 0  # Red on X faces\n    elif abs(n.y) > 0.9:\n        poly.material_index = 1  # Green on Y faces\n    elif abs(n.z) > 0.9:\n        poly.material_index = 2  # Blue on Z faces\n    else:\n        poly.material_index = 0\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 224,
+  "completion_tokens": 4651,
+  "reasoning_tokens": 4180,
+  "cost_usd_est": 0.006237880000000001,
+  "latency_s": 24.13,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

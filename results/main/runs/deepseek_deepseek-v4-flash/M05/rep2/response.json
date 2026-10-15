@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\n\n# Ensure we are in object mode before clearing\nif bpy.context.mode != 'OBJECT':\n    bpy.ops.object.mode_set(mode='OBJECT')\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Parameters\nrows = 10\ncols = 10\nbase_radius = 1.0\ngap_factor = 0.9\ncell_radius = base_radius * gap_factor\nheight = 0.5\n\n# Lattice constants for pointy-top hexagons\ncol_spacing_x = math.sqrt(3) * base_radius\nrow_spacing_y = 1.5 * base_radius\n\nvertices = []\nfaces = []\n\nfor r in range(rows):\n    x_offset = col_spacing_x / 2.0 if r % 2 else 0.0\n    for c in range(cols):\n        cx = c * col_spacing_x + x_offset\n        cy = r * row_spacing_y\n\n        base_idx = len(vertices)\n\n        # Bottom vertices (z = 0)\n        for i in range(6):\n            angle = math.radians(30 + 60 * i)\n            vertices.append((cx + cell_radius * math.cos(angle),\n                             cy + cell_radius * math.sin(angle),\n                             0.0))\n\n        # Top vertices (z = height)\n        for i in range(6):\n            angle = math.radians(30 + 60 * i)\n            vertices.append((cx + cell_radius * math.cos(angle),\n                             cy + cell_radius * math.sin(angle),\n                             height))\n\n        b0 = base_idx\n        t0 = base_idx + 6\n\n        # Bottom face (normal -Z)\n        faces.append([b0 + 5, b0 + 4, b0 + 3, b0 + 2, b0 + 1, b0])\n        # Top face (normal +Z)\n        faces.append([t0 + 0, t0 + 1, t0 + 2, t0 + 3, t0 + 4, t0 + 5])\n\n        # Side faces\n        for i in range(6):\n            i_next = (i + 1) % 6\n            faces.append([b0 + i, b0 + i_next, t0 + i_next, t0 + i])\n\n# Create mesh and object\nmesh = bpy.data.meshes.new(\"HoneycombPanel\")\nmesh.from_pydata(vertices, [], faces)\nmesh.update()\n\nobj = bpy.data.objects.new(\"HoneycombPanel\", mesh)\nbpy.context.collection.objects.link(obj)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 237,
+  "completion_tokens": 12542,
+  "reasoning_tokens": 11956,
+  "cost_usd_est": 0.016659720000000003,
+  "latency_s": 125.56,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

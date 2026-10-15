@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create the sphere\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=128,\n    ring_count=64,\n    radius=1.0,\n    location=(0.0, 0.0, 0.0)\n)\nsphere = bpy.context.object\nsphere.name = \"Deep Red Car Paint Sphere\"\n\n# Smooth shading\nfor polygon in sphere.data.polygons:\n    polygon.use_smooth = True\n\n# Create the deep red car-paint material\nmaterial = bpy.data.materials.new(name=\"Deep Red Car Paint\")\nmaterial.use_nodes = True\n\nnodes = material.node_tree.nodes\nprincipled = nodes.get(\"Principled BSDF\")\n\nprincipled.inputs[\"Base Color\"].default_value = (0.32, 0.008, 0.012, 1.0)\nprincipled.inputs[\"Metallic\"].default_value = 0.5\nprincipled.inputs[\"Roughness\"].default_value = 0.2\nprincipled.inputs[\"Coat Weight\"].default_value = 0.95\nprincipled.inputs[\"Coat Roughness\"].default_value = 0.08\n\nsphere.data.materials.append(material)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 154,
+  "completion_tokens": 450,
+  "reasoning_tokens": 175,
+  "cost_usd_est": 0.0005708,
+  "latency_s": 6.38,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

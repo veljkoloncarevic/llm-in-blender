@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Remove unused mesh and material data\nfor mesh in list(bpy.data.meshes):\n    if mesh.users == 0:\n        bpy.data.meshes.remove(mesh)\nfor material in list(bpy.data.materials):\n    if material.users == 0:\n        bpy.data.materials.remove(material)\n\ndef make_material(name, color, roughness=0.8):\n    mat = bpy.data.materials.new(name)\n    mat.diffuse_color = (*color, 1.0)\n    mat.use_nodes = True\n    bsdf = mat.node_tree.nodes.get(\"Principled BSDF\")\n    if bsdf:\n        bsdf.inputs[\"Base Color\"].default_value = (*color, 1.0)\n        bsdf.inputs[\"Roughness\"].default_value = roughness\n    return mat\n\ndef smooth_object(obj):\n    for polygon in obj.data.polygons:\n        polygon.use_smooth = True\n\ndef add_uv_sphere(name, location, radius, material, segments=24, rings=12):\n    bpy.ops.mesh.primitive_uv_sphere_add(\n        segments=segments,\n        ring_count=rings,\n        radius=radius,\n        location=location\n    )\n    obj = bpy.context.object\n    obj.name = name\n    obj.data.materials.append(material)\n    smooth_object(obj)\n    return obj\n\nsnow_material = make_material(\"Snow\", (0.92, 0.97, 1.0), 0.9)\nblack_material = make_material(\"Coal\", (0.015, 0.015, 0.02), 0.7)\norange_material = make_material(\"Carrot\", (1.0, 0.22, 0.015), 0.75)\n\n# Snowman body: three stacked spheres\nadd_uv_sphere(\"Bottom Snowball\", (0.0, 0.0, 1.05), 1.05, snow_material)\nadd_uv_sphere(\"Middle Snowball\", (0.0, 0.0, 2.65), 0.78, snow_material)\nadd_uv_sphere(\"Head\", (0.0, 0.0, 3.90), 0.58, snow_material)\n\n# Eyes, positioned toward the front (-Y)\nadd_uv_sphere(\"Left Eye\", (-0.21, -0.515, 4.06), 0.085, black_material, 16, 8)\nadd_uv_sphere(\"Right Eye\", (0.21, -0.515, 4.06), 0.085, black_material, 16, 8)\n\n# Carrot nose: cone axis rotated from Z to point toward -Y\nbpy.ops.mesh.primitive_cone_add(\n    vertices=24,\n    radius1=0.18,\n    radius2=0.0,\n    depth=0.72,\n    location=(0.0, -0.72, 3.89),\n    rotation=(1.5708, 0.0, 0.0)\n)\nnose = bpy.context.object\nnose.name = \"Carrot Nose\"\nnose.data.materials.append(orange_material)\nsmooth_object(nose)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 156,
+  "completion_tokens": 1220,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0014952000000000001,
+  "latency_s": 11.77,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

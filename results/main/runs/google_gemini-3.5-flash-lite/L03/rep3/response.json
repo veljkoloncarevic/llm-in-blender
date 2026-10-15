@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create trunk (cylinder with 8 vertices)\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=8,\n    radius=0.4,\n    depth=2.0,\n    location=(0, 0, 1.0)\n)\ntrunk = bpy.context.active_object\ntrunk.name = \"StylizedTrunk\"\n\n# Create canopy (icosphere with 1 subdivision for low-poly look, total faces = 80)\nbpy.ops.mesh.primitive_ico_sphere_add(\n    subdivisions=1,\n    radius=1.5,\n    location=(0, 0, 3.2)\n)\ncanopy = bpy.context.active_object\ncanopy.name = \"StylizedCanopy\"\n\n# Create a simple low-poly material for the trunk (Brown)\nmat_trunk = bpy.data.materials.new(name=\"TrunkMaterial\")\nmat_trunk.use_nodes = False\nmat_trunk.diffuse_color = (0.25, 0.15, 0.08, 1.0)\ntrunk.data.materials.append(mat_trunk)\n\n# Create a simple low-poly material for the canopy (Stylized Green)\nmat_canopy = bpy.data.materials.new(name=\"CanopyMaterial\")\nmat_canopy.use_nodes = False\nmat_canopy.diffuse_color = (0.15, 0.55, 0.2, 1.0)\ncanopy.data.materials.append(mat_canopy)\n\n# Apply flat shading to both objects to reinforce the low-poly aesthetic\nfor obj in [trunk, canopy]:\n    bpy.context.view_layer.objects.active = obj\n    bpy.ops.object.shade_flat()\n\n# Select both objects and join them into a single low-poly tree mesh\nbpy.ops.object.select_all(action='DESELECT')\ntrunk.select_set(True)\ncanopy.select_set(True)\nbpy.context.view_layer.objects.active = trunk\nbpy.ops.object.join()\n\ntree = bpy.context.active_object\ntree.name = \"StylizedTree\"\n\n# Ensure origin is at the base of the trunk\nbpy.ops.object.origin_set(type='GEOMETRY_ORIGIN', center='BOUNDS')\n# Move origin back to world Z=0 relative to the mesh base\n# (Bounding box center is roughly middle, let's snap origin to bottom using bmesh)\nbm = bmesh.new()\nbm.from_mesh(tree.data)\nmin_z = min(v.co.z for v in bm.verts)\nfor v in bm.verts:\n    v.co.z -= min_z\nbm.to_mesh(tree.data)\nbm.free()\ntree.location.z = 0\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 151,
+  "completion_tokens": 701,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0017978,
+  "latency_s": -19.6,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

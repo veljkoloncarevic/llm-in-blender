@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Helper function to create primitives with low poly count to keep under 3000 faces\ndef create_low_poly_sphere(name, location, scale):\n    bpy.ops.mesh.primitive_uv_sphere_add(\n        segments=16, \n        ring_count=12, \n        radius=1.0, \n        location=location\n    )\n    obj = bpy.context.active_object\n    obj.name = name\n    obj.scale = scale\n    # Apply scale to keep transformations clean\n    bpy.ops.object.transform_apply(scale=True)\n    return obj\n\ndef create_low_poly_cone(name, location, rotation, scale):\n    bpy.ops.mesh.primitive_cone_add(\n        vertices=12,\n        radius1=1.0,\n        depth=2.0,\n        location=location,\n        rotation=rotation\n    )\n    obj = bpy.context.active_object\n    obj.name = name\n    obj.scale = scale\n    bpy.ops.object.transform_apply(scale=True)\n    return obj\n\n# 1. Bottom body sphere (Largest)\nbody_bottom = create_low_poly_sphere(\n    name=\"Snowman_Body_Bottom\",\n    location=(0, 0, 1.0),\n    scale=(1.5, 1.5, 1.5)\n)\n\n# 2. Middle body sphere (Medium)\nbody_middle = create_low_poly_sphere(\n    name=\"Snowman_Body_Middle\",\n    location=(0, 0, 3.2),\n    scale=(1.05, 1.05, 1.05)\n)\n\n# 3. Head sphere (Smallest)\nhead = create_low_poly_sphere(\n    name=\"Snowman_Head\",\n    location=(0, 0, 4.7),\n    scale=(0.7, 0.7, 0.7)\n)\n\n# 4. Carrot nose (Cone)\n# Pointing forward (-Y direction in Blender, so rotate accordingly)\nimport math\nnose = create_low_poly_cone(\n    name=\"Snowman_Nose\",\n    location=(0, -0.65, 4.7),\n    rotation=(math.radians(90), 0, 0),\n    scale=(0.15, 0.15, 0.5)\n)\n\n# 5. Eyes (Two small spheres)\neye_left = create_low_poly_sphere(\n    name=\"Snowman_Eye_Left\",\n    location=(-0.2, -0.55, 4.9),\n    scale=(0.08, 0.08, 0.08)\n)\n\neye_right = create_low_poly_sphere(\n    name=\"Snowman_Eye_Right\",\n    location=(0.2, -0.55, 4.9),\n    scale=(0.08, 0.08, 0.08)\n)\n\n# Select all snowman parts and join them into a single mesh object (optional, but keeps outliner clean)\nbpy.ops.object.select_all(action='DESELECT')\nfor obj in [body_bottom, body_middle, head, nose, eye_left, eye_right]:\n    obj.select_set(True)\n\nbpy.context.view_layer.objects.active = body_bottom\nbpy.ops.object.join()\n\n# Final active object rename\nfinal_snowman = bpy.context.active_object\nfinal_snowman.name = \"Snowman\"\n\n# Shade smooth across the snowman\nbpy.ops.object.shade_smooth()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 153,
+  "completion_tokens": 892,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0022759,
+  "latency_s": 2.74,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

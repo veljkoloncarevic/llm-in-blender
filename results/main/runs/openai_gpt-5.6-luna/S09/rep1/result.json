@@ -1,0 +1,106 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.257,
+  "scene": {
+    "faces": 8192,
+    "triangles": 16128,
+    "vertices": 8066,
+    "n_geometry_objects": 1,
+    "objects": [
+      {
+        "name": "Deep Red Car Paint Sphere",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Deep Red Car Paint"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [],
+    "materials": [
+      {
+        "name": "Deep Red Car Paint",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.949999988079071,
+            "Metallic": 0.5,
+            "Roughness": 0.20000000298023224,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 1,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -0.998794674873352,
+      -0.9987947344779968,
+      -1.0
+    ],
+    "bbox_max": [
+      0.9987950325012207,
+      0.9975923299789429,
+      0.9987954497337341
+    ]
+  },
+  "render_time_s": 6.588,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

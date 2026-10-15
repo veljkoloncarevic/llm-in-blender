@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Add Suzanne\nbpy.ops.mesh.primitive_monkey_add(size=2, location=(0, 0, 0))\nsuzanne = bpy.context.object\n\n# Create white marble material\nmat = bpy.data.materials.new(name=\"White_Marble\")\nmat.use_nodes = True\nntree = mat.node_tree\nnodes = ntree.nodes\nlinks = ntree.links\n\n# Clear default nodes\nnodes.clear()\n\n# Create nodes\noutput = nodes.new(type='ShaderNodeOutputMaterial')\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\nnoise = nodes.new(type='ShaderNodeTexNoise')\nramp = nodes.new(type='ShaderNodeValToRGB')\n\n# Position nodes\noutput.location = (400, 0)\nprincipled.location = (200, 0)\nramp.location = (0, 0)\nnoise.location = (-200, 0)\n\n# Configure noise texture\nnoise.inputs['Scale'].default_value = 4.0\nnoise.inputs['Detail'].default_value = 2.0\nnoise.inputs['Roughness'].default_value = 0.5\n\n# Configure color ramp for white marble look\nramp.color_ramp.elements[0].position = 0.0\nramp.color_ramp.elements[0].color = (0.75, 0.75, 0.75, 1)\nramp.color_ramp.elements[1].position = 1.0\nramp.color_ramp.elements[1].color = (1.0, 1.0, 1.0, 1.0)\n\n# Configure principled BSDF\nprincipled.inputs['Roughness'].default_value = 0.3\n\n# Connect nodes\nlinks.new(noise.outputs['Fac'], ramp.inputs['Fac'])\nlinks.new(ramp.outputs['Color'], principled.inputs['Base Color'])\nlinks.new(principled.outputs['BSDF'], output.inputs['Surface'])\n\n# Assign material to Suzanne\nif suzanne.data.materials:\n    suzanne.data.materials[0] = mat\nelse:\n    suzanne.data.materials.append(mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 230,
+  "completion_tokens": 1887,
+  "reasoning_tokens": 1372,
+  "cost_usd_est": 0.00259204,
+  "latency_s": 21.01,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

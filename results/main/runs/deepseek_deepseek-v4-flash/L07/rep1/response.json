@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Low-poly rocket parameters\nbody_radius = 0.5\nbody_length = 2.0\nnose_length = 1.0\nfin_scale = (0.5, 0.08, 0.8)          # radial extent, thickness, axial length\nfin_radius = 1.0                       # distance from center to fin origin\n\n# Cylinder body (8-sided)\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=8,\n    radius=body_radius,\n    depth=body_length,\n    location=(0.0, 0.0, 0.0),\n)\nbody = bpy.context.active_object\nbody.name = \"RocketBody\"\n\n# Cone nose (8-sided, base matches body radius)\nbpy.ops.mesh.primitive_cone_add(\n    vertices=8,\n    radius1=body_radius,\n    depth=nose_length,\n    location=(0.0, 0.0, body_length / 2 + nose_length / 2),\n)\nnose = bpy.context.active_object\nnose.name = \"RocketNose\"\n\n# Three fins from scaled cubes, evenly spaced 120\u00b0 apart\nfor i in range(3):\n    angle = i * (2.0 * math.pi / 3.0)\n    x = fin_radius * math.cos(angle)\n    y = fin_radius * math.sin(angle)\n\n    bpy.ops.mesh.primitive_cube_add(\n        size=2.0,\n        location=(x, y, 0.0),\n        rotation=(0.0, 0.0, angle),\n    )\n    fin = bpy.context.active_object\n    fin.name = f\"Fin_{i + 1}\"\n    fin.scale = fin_scale\n\n# All objects remain separate; total face count is well under 800\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 234,
+  "completion_tokens": 4222,
+  "reasoning_tokens": 3786,
+  "cost_usd_est": 0.005676,
+  "latency_s": 45.52,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

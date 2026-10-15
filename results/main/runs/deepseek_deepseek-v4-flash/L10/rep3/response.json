@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Walls: a cube scaled to 4x4x3, centered at z=1.5\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 1.5))\nwalls = bpy.context.active_object\nwalls.name = \"Walls\"\nwalls.scale = (2, 2, 1.5)\n\n# Roof: four-sided pyramid made with bmesh\nbm = bmesh.new()\nb0 = bm.verts.new((2.3, 2.3, 3.0))\nb1 = bm.verts.new((-2.3, 2.3, 3.0))\nb2 = bm.verts.new((-2.3, -2.3, 3.0))\nb3 = bm.verts.new((2.3, -2.3, 3.0))\ntop = bm.verts.new((0.0, 0.0, 4.5))\nbm.faces.new((b0, b1, top))\nbm.faces.new((b1, b2, top))\nbm.faces.new((b2, b3, top))\nbm.faces.new((b3, b0, top))\n\nroof_mesh = bpy.data.meshes.new(\"RoofMesh\")\nbm.to_mesh(roof_mesh)\nbm.free()\nroof = bpy.data.objects.new(\"Roof\", roof_mesh)\nbpy.context.scene.collection.objects.link(roof)\n\n# Door: flat rectangle on the front wall\nbm = bmesh.new()\nd0 = bm.verts.new((-0.45, -1.99, 0.0))\nd1 = bm.verts.new((0.45, -1.99, 0.0))\nd2 = bm.verts.new((0.45, -1.99, 2.0))\nd3 = bm.verts.new((-0.45, -1.99, 2.0))\nbm.faces.new((d0, d1, d2, d3))\n\ndoor_mesh = bpy.data.meshes.new(\"DoorMesh\")\nbm.to_mesh(door_mesh)\nbm.free()\ndoor = bpy.data.objects.new(\"Door\", door_mesh)\nbpy.context.scene.collection.objects.link(door)\n\n# Window: flat rectangle on the right side of the front wall\n# A Mirror modifier will create the symmetric left-side window.\nbm = bmesh.new()\nw0 = bm.verts.new((0.8, -1.99, 1.1))\nw1 = bm.verts.new((1.6, -1.99, 1.1))\nw2 = bm.verts.new((1.6, -1.99, 1.9))\nw3 = bm.verts.new((0.8, -1.99, 1.9))\nbm.faces.new((w0, w1, w2, w3))\n\nwindow_mesh = bpy.data.meshes.new(\"WindowMesh\")\nbm.to_mesh(window_mesh)\nbm.free()\nwindow = bpy.data.objects.new(\"Window\", window_mesh)\nbpy.context.scene.collection.objects.link(window)\n\n# Add Mirror modifier to the window for symmetric placement\nbpy.ops.object.select_all(action='DESELECT')\nwindow.select_set(True)\nbpy.context.view_layer.objects.active = window\nbpy.ops.object.modifier_add(type='MIRROR')\nmod = window.modifiers[\"Mirror\"]\nmod.use_axis[0] = True\nmod.use_axis[1] = False\nmod.use_axis[2] = False\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 241,
+  "completion_tokens": 12396,
+  "reasoning_tokens": 11566,
+  "cost_usd_est": 0.016468760000000002,
+  "latency_s": 132.72,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

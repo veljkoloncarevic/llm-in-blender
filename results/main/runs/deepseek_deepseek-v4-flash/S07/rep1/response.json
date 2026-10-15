@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create cylinder\nbpy.ops.mesh.primitive_cylinder_add(vertices=64, radius=1, depth=2, location=(0, 0, 0))\nobj = bpy.context.active_object\nobj.name = \"RustyCylinder\"\nbpy.ops.object.shade_smooth()\n\n# Create material\nmat = bpy.data.materials.new(name=\"RustyMetal\")\nmat.use_nodes = True\nnt = mat.node_tree\nnodes = nt.nodes\nlinks = nt.links\n\n# Clear default nodes\nnodes.clear()\n\n# Create node group\noutput = nodes.new('ShaderNodeOutputMaterial')\noutput.location = (400, 0)\n\nmix = nodes.new('ShaderNodeMixShader')\nmix.location = (200, 0)\n\nnoise = nodes.new('ShaderNodeTexNoise')\nnoise.location = (-400, 0)\nnoise.inputs['Scale'].default_value = 2.0\nnoise.inputs['Detail'].default_value = 2.0\nnoise.inputs['Distortion'].default_value = 0.0\n\nmetal = nodes.new('ShaderNodeBsdfPrincipled')\nmetal.location = (0, 200)\nmetal.inputs['Base Color'].default_value = (0.5, 0.5, 0.5, 1.0)\nmetal.inputs['Metallic'].default_value = 1.0\nmetal.inputs['Roughness'].default_value = 0.3\n\nrust = nodes.new('ShaderNodeBsdfPrincipled')\nrust.location = (0, -200)\nrust.inputs['Base Color'].default_value = (0.6, 0.3, 0.1, 1.0)  # orange-brown\nrust.inputs['Metallic'].default_value = 0.0\nrust.inputs['Roughness'].default_value = 1.0\n\n# Connect nodes\nlinks.new(noise.outputs['Fac'], mix.inputs['Fac'])\nlinks.new(metal.outputs['BSDF'], mix.inputs[1])\nlinks.new(rust.outputs['BSDF'], mix.inputs[2])\nlinks.new(mix.outputs['BSDF'], output.inputs['Surface'])\n\n# Assign material to the cylinder\nif obj.data.materials:\n    obj.data.materials[0] = mat\nelse:\n    obj.data.materials.append(mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 229,
+  "completion_tokens": 2209,
+  "reasoning_tokens": 1668,
+  "cost_usd_est": 0.00301664,
+  "latency_s": 20.7,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

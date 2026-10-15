@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport mathutils\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n\ndef create_box(name, width, depth, height, location):\n    mesh = bpy.data.meshes.new(name)\n    bm = bmesh.new()\n    x = width / 2\n    y = depth / 2\n    z = height / 2\n    loc = mathutils.Vector(location)\n\n    verts = [\n        mathutils.Vector((-x, -y, -z)) + loc,\n        mathutils.Vector((x, -y, -z)) + loc,\n        mathutils.Vector((x, y, -z)) + loc,\n        mathutils.Vector((-x, y, -z)) + loc,\n        mathutils.Vector((-x, -y, z)) + loc,\n        mathutils.Vector((x, -y, z)) + loc,\n        mathutils.Vector((x, y, z)) + loc,\n        mathutils.Vector((-x, y, z)) + loc,\n    ]\n    for v in verts:\n        bm.verts.new(v)\n    bm.verts.ensure_lookup_table()\n\n    faces = [\n        [0, 1, 2, 3],\n        [4, 5, 6, 7],\n        [0, 1, 5, 4],\n        [1, 2, 6, 5],\n        [2, 3, 7, 6],\n        [3, 0, 4, 7],\n    ]\n    for face_verts in faces:\n        bm.faces.new([bm.verts[i] for i in face_verts])\n\n    bm.to_mesh(mesh)\n    bm.free()\n\n    obj = bpy.data.objects.new(name, mesh)\n    bpy.context.scene.collection.objects.link(obj)\n    return obj\n\n\n# Tabletop\ntabletop = create_box(\"Tabletop\", 2.0, 1.0, 0.1, (0, 0, 0.85))\n\n# Bevel modifier on tabletop\nbevel = tabletop.modifiers.new(name=\"Bevel\", type='BEVEL')\nbevel.width = 0.02\nbevel.segments = 1\nbevel.limit_method = 'NONE'\n\n# Four legs\nleg_positions = [\n    (0.9, 0.4),\n    (-0.9, 0.4),\n    (0.9, -0.4),\n    (-0.9, -0.4),\n]\nfor i, (x, y) in enumerate(leg_positions, start=1):\n    create_box(f\"Leg{i}\", 0.1, 0.1, 0.8, (x, y, 0.4))\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 229,
+  "completion_tokens": 5939,
+  "reasoning_tokens": 5314,
+  "cost_usd_est": 0.007940240000000001,
+  "latency_s": 83.97,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\nimport mathutils\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Parameters for the (p, q) torus knot\np = 2\nq = 3\nmajor_radius = 1.0\ntube_radius = 0.25\n\n# Resolution parameters to hit target face count (2k - 60k)\n# Spline resolution (u_segments) and tube resolution (v_segments)\nu_segments = 250  # Number of points along the knot\nv_segments = 32   # Resolution of the circular cross-section\n# Total faces approx = u_segments * v_segments = 250 * 32 = 8,000 faces (within 2k-60k)\n\n# Generate parametric curve points for a (p,q) torus knot\ncurve_data = bpy.data.curves.new('TorusKnotCurve', type='CURVE')\ncurve_data.dimensions = '3D'\ncurve_data.resolution_u = u_segments\ncurve_data.bevel_depth = tube_radius\ncurve_data.bevel_resolution = v_segments\ncurve_data.fill_mode = 'FULL'\n\nspline = curve_data.splines.new(type='POLY')\nspline.points.add(u_segments - 1)  # -1 because 1 point exists by default\n\nfor i in range(u_segments):\n    t = (i / u_segments) * (2.0 * math.pi * q)\n    \n    # Torus knot equations\n    r = major_radius * (1.0 + 0.3 * math.cos(q * t))\n    x = r * math.cos(p * t)\n    y = r * math.sin(p * t)\n    z = 0.4 * major_radius * math.sin(q * t)\n    \n    # Set point coordinate (w = 1.0 for rational bezier/nurbs, but for poly it's just xyz1)\n    # POLY spline points use .co as a 4D vector (x, y, z, w)\n    spline.points[i].co = (x, y, z, 1.0)\n\n# Make the curve cyclic to close the knot smoothly\nspline.use_cyclic_u = True\n\n# Create curve object\ncurve_obj = bpy.data.objects.new('TorusKnot', curve_data)\nbpy.context.collection.objects.link(curve_obj)\n\n# Smooth shading for the curve object when converted/displayed\ncurve_obj.data.use_fill_caps = True\n\n# Select and set active\nbpy.context.view_layer.objects.active = curve_obj\ncurve_obj.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 166,
+  "completion_tokens": 654,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0016848,
+  "latency_s": 2.63,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

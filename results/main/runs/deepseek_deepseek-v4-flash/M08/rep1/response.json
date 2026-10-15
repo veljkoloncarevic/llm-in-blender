@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Spring parameters\nturns = 8\nradius = 1.0\nheight = 4.0\nwire_radius = 0.1\nsegments_per_turn = 64\ncircle_segments = 16\n\ntotal_segments = turns * segments_per_turn\ntotal_angle = 2.0 * math.pi * turns\npitch = height / total_angle  # vertical distance per radian\n\n# Build coordinates for the helical tube\ncoords = []\nfor i in range(total_segments + 1):\n    t = i / total_segments * total_angle\n    cos_t = math.cos(t)\n    sin_t = math.sin(t)\n\n    pos = Vector((radius * cos_t, radius * sin_t, pitch * t - height / 2.0))\n\n    # Frenet frame\n    T = Vector((-radius * sin_t, radius * cos_t, pitch)).normalized()\n    N = Vector((-cos_t, -sin_t, 0.0))  # points toward the helix axis\n    B = T.cross(N)\n\n    for k in range(circle_segments):\n        phi = 2.0 * math.pi * k / circle_segments\n        circle_vec = math.cos(phi) * N + math.sin(phi) * B\n        coords.append(pos + wire_radius * circle_vec)\n\n# Create mesh\nmesh = bpy.data.meshes.new(\"CoilSpring\")\nbm = bmesh.new()\nbm_verts = [bm.verts.new(v) for v in coords]\n\n# Create quad faces between consecutive rings\nfor i in range(total_segments):\n    base = i * circle_segments\n    next_base = base + circle_segments\n    for k in range(circle_segments):\n        k_next = (k + 1) % circle_segments\n        v1 = bm_verts[base + k]\n        v2 = bm_verts[base + k_next]\n        v3 = bm_verts[next_base + k_next]\n        v4 = bm_verts[next_base + k]\n        bm.faces.new((v1, v2, v3, v4))\n\nbm.normal_update()\nbm.to_mesh(mesh)\nbm.free()\n\n# Add object to scene\nobj = bpy.data.objects.new(\"CoilSpring\", mesh)\nbpy.context.collection.objects.link(obj)\n\n# Smooth shading\nfor poly in mesh.polygons:\n    poly.use_smooth = True\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 241,
+  "completion_tokens": 6533,
+  "reasoning_tokens": 5957,
+  "cost_usd_est": 0.008729600000000002,
+  "latency_s": 62.61,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

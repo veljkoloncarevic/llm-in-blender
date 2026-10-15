@@ -1,0 +1,69 @@
+# ---------------------------------------------------------------------------
+# Experiment configuration. Everything that affects results lives here so the
+# exact config is copied into results/ next to the data.
+# ---------------------------------------------------------------------------
+experiment_name: blender-llm-complexity-tiers
+
+gateway:
+  base_url: https://ai-gateway.vercel.sh/v1
+  api_key_env: AI_GATEWAY_API_KEY
+  request_timeout_s: 900
+  max_retries: 3            # network / 429 / 5xx retries (failed calls are not billed)
+
+budget:
+  hard_limit_usd: 4.50      # run stops BEFORE a call that could cross this
+  # Price used for the guard = max(price reported by the gateway, price below).
+  # Values below are deliberately conservative (USD per 1M tokens).
+
+generation:
+  repetitions: 3            # independent samples per (model, prompt)
+  temperature: 0.7          # dropped automatically for models that reject it
+  max_output_tokens: 32000   # includes hidden reasoning tokens for thinking models
+  blender_version_in_prompt: "4.2"
+
+models:
+  - id: openai/gpt-5.6-luna
+    label: GPT-5.6 Luna
+    family: OpenAI
+    price_in: 0.20
+    price_out: 1.20
+    extra_params: {reasoning_effort: low}
+    send_temperature: false   # GPT-5.x reasoning models only accept the default
+  - id: anthropic/claude-haiku-4.5
+    label: Claude Haiku 4.5
+    family: Anthropic
+    price_in: 1.00
+    price_out: 5.00
+    extra_params: {}
+    send_temperature: true
+  - id: deepseek/deepseek-v4-flash
+    label: DeepSeek V4 Flash
+    family: DeepSeek
+    price_in: 0.44          # most expensive routed provider, so the guard is safe
+    price_out: 1.32
+    extra_params: {}
+    send_temperature: true
+  - id: google/gemini-3.5-flash-lite
+    label: Gemini 3.5 Flash-Lite
+    family: Google
+    price_in: 0.30
+    price_out: 2.50
+    extra_params: {}
+    send_temperature: true
+
+blender:
+  executable: /opt/blender/blender
+  timeout_s: 300            # whole Blender process (script + 3 renders)
+  workers: 3                # parallel attempts (LLM call + Blender) at once
+  render:
+    engine: CYCLES          # CYCLES (CPU) or BLENDER_WORKBENCH (fast, no materials)
+    samples: 24
+    resolution: 512
+    denoise: true
+    # (azimuth_deg, elevation_deg); azimuth 0 = looking from -Y (front)
+    views: [[35, 20], [125, 15], [35, 60]]
+
+metrics:
+  clip_model: ViT-B-32
+  clip_pretrained: openai
+  blank_render_std_threshold: 2.0   # 0-255 pixel std below this = blank image

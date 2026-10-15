@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects in the scene\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# --- Create Ground Plane ---\nbpy.ops.mesh.primitive_plane_size = 20.0\nbpy.ops.mesh.primitive_plane_add(size=20.0, location=(0, 0, 0))\nground_plane = bpy.context.active_object\nground_plane.name = \"GroundPlane\"\n\n# --- Create Blue Material for Ground Plane ---\nground_mat = bpy.data.materials.new(name=\"BlueGroundMaterial\")\nground_mat.use_nodes = True\nground_nodes = ground_mat.node_tree.nodes\nground_links = ground_mat.node_tree.links\n\n# Configure Principled BSDF for the ground\nground_bsdf = ground_nodes.get(\"Principled BSDF\")\nif ground_bsdf:\n    ground_bsdf.inputs['Base Color'].default_value = (0.02, 0.15, 0.4, 1.0)  # Rich blue\n    ground_bsdf.inputs['Roughness'].default_value = 0.2  # Slight gloss for reflections\n\nground_plane.data.materials.append(ground_mat)\n\n# --- Create Glass Sphere ---\n# Radius of 2.0, positioned so it rests perfectly on the z=0 plane\nbpy.ops.mesh.primitive_uv_sphere_add(\n    radius=2.0, \n    segments=64, \n    ring_count=32, \n    location=(0, 0, 2.0)\n)\nglass_sphere = bpy.context.active_object\nglass_sphere.name = \"GlassSphere\"\n\n# Smooth shading for the sphere\nfor face in glass_sphere.data.polygons:\n    face.use_smooth = True\n\n# --- Create Clear Glass Material ---\nglass_mat = bpy.data.materials.new(name=\"ClearGlassMaterial\")\nglass_mat.use_nodes = True\nglass_nodes = glass_mat.node_tree.nodes\n\n# Configure Principled BSDF for clear glass\nglass_bsdf = glass_nodes.get(\"Principled BSDF\")\nif glass_bsdf:\n    glass_bsdf.inputs['Base Color'].default_value = (1.0, 1.0, 1.0, 1.0)\n    glass_bsdf.inputs['Roughness'].default_value = 0.01      # Near 0 roughness\n    glass_bsdf.inputs['Transmission Weight'].default_value = 1.0  # Full transmission\n    glass_bsdf.inputs['IOR'].default_value = 1.45             # Glass IOR\n    \n    # Optional: ensure specular is set nicely for glass reflections\n    if 'Specular IOR Level' in glass_bsdf.inputs:\n        glass_bsdf.inputs['Specular IOR Level'].default_value = 0.5\n\nglass_sphere.data.materials.append(glass_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 146,
+  "completion_tokens": 704,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0018038,
+  "latency_s": 2.46,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

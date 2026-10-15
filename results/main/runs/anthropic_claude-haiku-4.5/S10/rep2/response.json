@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a cube mesh\ncube_data = bpy.data.meshes.new(\"CubeMesh\")\ncube_obj = bpy.data.objects.new(\"Cube\", cube_data)\nbpy.context.collection.objects.link(cube_obj)\nbpy.context.view_layer.objects.active = cube_obj\ncube_obj.select_set(True)\n\n# Create cube geometry using bmesh\nbm = bmesh.new()\nverts = [\n    bm.verts.new((-1, -1, -1)),\n    bm.verts.new((1, -1, -1)),\n    bm.verts.new((1, 1, -1)),\n    bm.verts.new((-1, 1, -1)),\n    bm.verts.new((-1, -1, 1)),\n    bm.verts.new((1, -1, 1)),\n    bm.verts.new((1, 1, 1)),\n    bm.verts.new((-1, 1, 1)),\n]\n\n# Create faces\nfaces = [\n    bm.faces.new([verts[0], verts[1], verts[2], verts[3]]),  # Bottom\n    bm.faces.new([verts[4], verts[7], verts[6], verts[5]]),  # Top\n    bm.faces.new([verts[0], verts[4], verts[5], verts[1]]),  # Front\n    bm.faces.new([verts[2], verts[6], verts[7], verts[3]]),  # Back\n    bm.faces.new([verts[0], verts[3], verts[7], verts[4]]),  # Left\n    bm.faces.new([verts[1], verts[5], verts[6], verts[2]]),  # Right\n]\n\nbm.to_mesh(cube_data)\nbm.free()\n\n# Create three materials: Red, Green, Blue\nred_mat = bpy.data.materials.new(name=\"Red\")\nred_mat.use_nodes = True\nred_mat.node_tree.nodes[\"Principled BSDF\"].inputs[0].default_value = (1.0, 0.0, 0.0, 1.0)\n\ngreen_mat = bpy.data.materials.new(name=\"Green\")\ngreen_mat.use_nodes = True\ngreen_mat.node_tree.nodes[\"Principled BSDF\"].inputs[0].default_value = (0.0, 1.0, 0.0, 1.0)\n\nblue_mat = bpy.data.materials.new(name=\"Blue\")\nblue_mat.use_nodes = True\nblue_mat.node_tree.nodes[\"Principled BSDF\"].inputs[0].default_value = (0.0, 0.0, 1.0, 1.0)\n\n# Add materials to material slots\ncube_obj.data.materials.append(red_mat)\ncube_obj.data.materials.append(green_mat)\ncube_obj.data.materials.append(blue_mat)\n\n# Assign materials to faces using face material indices\nfor i, face in enumerate(cube_data.polygons):\n    if i == 0 or i == 1:\n        face.material_index = 0  # Red for bottom and top\n    elif i == 2 or i == 3:\n        face.material_index = 1  # Green for front and back\n    else:\n        face.material_index = 2  # Blue for left and right\n\n# Update the mesh\ncube_data.update()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 160,
+  "completion_tokens": 957,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004945,
+  "latency_s": 5.71,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

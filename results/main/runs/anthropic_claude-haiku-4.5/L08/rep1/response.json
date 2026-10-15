@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Matrix, Vector\nimport math\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create the mug body as a cylinder\nbpy.ops.mesh.primitive_cylinder_add(\n    radius=0.8,\n    depth=2.0,\n    vertices=16,\n    location=(0, 0, 1)\n)\nmug_body = bpy.context.active_object\nmug_body.name = \"MugBody\"\n\n# Enter edit mode to make it hollow by deleting top face\nbpy.context.view_layer.objects.active = mug_body\nbpy.ops.object.mode_set(mode='EDIT')\nbpy.ops.mesh.select_all(action='SELECT')\nbpy.ops.mesh.remove_doubles()\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Select top face and delete it\nbpy.ops.object.mode_set(mode='EDIT')\nbpy.ops.mesh.select_all(action='DESELECT')\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Get the mesh and select top vertices\nmesh = mug_body.data\nfor v in mesh.vertices:\n    if v.co.z > 1.5:\n        v.select = True\n\nbpy.ops.object.mode_set(mode='EDIT')\nbpy.ops.mesh.delete(type='FACE')\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Add Solidify modifier to make walls\nsolidify = mug_body.modifiers.new(name=\"Solidify\", type='SOLIDIFY')\nsolidify.thickness = 0.1\nsolidify.offset = 0\n\n# Create the handle as a torus\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=0.6,\n    minor_radius=0.15,\n    location=(1.0, 0, 1.2)\n)\nhandle = bpy.context.active_object\nhandle.name = \"Handle\"\n\n# Rotate handle to be vertical and positioned correctly\nhandle.rotation_euler = (math.pi / 2, 0, 0)\nhandle.location = (1.1, 0, 1.0)\n\n# Scale down the torus segments for fewer faces\nbpy.ops.object.mode_set(mode='EDIT')\nbpy.ops.mesh.select_all(action='SELECT')\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Join handle to body\nbpy.context.view_layer.objects.active = mug_body\nhandle.select_set(True)\nbpy.ops.object.join()\n\n# Final cleanup\nbpy.context.view_layer.objects.active = mug_body\nbpy.ops.object.shade_smooth()\n\nprint(f\"Mug created with {len(mug_body.data.vertices)} vertices and {len(mug_body.data.polygons)} faces\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 178,
+  "completion_tokens": 764,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.003998,
+  "latency_s": 5.69,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

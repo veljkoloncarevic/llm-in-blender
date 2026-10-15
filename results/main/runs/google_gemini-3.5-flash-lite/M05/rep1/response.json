@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\nimport mathutils\n\n# --- Cleanup Scene ---\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# --- Parameters ---\ncols = 10\nrows = 10\nhex_radius = 1.0\nwall_gap = 0.1  # Gap between individual cells\nextrusion_height = 2.0\n\n# Geometry math for pointy-topped hexagons\n# Width of pointy-topped hex = sqrt(3) * radius\n# Height of pointy-topped hex = 2 * radius\ndx = math.sqrt(3) * hex_radius\ndy = 1.5 * hex_radius\n\n# Create a new mesh and object for the honeycomb\nmesh = bpy.data.meshes.new(\"HoneycombMesh\")\nobj = bpy.data.objects.new(\"HoneycombPanel\", mesh)\nbpy.context.collection.objects.link(obj)\n\n# Use bmesh to construct geometry efficiently\nbm = bmesh.new()\n\n# To add a gap between cells while keeping them distinct, \n# we scale down each hex slightly from its center.\ninner_radius = hex_radius - (wall_gap * 0.5)\n\nfor r in range(rows):\n    # Offset alternating rows\n    x_offset = (dx / 2.0) if (r % 2 == 1) else 0.0\n    y_pos = r * dy\n    \n    for c in range(cols):\n        x_pos = c * dx + x_offset\n        \n        # Build a single hexagonal prism using bmesh utility\n        # bmesh.ops.create_cone creates a cone or cylinder. \n        # A 6-vertex cylinder acts as a hexagonal prism.\n        geom = bmesh.ops.create_cone(\n            bm,\n            cap_ends=True,\n            cap_tris=False,\n            segments=6,\n            radius1=inner_radius,\n            radius2=inner_radius,\n            depth=extrusion_height\n        )\n        \n        # Collect created faces/verts for translation\n        created_verts = [v for v in geom['verts']]\n        \n        # Move the hex prism to its grid position\n        # Note: create_cone centers the cylinder at origin along Z, \n        # so we shift it up by half-height to rest on Z=0, and apply grid offsets.\n        translation = mathutils.Vector((x_pos, y_pos, extrusion_height / 2.0))\n        bmesh.ops.translate(bm, verts=created_verts, vec=translation)\n\n# Finalize mesh\nbm.to_mesh(mesh)\nbm.free()\n\n# Set smooth shading for clean appearance\nbpy.context.view_layer.objects.active = obj\nobj.select_set(True)\nbpy.ops.object.shade_smooth()\n\nprint(\"Procedural honeycomb panel generated successfully.\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 160,
+  "completion_tokens": 675,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0017355,
+  "latency_s": 3.17,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

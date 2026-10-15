@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Clear existing mesh objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a cube and scale it to look like a plank\ncube = bpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 0))\nobj = bpy.context.active_object\nobj.scale = (4, 0.2, 1)  # Scale to plank proportions\n\n# Create a new material\nmat = bpy.data.materials.new(name=\"WoodMaterial\")\nmat.use_nodes = True\nbsdf = mat.node_tree.nodes[\"Principled BSDF\"]\nmat.node_tree.nodes.clear()\n\n# Create shader nodes\nnodes = mat.node_tree.nodes\nlinks = mat.node_tree.links\n\n# Add nodes\noutput_node = nodes.new(type='ShaderNodeOutputMaterial')\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\ncolor_ramp = nodes.new(type='ShaderNodeValRamp')\nbump_node = nodes.new(type='ShaderNodeBump')\nnoise_texture = nodes.new(type='ShaderNodeTexNoise')\nwave_texture = nodes.new(type='ShaderNodeTexWave')\ncoord_node = nodes.new(type='ShaderNodeTexCoord')\n\n# Configure Wave texture\nwave_texture.inputs['Scale'].default_value = 5.0\nwave_texture.inputs['Distortion'].default_value = 2.0\n\n# Configure Noise texture for distortion\nnoise_texture.inputs['Scale'].default_value = 8.0\nnoise_texture.inputs['Detail'].default_value = 5.0\n\n# Configure Color Ramp with brown tones\ncolor_ramp.color_ramp.elements[0].color = (0.2, 0.1, 0.05, 1.0)  # Dark brown\ncolor_ramp.color_ramp.elements[1].color = (0.6, 0.4, 0.2, 1.0)   # Light brown\n\n# Configure Bump node\nbump_node.inputs['Strength'].default_value = 0.8\n\n# Configure Principled BSDF\nprincipled.inputs['Roughness'].default_value = 0.7\n\n# Connect nodes: Texture Coordinate -> Wave Texture\nlinks.new(coord_node.outputs['Generated'], wave_texture.inputs['Vector'])\n\n# Connect Noise Texture to Wave Texture's Distortion\nlinks.new(coord_node.outputs['Generated'], noise_texture.inputs['Vector'])\nlinks.new(noise_texture.outputs['Fac'], wave_texture.inputs['Distortion'])\n\n# Connect Wave output through Color Ramp to Base Color\nlinks.new(wave_texture.outputs['Fac'], color_ramp.inputs['Fac'])\nlinks.new(color_ramp.outputs['Color'], principled.inputs['Base Color'])\n\n# Connect Wave output to Bump for normal mapping\nlinks.new(wave_texture.outputs['Fac'], bump_node.inputs['Height'])\nlinks.new(bump_node.outputs['Normal'], principled.inputs['Normal'])\n\n# Connect Principled to Output\nlinks.new(principled.outputs['BSDF'], output_node.inputs['Surface'])\n\n# Assign material to object\nobj.data.materials.append(mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 187,
+  "completion_tokens": 849,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004432,
+  "latency_s": -17.12,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a ground plane\nbpy.ops.mesh.primitive_plane_add(size=10, location=(0, 0, 0))\nground_plane = bpy.context.active_object\nground_plane.name = \"GroundPlane\"\n\n# Create blue material for ground plane\nground_mat = bpy.data.materials.new(name=\"GroundMaterial\")\nground_mat.use_nodes = True\nground_mat.node_tree.nodes[\"Principled BSDF\"].inputs[\"Base Color\"].default_value = (0.1, 0.3, 0.8, 1.0)\nground_plane.data.materials.append(ground_mat)\n\n# Create a glass sphere\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(0, 0, 1))\nsphere = bpy.context.active_object\nsphere.name = \"GlassSphere\"\n\n# Create glass material with Principled BSDF\nglass_mat = bpy.data.materials.new(name=\"GlassMaterial\")\nglass_mat.use_nodes = True\nprincipled = glass_mat.node_tree.nodes[\"Principled BSDF\"]\n\n# Set glass material properties\nprincipled.inputs[\"Transmission\"].default_value = 1.0  # Full transmission\nprincipled.inputs[\"Roughness\"].default_value = 0.01  # Near 0 roughness\nprincipled.inputs[\"IOR\"].default_value = 1.45  # Glass IOR\nprincipled.inputs[\"Base Color\"].default_value = (1.0, 1.0, 1.0, 1.0)  # White base color\n\nsphere.data.materials.append(glass_mat)\n\n# Ensure the viewport shading shows materials correctly\nfor area in bpy.context.screen.areas:\n    if area.type == 'VIEW_3D':\n        for space in area.spaces:\n            if space.type == 'VIEW_3D':\n                space.shading.type = 'MATERIAL'\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 167,
+  "completion_tokens": 551,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.002922,
+  "latency_s": -18.39,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

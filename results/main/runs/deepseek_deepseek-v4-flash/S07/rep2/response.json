@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a cylinder\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=64,\n    radius=1,\n    depth=2,\n    enter_editmode=False,\n    align='WORLD',\n    location=(0, 0, 0),\n    scale=(1, 1, 1)\n)\ncylinder = bpy.context.active_object\n\n# Create a new material\nmat = bpy.data.materials.new(name=\"Rusty_Metal\")\nmat.use_nodes = True\nntree = mat.node_tree\nnodes = ntree.nodes\nlinks = ntree.links\n\n# Clear default nodes\nnodes.clear()\n\n# Node: Output\noutput = nodes.new('ShaderNodeOutputMaterial')\noutput.location = (400, 0)\n\n# Node: Principled BSDF for grey metallic surface\nmetal_bsdf = nodes.new('ShaderNodeBsdfPrincipled')\nmetal_bsdf.location = (-400, 100)\nmetal_bsdf.inputs['Base Color'].default_value = (0.8, 0.8, 0.8, 1)\nmetal_bsdf.inputs['Metallic'].default_value = 1.0\nmetal_bsdf.inputs['Roughness'].default_value = 0.3\n\n# Node: Principled BSDF for orange-brown rough rust\nrust_bsdf = nodes.new('ShaderNodeBsdfPrincipled')\nrust_bsdf.location = (-400, -100)\nrust_bsdf.inputs['Base Color'].default_value = (0.8, 0.3, 0.1, 1)\nrust_bsdf.inputs['Metallic'].default_value = 0.0\nrust_bsdf.inputs['Roughness'].default_value = 1.0\n\n# Node: Noise texture as mask\nnoise = nodes.new('ShaderNodeTexNoise')\nnoise.location = (-600, 0)\nnoise.inputs['Scale'].default_value = 5.0\nnoise.inputs['Detail'].default_value = 4.0\nnoise.inputs['Roughness'].default_value = 0.5\n\n# Node: Mix Shader\nmix = nodes.new('ShaderNodeMixShader')\nmix.location = (100, 0)\n\n# Make connections\nlinks.new(noise.outputs['Fac'], mix.inputs['Fac'])\nlinks.new(metal_bsdf.outputs['BSDF'], mix.inputs[1])\nlinks.new(rust_bsdf.outputs['BSDF'], mix.inputs[2])\nlinks.new(mix.outputs['Shader'], output.inputs['Surface'])\n\n# Assign material to the cylinder\nif cylinder.data.materials:\n    cylinder.data.materials.clear()\ncylinder.data.materials.append(mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 229,
+  "completion_tokens": 2032,
+  "reasoning_tokens": 1414,
+  "cost_usd_est": 0.0027830000000000003,
+  "latency_s": 22.84,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

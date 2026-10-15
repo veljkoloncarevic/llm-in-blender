@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport mathutils\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a cylinder\nbpy.ops.mesh.primitive_cylinder_add(\n    radius=1.0,\n    depth=2.0,\n    vertices=32,\n    location=(0.0, 0.0, 0.0)\n)\nobj = bpy.context.active_object\nobj.name = \"RustyCylinder\"\n\n# Create rusty metal material\nmat = bpy.data.materials.new(name=\"RustyMetal\")\nmat.use_nodes = True\nnt = mat.node_tree\nnt.nodes.clear()\n\n# ---- Create nodes ----\n# Output\nout = nt.nodes.new('ShaderNodeOutputMaterial')\nout.location = (300, 0)\n\n# Mix Shader\nmix = nt.nodes.new('ShaderNodeMixShader')\nmix.location = (100, 0)\nmix.inputs[0].default_value = 0.5\n\n# Metal Principled BSDF\nmetal = nt.nodes.new('ShaderNodeBsdfPrincipled')\nmetal.location = (-200, 200)\nmetal.inputs['Base Color'].default_value = (0.8, 0.8, 0.8, 1.0)\nmetal.inputs['Metallic'].default_value = 1.0\nmetal.inputs['Roughness'].default_value = 0.3\n\n# Rust Principled BSDF\nrust = nt.nodes.new('ShaderNodeBsdfPrincipled')\nrust.location = (-200, -100)\nrust.inputs['Base Color'].default_value = (0.6, 0.25, 0.05, 1.0)\nrust.inputs['Metallic'].default_value = 0.0\nrust.inputs['Roughness'].default_value = 0.8\n\n# Texture Coordinate\ntex_coord = nt.nodes.new('ShaderNodeTexCoord')\ntex_coord.location = (-600, 0)\n\n# Noise Texture\nnoise = nt.nodes.new('ShaderNodeTexNoise')\nnoise.location = (-400, 0)\nnoise.inputs['Scale'].default_value = 3.0\n\n# ColorRamp to sharpen mask contrast\nramp = nt.nodes.new('ShaderNodeValToRGB')\nramp.location = (-200, 0)\nramp.color_ramp.elements[0].position = 0.3\nramp.color_ramp.elements[1].position = 0.7\n\n# ---- Connect nodes ----\nnt.links.new(tex_coord.outputs['Generated'], noise.inputs['Vector'])\nnt.links.new(noise.outputs['Fac'], ramp.inputs[0])\nnt.links.new(ramp.outputs['Color'], mix.inputs['Fac'])\nnt.links.new(metal.outputs['BSDF'], mix.inputs[1])\nnt.links.new(rust.outputs['BSDF'], mix.inputs[2])\nnt.links.new(mix.outputs['Shader'], out.inputs['Surface'])\n\n# Assign material to cylinder\nif obj.data.materials:\n    obj.data.materials[0] = mat\nelse:\n    obj.data.materials.append(mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 229,
+  "completion_tokens": 1176,
+  "reasoning_tokens": 485,
+  "cost_usd_est": 0.0016530800000000001,
+  "latency_s": 13.51,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

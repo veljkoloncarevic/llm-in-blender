@@ -1,0 +1,182 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.019,
+  "scene": {
+    "faces": 6912,
+    "triangles": 13824,
+    "vertices": 6912,
+    "n_geometry_objects": 12,
+    "objects": [
+      {
+        "name": "Oval_Link_01",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Chain Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Oval_Link_02",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Chain Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Oval_Link_03",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Chain Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Oval_Link_04",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Chain Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Oval_Link_05",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Chain Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Oval_Link_06",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Chain Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Oval_Link_07",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Chain Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Oval_Link_08",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Chain Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Oval_Link_09",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Chain Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Oval_Link_10",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Chain Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Oval_Link_11",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Chain Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Oval_Link_12",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Chain Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [],
+    "materials": [
+      {
+        "name": "Chain Metal",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 1,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -9.265000343322754,
+      -0.6599999666213989,
+      -0.6599999666213989
+    ],
+    "bbox_max": [
+      9.265000343322754,
+      0.6599999666213989,
+      0.6599999666213989
+    ]
+  },
+  "render_time_s": 6.767,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

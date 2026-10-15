@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Rocket body\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=12,\n    radius=0.65,\n    depth=3.0,\n    end_fill_type='NGON',\n    location=(0.0, 0.0, 0.0)\n)\nbody = bpy.context.object\nbody.name = \"Rocket_Body\"\n\n# Cone nose\nbpy.ops.mesh.primitive_cone_add(\n    vertices=12,\n    radius1=0.65,\n    radius2=0.0,\n    depth=1.2,\n    end_fill_type='NGON',\n    location=(0.0, 0.0, 2.1)\n)\nnose = bpy.context.object\nnose.name = \"Rocket_Nose\"\n\n# Three evenly spaced fins\nfin_radius = 0.78\nfin_z = -0.95\n\nfor i in range(3):\n    angle = math.radians(i * 120.0)\n    x = fin_radius * math.cos(angle)\n    y = fin_radius * math.sin(angle)\n\n    bpy.ops.mesh.primitive_cube_add(\n        location=(x, y, fin_z),\n        rotation=(0.0, 0.0, angle)\n    )\n    fin = bpy.context.object\n    fin.name = f\"Rocket_Fin_{i + 1}\"\n\n    # Local X extends radially, local Y is tangential, and Z is vertical\n    fin.scale = (0.42, 0.12, 0.58)\n    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 156,
+  "completion_tokens": 795,
+  "reasoning_tokens": 427,
+  "cost_usd_est": 0.0009852,
+  "latency_s": 8.6,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

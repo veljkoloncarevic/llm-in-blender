@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create dark ground plane\nbpy.ops.mesh.primitive_plane_add(size=20, location=(0, 0, 0))\nground = bpy.context.active_object\nground.name = \"Ground\"\n\n# Create ground material\nground_mat = bpy.data.materials.new(name=\"GroundMaterial\")\nground_mat.use_nodes = True\nprincipled = ground_mat.node_tree.nodes.get(\"Principled BSDF\")\nprincipled.inputs[\"Base Color\"].default_value = (0.01, 0.01, 0.01, 1)\nprincipled.inputs[\"Roughness\"].default_value = 0.8\nground.data.materials.append(ground_mat)\n\n# Create glowing cyan neon ring (torus)\nbpy.ops.mesh.primitive_torus_add(\n    location=(0, 0, 0.5),\n    major_radius=1.0,\n    minor_radius=0.05,\n    major_segments=128,\n    minor_segments=32\n)\ntorus = bpy.context.active_object\ntorus.name = \"NeonRing\"\nbpy.ops.object.shade_smooth()\n\n# Create neon material\nneon_mat = bpy.data.materials.new(name=\"NeonMaterial\")\nneon_mat.use_nodes = True\nprincipled = neon_mat.node_tree.nodes.get(\"Principled BSDF\")\nprincipled.inputs[\"Base Color\"].default_value = (0, 0, 0, 1)\nprincipled.inputs[\"Emission Color\"].default_value = (0, 1, 1, 1)\nprincipled.inputs[\"Emission Strength\"].default_value = 10.0\ntorus.data.materials.append(neon_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 222,
+  "completion_tokens": 1541,
+  "reasoning_tokens": 1136,
+  "cost_usd_est": 0.0021318,
+  "latency_s": 17.37,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

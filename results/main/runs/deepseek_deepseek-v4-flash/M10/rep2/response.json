@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\nfrom mathutils import Matrix\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Chain parameters\nnum_links = 12\nmajor_radius = 1.0\nminor_radius = 0.15\noval_aspect = 1.5\nmajor_segments = 48\nminor_segments = 16\n\n# Distance between adjacent link centers along the chain axis (Z)\nspacing = oval_aspect * major_radius\n\nbm = bmesh.new()\n\nfor i in range(num_links):\n    # Create a standard torus in the XY plane (hole along Z)\n    result = bmesh.ops.create_torus(\n        bm,\n        major_segments=major_segments,\n        minor_segments=minor_segments,\n        mode='MAJOR_MINOR',\n        major_radius=major_radius,\n        minor_radius=minor_radius,\n    )\n    verts = result['verts']\n\n    # Transform base torus:\n    # 1. Scale along X to make the link oval.\n    # 2. Rotate around Y so the oval lies in a plane containing the chain axis (Z).\n    # 3. Rotate around Z by 90 degrees for alternating link orientation.\n    # 4. Translate along Z to place the link in the chain.\n    scale = Matrix.Scale(oval_aspect, 4, (1, 0, 0))\n    rot_y = Matrix.Rotation(-math.pi / 2, 4, 'Y')\n    rot_z = Matrix.Rotation(math.radians(90 * i), 4, 'Z')\n    trans = Matrix.Translation((0.0, 0.0, i * spacing))\n\n    mat = trans @ rot_z @ rot_y @ scale\n    for v in verts:\n        v.co = mat @ v.co\n\n# Recalculate normals for the whole mesh\nbmesh.ops.recalc_face_normals(bm, faces=bm.faces)\n\n# Build the mesh object\nmesh = bpy.data.meshes.new(\"ChainMesh\")\nbm.to_mesh(mesh)\nbm.free()\n\nobj = bpy.data.objects.new(\"Chain\", mesh)\nbpy.context.collection.objects.link(obj)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 241,
+  "completion_tokens": 23911,
+  "reasoning_tokens": 23412,
+  "cost_usd_est": 0.03166856,
+  "latency_s": 252.49,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

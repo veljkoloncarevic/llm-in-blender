@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Bottom sphere\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=16,\n    ring_count=8,\n    radius=1.0,\n    location=(0.0, 0.0, 1.0)\n)\n\n# Middle sphere\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=16,\n    ring_count=8,\n    radius=0.7,\n    location=(0.0, 0.0, 2.0)\n)\n\n# Top sphere\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=16,\n    ring_count=8,\n    radius=0.5,\n    location=(0.0, 0.0, 2.7)\n)\n\n# Carrot nose (cone)\nbpy.ops.mesh.primitive_cone_add(\n    vertices=12,\n    radius1=0.1,\n    radius2=0.0,\n    depth=0.5,\n    location=(0.0, 0.5, 2.7),\n    rotation=(math.pi / 2, 0.0, 0.0)\n)\n\n# Left eye\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=8,\n    ring_count=4,\n    radius=0.08,\n    location=(-0.1545, 0.464, 2.803)\n)\n\n# Right eye\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=8,\n    ring_count=4,\n    radius=0.08,\n    location=(0.1545, 0.464, 2.803)\n)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 234,
+  "completion_tokens": 3619,
+  "reasoning_tokens": 3215,
+  "cost_usd_est": 0.0048800399999999996,
+  "latency_s": 37.16,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

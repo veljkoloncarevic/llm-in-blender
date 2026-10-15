@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import noise\n\n# 1. Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# 2. Create a grid mesh with sufficient subdivisions\n# 150 x 150 grid = 22,500 vertices, 44,100 faces (fits within 5k-120k face range)\ngrid_size = 150\nbpy.ops.mesh.primitive_grid_subdivide(\n    size=20.0,\n    resolution=grid_size,\n    calc_uv_args=True\n)\n\nobj = bpy.context.active_object\nobj.name = \"ProceduralHillyTerrain\"\n\n# Ensure object is in object mode and data is accessible\nmesh = obj.data\n\n# 3. Apply noise function to vertex heights\n# Using mathutils.noise.heterogeneous_terrain for a natural, mountainous look\nscale = 0.15\nheight_multiplier = 2.5\n\nfor v in mesh.vertices:\n    # Get local coordinates\n    x, y, z = v.co\n    \n    # Generate fractal noise based on position\n    # mathutils.noise.heterogeneous_terrain(vector, h, octaves, offset)\n    nx = x * scale\n    ny = y * scale\n    nz = z * scale\n    \n    # Combine standard turbulence/noise for rolling hills with some roughness\n    noise_val = noise.turbulence((nx, ny, nz), octaves=4, hurst=0.5, lacunarity=2.0)\n    \n    # Set the Z coordinate\n    v.co.z = noise_val * height_multiplier\n\n# 4. Update mesh normals and geometry\nmesh.update()\n\n# 5. Add a smooth modifier to soften the terrain appearance\nsmooth_mod = obj.modifiers.new(name=\"TerrainSmooth\", type='SMOOTH')\nsmooth_mod.factor = 0.5\nsmooth_mod.iterations = 2\n\n# Apply the modifier so the geometry is baked\nbpy.ops.object.modifier_apply(modifier=smooth_mod.name)\n\n# 6. Recalculate normals for proper shading\nbpy.ops.object.mode_set(mode='EDIT')\nbpy.ops.mesh.select_all(action='SELECT')\nbpy.ops.mesh.normals_make_consistent(inside=False)\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Set smooth shading for the mesh\nfor p in mesh.polygons:\n    p.use_smooth = True\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 179,
+  "completion_tokens": 598,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0015487,
+  "latency_s": 2.64,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

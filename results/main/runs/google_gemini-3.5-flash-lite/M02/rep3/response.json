@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import noise\n\n# 1. Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# 2. Create a high-subdivision grid for terrain\n# 150 x 150 vertices = 22,500 vertices, 22,201 quads (44,402 triangles)\n# This comfortably fits the 5,000 - 120,000 face count requirement.\nsubdivisions = 150\nsize = 20.0\n\nbpy.ops.mesh.primitive_grid_add(\n    x_subdivisions=subdivisions,\n    y_subdivisions=subdivisions,\n    size=size,\n    location=(0, 0, 0)\n)\n\nterrain_obj = bpy.context.active_object\nterrain_obj.name = \"ProceduralTerrain\"\n\n# 3. Apply noise function to vertex heights using BMesh\nmesh = terrain_obj.data\nbm = bmesh.from_edit_mesh(mesh) if terrain_obj.mode == 'EDIT' else bmesh.new()\nif terrain_obj.mode != 'EDIT':\n    bm.from_mesh(mesh)\n\n# Ensure vertex coordinates can be modified\nbm.verts.ensure_lookup_table()\n\n# Multi-layered noise parameters for realistic hills\nscale = 0.3\nheight_multiplier = 2.5\n\nfor v in bm.verts:\n    # Get local coordinates\n    x, y, z = v.co.x, v.co.y, v.co.z\n    \n    # Layered noise (Fractal-like sum)\n    # Base rolling hills\n    n1 = noise.noise((x * scale, y * scale, 0.0)) * 1.0\n    # Medium detail ridges\n    n2 = noise.noise((x * scale * 2.5, y * scale * 2.5, 1.5)) * 0.4\n    # Fine surface bump\n    n3 = noise.noise((x * scale * 6.0, y * scale * 6.0, 3.0)) * 0.1\n    \n    # Combine noise layers\n    combined_noise = n1 + n2 + n3\n    \n    # Optional: flatten out valleys slightly or shape the profile\n    # Let's apply height scaling\n    v.co.z = combined_noise * height_multiplier\n\n# Update mesh from bmesh\nbm.to_mesh(mesh)\nbm.free()\n\n# 4. Shade smooth for clean terrain appearance\nfor p in mesh.polygons:\n    p.use_smooth = True\n\n# 5. Add a Subdivision Surface modifier for extra organic smoothness (optional, keeps within poly limits)\nsubsurf = terrain_obj.modifiers.new(name=\"TerrainSubsurf\", type='SUBSURF')\nsubsurf.levels = 1\nsubsurf.render_levels = 2\nsubsurf.uv_smooth_mode = 'PRESERVE_CORNERS'\n\n# Set active object\nbpy.context.view_layer.objects.active = terrain_obj\nterrain_obj.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 179,
+  "completion_tokens": 737,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0018962,
+  "latency_s": 3.33,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

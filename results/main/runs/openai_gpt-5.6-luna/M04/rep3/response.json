@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Torus knot parameters: (p, q) = (2, 3)\np = 2\nq = 3\nmajor_radius = 2.0\nminor_radius = 0.8\ntube_radius = 0.22\n\n# Resolution: 256 longitudinal segments x 16 circular segments = 4096 quad faces\ncurve_segments = 256\ncross_segments = 16\n\nvertices = []\nfaces = []\n\nfor i in range(curve_segments):\n    t = 2.0 * math.pi * i / curve_segments\n    pt = p * t\n    qt = q * t\n\n    cqt = math.cos(qt)\n    sqt = math.sin(qt)\n    cpt = math.cos(pt)\n    spt = math.sin(pt)\n\n    radial_distance = major_radius + minor_radius * cqt\n\n    # Parametric torus knot centerline\n    center = Vector((\n        radial_distance * cpt,\n        radial_distance * spt,\n        minor_radius * sqt\n    ))\n\n    # Analytic tangent derivative\n    tangent = Vector((\n        -minor_radius * q * sqt * cpt - radial_distance * p * spt,\n        -minor_radius * q * sqt * spt + radial_distance * p * cpt,\n        minor_radius * q * cqt\n    )).normalized()\n\n    # Use the outward direction from the torus axis as a stable frame reference\n    reference = Vector((cpt, spt, 0.0))\n    normal = reference - tangent * reference.dot(tangent)\n\n    if normal.length < 1e-6:\n        reference = Vector((0.0, 0.0, 1.0))\n        normal = reference - tangent * reference.dot(tangent)\n\n    normal.normalize()\n    binormal = tangent.cross(normal).normalized()\n\n    # Circular tube cross-section\n    for j in range(cross_segments):\n        angle = 2.0 * math.pi * j / cross_segments\n        offset = (\n            math.cos(angle) * normal +\n            math.sin(angle) * binormal\n        ) * tube_radius\n        vertices.append(tuple(center + offset))\n\n# Connect neighboring rings, including the closing seam\nfor i in range(curve_segments):\n    next_i = (i + 1) % curve_segments\n    for j in range(cross_segments):\n        next_j = (j + 1) % cross_segments\n\n        a = i * cross_segments + j\n        b = i * cross_segments + next_j\n        c = next_i * cross_segments + next_j\n        d = next_i * cross_segments + j\n\n        faces.append((a, b, c, d))\n\nmesh = bpy.data.meshes.new(\"TorusKnot_2_3_Mesh\")\nmesh.from_pydata(vertices, [], faces)\nmesh.update()\n\nobj = bpy.data.objects.new(\"TorusKnot_2_3\", mesh)\nbpy.context.collection.objects.link(obj)\n\n# Smooth shading\nfor polygon in mesh.polygons:\n    polygon.use_smooth = True\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 166,
+  "completion_tokens": 1202,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0014755999999999999,
+  "latency_s": 11.34,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

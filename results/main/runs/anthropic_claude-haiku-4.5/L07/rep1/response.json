@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\nfrom mathutils import Matrix\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create rocket body (cylinder)\nbpy.ops.mesh.primitive_cylinder_add(\n    radius=0.5,\n    depth=3,\n    vertices=8,\n    location=(0, 0, 0)\n)\nbody = bpy.context.active_object\nbody.name = \"RocketBody\"\n\n# Create nose cone\nbpy.ops.mesh.primitive_cone_add(\n    radius1=0.5,\n    radius2=0,\n    depth=1,\n    vertices=8,\n    location=(0, 0, 2)\n)\nnose = bpy.context.active_object\nnose.name = \"RocketNose\"\n\n# Create fins (scaled cubes)\nfin_positions = [\n    (0, 120),\n    (120, 240),\n    (240, 360)\n]\n\nfor i, (start_angle, end_angle) in enumerate(fin_positions):\n    # Create cube\n    bpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, 0))\n    fin = bpy.context.active_object\n    fin.name = f\"Fin{i+1}\"\n    \n    # Scale the cube to make it fin-shaped\n    # Scale down in Z (height), keep X, scale down Y (thickness)\n    fin.scale = (0.3, 0.15, 0.8)\n    \n    # Move fin away from body center\n    fin.location = (0.65, 0, -0.5)\n    \n    # Rotate around Z axis to position the fin\n    angle_rad = math.radians(start_angle + (end_angle - start_angle) / 2)\n    fin.rotation_euler = (0, 0, angle_rad)\n\n# Select all objects and apply transforms\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.transform_apply(location=False, rotation=True, scale=True)\n\n# Deselect all\nbpy.ops.object.select_all(action='DESELECT')\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 173,
+  "completion_tokens": 562,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.002983,
+  "latency_s": 4.45,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

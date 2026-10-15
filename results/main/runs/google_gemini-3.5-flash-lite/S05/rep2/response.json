@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing scene objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# 1. Create a dark ground plane\nbpy.ops.mesh.primitive_plane_add(size=20.0, location=(0, 0, 0))\nground_obj = bpy.active_object\nground_obj.name = \"GroundPlane\"\n\n# Create dark material for the ground\nground_mat = bpy.data.materials.new(name=\"GroundMaterial\")\nground_mat.use_nodes = True\nground_nodes = ground_mat.node_tree.nodes\nground_nodes.clear()\n\n# Add Principled BSDF for the ground\nground_bsdf = ground_nodes.new(type='ShaderNodeBsdfPrincipled')\nground_bsdf.inputs['Base Color'].default_value = (0.02, 0.02, 0.02, 1.0)\nground_bsdf.inputs['Roughness'].default_value = 0.4\n\nground_output = ground_nodes.new(type='ShaderNodeOutputMaterial')\nground_mat.node_tree.links.new(ground_bsdf.outputs['BSDF'], ground_output.inputs['Surface'])\nground_obj.data.materials.append(ground_mat)\n\n# 2. Create the neon torus ring above the ground\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=2.0,\n    minor_radius=0.2,\n    major_segments=64,\n    minor_segments=32,\n    location=(0, 0, 2.0),\n    rotation=(1.5708, 0, 0) # Rotate to stand vertically\n)\ntorus_obj = bpy.active_object\ntorus_obj.name = \"NeonRing\"\n\n# Apply smooth shading to the torus\nfor polygon in torus_obj.data.polygons:\n    polygon.use_smooth = True\n\n# Create glowing cyan emissive material\nneon_mat = bpy.data.materials.new(name=\"NeonCyanMaterial\")\nneon_mat.use_nodes = True\nneon_nodes = neon_mat.node_tree.nodes\nneon_nodes.clear()\n\n# Add Emission shader\nemission_node = neon_nodes.new(type='ShaderNodeEmission')\n# Cyan color\nemission_node.inputs['Color'].default_value = (0.0, 1.0, 1.0, 1.0)\n# High emission strength (at least 5 as requested)\nemission_node.inputs['Strength'].default_value = 15.0\n\nneon_output = neon_nodes.new(type='ShaderNodeOutputMaterial')\nneon_mat.node_tree.links.new(emission_node.outputs['Emission'], neon_output.inputs['Surface'])\ntorus_obj.data.materials.append(neon_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 140,
+  "completion_tokens": 680,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.001742,
+  "latency_s": 2.34,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

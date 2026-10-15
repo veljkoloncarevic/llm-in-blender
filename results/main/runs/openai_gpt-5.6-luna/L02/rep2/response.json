@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Materials\ndef make_material(name, color):\n    mat = bpy.data.materials.new(name)\n    mat.diffuse_color = (*color, 1.0)\n    return mat\n\nsnow_mat = make_material(\"Snow\", (0.92, 0.97, 1.0))\norange_mat = make_material(\"Carrot Orange\", (1.0, 0.25, 0.03))\nblack_mat = make_material(\"Coal Black\", (0.01, 0.01, 0.01))\n\ndef smooth_object(obj):\n    for poly in obj.data.polygons:\n        poly.use_smooth = True\n\ndef add_uv_sphere(name, radius, location, material):\n    bpy.ops.mesh.primitive_uv_sphere_add(\n        segments=24,\n        ring_count=12,\n        radius=radius,\n        location=location\n    )\n    obj = bpy.context.object\n    obj.name = name\n    obj.data.materials.append(material)\n    smooth_object(obj)\n    return obj\n\n# Snowman body: three stacked UV spheres\nadd_uv_sphere(\"Bottom Snowball\", 2.0, (0.0, 0.0, 2.0), snow_mat)\nadd_uv_sphere(\"Middle Snowball\", 1.5, (0.0, 0.0, 4.9), snow_mat)\nadd_uv_sphere(\"Head Snowball\", 1.1, (0.0, 0.0, 7.2), snow_mat)\n\n# Carrot nose, pointing toward the front (-Y)\nbpy.ops.mesh.primitive_cone_add(\n    vertices=24,\n    radius1=0.32,\n    radius2=0.0,\n    depth=0.8,\n    location=(0.0, -1.38, 7.15),\n    rotation=(math.pi / 2.0, 0.0, 0.0)\n)\nnose = bpy.context.object\nnose.name = \"Carrot Nose\"\nnose.data.materials.append(orange_mat)\nsmooth_object(nose)\n\n# Coal eyes\nadd_uv_sphere(\"Left Eye\", 0.14, (-0.38, -1.02, 7.5), black_mat)\nadd_uv_sphere(\"Right Eye\", 0.14, (0.38, -1.02, 7.5), black_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 156,
+  "completion_tokens": 1275,
+  "reasoning_tokens": 730,
+  "cost_usd_est": 0.0015612,
+  "latency_s": 12.48,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

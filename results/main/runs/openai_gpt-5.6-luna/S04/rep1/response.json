@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Remove orphaned mesh and material data where possible\nfor datablocks in (bpy.data.meshes, bpy.data.materials, bpy.data.curves, bpy.data.cameras, bpy.data.lights):\n    for datablock in list(datablocks):\n        if datablock.users == 0:\n            datablocks.remove(datablock)\n\n# Create blue ground material\nground_material = bpy.data.materials.new(\"Blue Ground Material\")\nground_material.use_nodes = True\n\nground_bsdf = ground_material.node_tree.nodes.get(\"Principled BSDF\")\nground_bsdf.inputs[\"Base Color\"].default_value = (0.015, 0.08, 0.35, 1.0)\nground_bsdf.inputs[\"Roughness\"].default_value = 0.42\nground_bsdf.inputs[\"Metallic\"].default_value = 0.0\n\n# Create ground plane\nbpy.ops.mesh.primitive_plane_add(\n    size=12.0,\n    location=(0.0, 0.0, 0.0)\n)\nground = bpy.context.active_object\nground.name = \"Blue Ground Plane\"\nground.data.name = \"Blue Ground Plane Mesh\"\nground.data.materials.append(ground_material)\n\n# Create clear glass material\nglass_material = bpy.data.materials.new(\"Clear Glass Material\")\nglass_material.use_nodes = True\n\nglass_bsdf = glass_material.node_tree.nodes.get(\"Principled BSDF\")\nglass_bsdf.inputs[\"Base Color\"].default_value = (1.0, 1.0, 1.0, 1.0)\nglass_bsdf.inputs[\"Metallic\"].default_value = 0.0\nglass_bsdf.inputs[\"Roughness\"].default_value = 0.01\nglass_bsdf.inputs[\"IOR\"].default_value = 1.45\n\nif \"Transmission Weight\" in glass_bsdf.inputs:\n    glass_bsdf.inputs[\"Transmission Weight\"].default_value = 1.0\nelif \"Transmission\" in glass_bsdf.inputs:\n    glass_bsdf.inputs[\"Transmission\"].default_value = 1.0\n\n# Create glass sphere, tangent to the ground plane\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=64,\n    ring_count=32,\n    radius=1.0,\n    location=(0.0, 0.0, 1.0)\n)\nsphere = bpy.context.active_object\nsphere.name = \"Clear Glass Sphere\"\nsphere.data.name = \"Clear Glass Sphere Mesh\"\nsphere.data.materials.append(glass_material)\n\n# Smooth shading\nfor polygon in sphere.data.polygons:\n    polygon.use_smooth = True\n\n# Ensure the sphere is centered precisely above the plane\nsphere.location.z = 1.0\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 150,
+  "completion_tokens": 918,
+  "reasoning_tokens": 325,
+  "cost_usd_est": 0.0011316,
+  "latency_s": 30.61,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

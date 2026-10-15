@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create a flat wall (Plane rotated to stand vertically)\nbpy.ops.mesh.primitive_plane_add(size=4.0, location=(0, 0, 2))\nwall = bpy.context.active_object\nwall.name = \"BrickWall\"\nwall.rotation_euler = (1.57079, 0, 0) # Rotate 90 degrees on X to make it vertical\n\n# Ensure normals point outward nicely (though flat plane is fine)\nbpy.ops.object.shade_smooth()\n\n# Create a new material for procedural bricks\nmat = bpy.data.materials.new(name=\"ProceduralBrickMaterial\")\nmat.use_nodes = True\nnodes = mat.node_tree.nodes\nlinks = mat.node_tree.links\n\n# Clear default nodes\nnodes.clear()\n\n# Create necessary nodes\nnode_output = nodes.new(type='ShaderNodeOutputMaterial')\nnode_output.location = (600, 0)\n\nnode_principled = nodes.new(type='ShaderNodeBsdfPrincipled')\nnode_principled.location = (300, 0)\nnode_principled.inputs['Roughness'].default_value = 0.5\n\nnode_brick = nodes.new(type='ShaderNodeTexBrick')\nnode_brick.location = (-300, 0)\n# Configure brick texture properties\nnode_brick.inputs['Color1'].default_value = (0.2, 0.2, 0.2, 1.0) # Dark reddish-brown mortar base\nnode_brick.inputs['Color2'].default_value = (0.65, 0.25, 0.15, 1.0) # Terracotta brick color\nnode_brick.inputs['Mortar Size'].default_value = 0.02\nnode_brick.inputs['Brick Width'].default_value = 0.5\nnode_brick.inputs['Row Height'].default_value = 0.25\n\nnode_bump = nodes.new(type='ShaderNodeBump')\nnode_bump.location = (0, -200)\nnode_bump.inputs['Strength'].default_value = 0.4\nnode_bump.inputs['Distance'].default_value = 0.03\n\n# Link nodes together\n# 1. Base Color from Brick Texture to Principled BSDF\nlinks.new(node_brick.outputs['Color'], node_principled.inputs['Base Color'])\n\n# 2. Fac (mortar pattern mask) from Brick Texture to Bump Height\nlinks.new(node_brick.outputs['Fac'], node_bump.inputs['Height'])\n\n# 3. Normal from Bump node to Principled BSDF Normal\nlinks.new(node_bump.outputs['Normal'], node_principled.inputs['Normal'])\n\n# 4. Principled BSDF Shader to Material Output Surface\nlinks.new(node_principled.outputs['BSDF'], node_output.inputs['Surface'])\n\n# Assign material to the wall\nif wall.data.materials:\n    wall.data.materials[0] = mat\nelse:\n    wall.data.materials.append(mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 146,
+  "completion_tokens": 750,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0019188,
+  "latency_s": 2.28,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

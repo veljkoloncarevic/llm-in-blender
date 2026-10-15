@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects in the scene\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create a smooth UV sphere\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1.0, segments=64, ring_count=32, location=(0, 0, 1.0))\nsphere = bpy.active_object\nsphere.name = \"GoldSphere\"\n\n# Apply smooth shading to the sphere\nfor polygon in sphere.data.polygons:\n    polygon.use_smooth = True\n\n# Create a ground plane\nbpy.ops.mesh.primitive_plane_add(size=10.0, location=(0, 0, 0))\nground = bpy.active_object\nground.name = \"GroundPlane\"\n\n# --- Material 1: Polished Gold ---\ngold_mat = bpy.data.materials.new(name=\"PolishedGold\")\ngold_mat.use_nodes = True\nnodes_gold = gold_mat.node_tree.nodes\nlinks_gold = gold_mat.node_tree.links\n\n# Clear default nodes just in case\nnodes_gold.clear()\n\n# Add Principled BSDF and Material Output\nnode_principled_gold = nodes_gold.new(type='ShaderNodeBsdfPrincipled')\nnode_principled_gold.location = (0, 0)\n\nnode_output_gold = nodes_gold.new(type='ShaderNodeOutputMaterial')\nnode_output_gold.location = (300, 0)\n\n# Configure Gold properties\n# Base Color: Rich metallic gold (RGB ~ 1.0, 0.766, 0.336)\nnode_principled_gold.inputs['Base Color'].default_value = (1.0, 0.766, 0.336, 1.0)\nnode_principled_gold.inputs['Metallic'].default_value = 1.0\nnode_principled_gold.inputs['Roughness'].default_value = 0.1\n\n# Link Principled to Output\nlinks_gold.new(node_principled_gold.outputs['BSDF'], node_output_gold.inputs['Surface'])\n\n# Assign gold material to the sphere\nif sphere.data.materials:\n    sphere.data.materials[0] = gold_mat\nelse:\n    sphere.data.materials.append(gold_mat)\n\n\n# --- Material 2: Neutral Grey Ground ---\ngrey_mat = bpy.data.materials.new(name=\"NeutralGrey\")\ngrey_mat.use_nodes = True\nnodes_grey = grey_mat.node_tree.nodes\nlinks_grey = grey_mat.node_tree.links\n\nnodes_grey.clear()\n\nnode_principled_grey = nodes_grey.new(type='ShaderNodeBsdfPrincipled')\nnode_principled_grey.location = (0, 0)\n\nnode_output_grey = nodes_grey.new(type='ShaderNodeOutputMaterial')\nnode_output_grey.location = (300, 0)\n\n# Configure Grey properties\nnode_principled_grey.inputs['Base Color'].default_value = (0.5, 0.5, 0.5, 1.0)\nnode_principled_grey.inputs['Roughness'].default_value = 0.6\n\n# Link Principled to Output\nlinks_grey.new(node_principled_grey.outputs['BSDF'], node_output_grey.inputs['Surface'])\n\n# Assign grey material to the ground plane\nif ground.data.materials:\n    ground.data.materials[0] = grey_mat\nelse:\n    ground.data.materials.append(grey_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 152,
+  "completion_tokens": 855,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0021831,
+  "latency_s": 2.53,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

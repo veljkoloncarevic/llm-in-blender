@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create Suzanne\nbpy.ops.mesh.primitive_monkey_add(location=(0.0, 0.0, 0.0))\nsuzanne = bpy.context.active_object\nsuzanne.name = \"Marble Suzanne\"\n\n# Smooth shading\nfor polygon in suzanne.data.polygons:\n    polygon.use_smooth = True\n\n# Add subdivision for a smoother sculptural form\nsubdivision = suzanne.modifiers.new(name=\"Subdivision Surface\", type='SUBSURF')\nsubdivision.subdivision_type = 'CATMULL_CLARK'\nsubdivision.levels = 2\nsubdivision.render_levels = 2\n\n# Create white marble material\nmaterial = bpy.data.materials.new(name=\"White Marble\")\nmaterial.use_nodes = True\n\nnodes = material.node_tree.nodes\nlinks = material.node_tree.links\nnodes.clear()\n\noutput = nodes.new(type='ShaderNodeOutputMaterial')\noutput.name = \"Material Output\"\noutput.location = (600, 0)\n\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\nprincipled.name = \"Marble Principled BSDF\"\nprincipled.location = (300, 0)\nprincipled.inputs[\"Roughness\"].default_value = 0.28\nprincipled.inputs[\"Specular IOR Level\"].default_value = 0.35\n\nnoise = nodes.new(type='ShaderNodeTexNoise')\nnoise.name = \"Marble Noise\"\nnoise.location = (-600, 0)\nnoise.inputs[\"Scale\"].default_value = 5.0\nnoise.inputs[\"Detail\"].default_value = 7.0\nnoise.inputs[\"Roughness\"].default_value = 0.65\nnoise.inputs[\"Distortion\"].default_value = 0.35\n\nramp = nodes.new(type='ShaderNodeValToRGB')\nramp.name = \"Marble Color Ramp\"\nramp.location = (-150, 0)\n\nramp.color_ramp.elements.remove(ramp.color_ramp.elements[1])\ndark = ramp.color_ramp.elements[0]\ndark.position = 0.32\ndark.color = (0.18, 0.20, 0.22, 1.0)\n\nmid = ramp.color_ramp.elements.new(0.47)\nmid.color = (0.62, 0.65, 0.68, 1.0)\n\nlight = ramp.color_ramp.elements.new(0.58)\nlight.color = (0.96, 0.97, 0.98, 1.0)\n\nwhite = ramp.color_ramp.elements.new(0.78)\nwhite.color = (1.0, 1.0, 1.0, 1.0)\n\nlinks.new(noise.outputs[\"Fac\"], ramp.inputs[\"Fac\"])\nlinks.new(ramp.outputs[\"Color\"], principled.inputs[\"Base Color\"])\nlinks.new(principled.outputs[\"BSDF\"], output.inputs[\"Surface\"])\n\nsuzanne.data.materials.append(material)\n\n# Frame the object in the viewport\nbpy.context.view_layer.objects.active = suzanne\nsuzanne.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 151,
+  "completion_tokens": 824,
+  "reasoning_tokens": 159,
+  "cost_usd_est": 0.001019,
+  "latency_s": 7.12,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

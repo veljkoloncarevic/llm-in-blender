@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Materials\ndef make_material(name, color):\n    mat = bpy.data.materials.new(name)\n    mat.diffuse_color = (*color, 1.0)\n    return mat\n\nframe_mat = make_material(\"Warm Wood\", (0.30, 0.12, 0.045))\nbook_mats = [\n    make_material(\"Book Red\", (0.55, 0.06, 0.04)),\n    make_material(\"Book Blue\", (0.04, 0.18, 0.50)),\n    make_material(\"Book Green\", (0.06, 0.35, 0.12)),\n]\n\ndef create_cube(name, location, dimensions, material):\n    bpy.ops.mesh.primitive_cube_add(location=location)\n    obj = bpy.context.object\n    obj.name = name\n    obj.dimensions = dimensions\n    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)\n    obj.data.materials.append(material)\n    return obj\n\n# Overall bookshelf dimensions:\n# width: 6.0, depth: 0.65, height: 7.0\n# Vertical side panels\ncreate_cube(\"Left Side\", (-2.85, 0.0, 0.0), (0.30, 0.65, 7.0), frame_mat)\ncreate_cube(\"Right Side\", (2.85, 0.0, 0.0), (0.30, 0.65, 7.0), frame_mat)\n\n# Bottom, three shelves, and top\nhorizontal_levels = [-3.35, -1.10, 1.15, 3.40]\nfor index, z in enumerate(horizontal_levels):\n    label = \"Bottom\" if index == 0 else (\"Top\" if index == 4 else f\"Shelf {index}\")\n    create_cube(label, (0.0, 0.0, z), (5.70, 0.65, 0.30), frame_mat)\n\n# Create one book per shelf level, then use an Array modifier for ten books per row\nbook_rows = [\n    (-2.40, book_mats[0]),\n    (-0.15, book_mats[1]),\n    (2.10, book_mats[2]),\n]\n\nfor row_index, (z, material) in enumerate(book_rows, start=1):\n    book = create_cube(\n        f\"Row {row_index} Book\",\n        (-2.42, -0.03, z),\n        (0.40, 0.48, 1.75),\n        material\n    )\n\n    array = book.modifiers.new(name=\"Ten Books Array\", type='ARRAY')\n    array.count = 10\n    array.use_relative_offset = False\n    array.use_constant_offset = True\n    array.constant_offset_displace = (0.48, 0.0, 0.0)\n\n# Set a clean object selection state\nbpy.ops.object.select_all(action='DESELECT')\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 164,
+  "completion_tokens": 1517,
+  "reasoning_tokens": 853,
+  "cost_usd_est": 0.0018531999999999997,
+  "latency_s": 15.93,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

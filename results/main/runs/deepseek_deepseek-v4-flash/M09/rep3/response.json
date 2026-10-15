@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Ensure object mode and delete any existing objects\ntry:\n    bpy.ops.object.mode_set(mode='OBJECT')\nexcept Exception:\n    pass\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a subdivided icosphere (5 subdivisions -> 20,480 faces)\nbpy.ops.mesh.primitive_ico_sphere_add(subdivisions=5, radius=1, location=(0, 0, 0))\nrock = bpy.context.active_object\nrock.name = \"Rock\"\nrock.data.name = \"RockMesh\"\n\n# Irregular non-uniform scale for a natural, irregular silhouette\nrock.scale = (1.35, 0.8, 1.1)\n\n# Create a procedural noise texture for displacement\nnoise_tex = bpy.data.textures.new(\"RockNoise\", type='NOISE')\nnoise_tex.noise_scale = 0.6\nnoise_tex.noise_depth = 5\n\n# Add a Displace modifier using the noise texture\ndisp = rock.modifiers.new(\"RockDisplace\", type='DISPLACE')\ndisp.texture = noise_tex\ndisp.texture_coords = 'OBJECT'\ndisp.texture_coords_object = rock\ndisp.strength = 0.8\ndisp.mid_level = 0.5\n\n# Smooth shading for a more rock-like appearance\nfor poly in rock.data.polygons:\n    poly.use_smooth = True\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 245,
+  "completion_tokens": 6057,
+  "reasoning_tokens": 5735,
+  "cost_usd_est": 0.00810304,
+  "latency_s": 73.66,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

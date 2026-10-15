@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Remove unused mesh and material data\nfor datablocks in (bpy.data.meshes, bpy.data.curves, bpy.data.materials, bpy.data.cameras, bpy.data.lights):\n    for datablock in list(datablocks):\n        if datablock.users == 0:\n            datablocks.remove(datablock)\n\n# Create polished gold material\ngold_material = bpy.data.materials.new(name=\"Polished Gold\")\ngold_material.use_nodes = True\n\ngold_bsdf = gold_material.node_tree.nodes.get(\"Principled BSDF\")\ngold_bsdf.inputs[\"Base Color\"].default_value = (1.0, 0.766, 0.336, 1.0)\ngold_bsdf.inputs[\"Metallic\"].default_value = 1.0\ngold_bsdf.inputs[\"Roughness\"].default_value = 0.12\n\n# Create smooth UV sphere resting on the ground plane\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=64,\n    ring_count=32,\n    radius=1.0,\n    location=(0.0, 0.0, 1.0)\n)\nsphere = bpy.context.object\nsphere.name = \"Polished Gold Sphere\"\nsphere.data.materials.append(gold_material)\n\nfor polygon in sphere.data.polygons:\n    polygon.use_smooth = True\n\n# Create neutral grey ground material\nground_material = bpy.data.materials.new(name=\"Neutral Grey Ground\")\nground_material.use_nodes = True\n\nground_bsdf = ground_material.node_tree.nodes.get(\"Principled BSDF\")\nground_bsdf.inputs[\"Base Color\"].default_value = (0.18, 0.18, 0.18, 1.0)\nground_bsdf.inputs[\"Metallic\"].default_value = 0.0\nground_bsdf.inputs[\"Roughness\"].default_value = 0.45\n\n# Create ground plane\nbpy.ops.mesh.primitive_plane_add(\n    size=20.0,\n    location=(0.0, 0.0, 0.0)\n)\nground = bpy.context.object\nground.name = \"Neutral Grey Ground Plane\"\nground.data.materials.append(ground_material)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 157,
+  "completion_tokens": 664,
+  "reasoning_tokens": 184,
+  "cost_usd_est": 0.0008282,
+  "latency_s": 6.37,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

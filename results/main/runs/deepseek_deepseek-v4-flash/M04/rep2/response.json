@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Torus knot parameters\np, q = 2, 3\nR = 2.0\nr = 1.0\ntube_radius = 0.15\n\n# Resolution\nN_path = 1000  # segments around the knot\nN_circle = 24  # segments around the tube cross-section\n\n# Compute curve points and frames\npath = []\nfor i in range(N_path):\n    t = 2.0 * math.pi * i / float(N_path)\n    u = p * t\n    v = q * t\n\n    cos_u = math.cos(u)\n    sin_u = math.sin(u)\n    cos_v = math.cos(v)\n    sin_v = math.sin(v)\n\n    # Position on torus knot\n    pos = Vector((\n        (R + r * cos_v) * cos_u,\n        (R + r * cos_v) * sin_u,\n        r * sin_v\n    ))\n\n    # Tangent vector (derivative)\n    dx_dt = -(R + r * cos_v) * p * sin_u - r * q * sin_v * cos_u\n    dy_dt = (R + r * cos_v) * p * cos_u - r * q * sin_v * sin_u\n    dz_dt = r * q * cos_v\n    tangent = Vector((dx_dt, dy_dt, dz_dt))\n    tangent.normalize()\n\n    # Normal to the underlying torus surface (also perpendicular to the tangent)\n    normal = Vector((cos_v * cos_u, cos_v * sin_u, sin_v))\n    normal.normalize()\n\n    # Binormal completes the frame\n    binormal = tangent.cross(normal)\n    binormal.normalize()\n\n    path.append((pos, tangent, normal, binormal))\n\n# Build the tube mesh\nmesh = bpy.data.meshes.new(\"TorusKnot\")\nbm = bmesh.new()\n\n# Create cross-section vertices for each path point\nverts = []\nfor pos, tangent, normal, binormal in path:\n    ring = []\n    for j in range(N_circle):\n        theta = 2.0 * math.pi * j / float(N_circle)\n        offset = (math.cos(theta) * normal + math.sin(theta) * binormal) * tube_radius\n        v = bm.verts.new(pos + offset)\n        ring.append(v)\n    verts.append(ring)\n\n# Create quad faces between adjacent rings\nfor i in range(N_path):\n    i_next = (i + 1) % N_path\n    for j in range(N_circle):\n        j_next = (j + 1) % N_circle\n        face = bm.faces.new((\n            verts[i][j],\n            verts[i][j_next],\n            verts[i_next][j_next],\n            verts[i_next][j],\n        ))\n        face.smooth = True\n\nbm.normal_update()\nbm.to_mesh(mesh)\nbm.free()\n\n# Link the mesh to the scene\nobj = bpy.data.objects.new(\"TorusKnot\", mesh)\nbpy.context.collection.objects.link(obj)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 243,
+  "completion_tokens": 8688,
+  "reasoning_tokens": 7974,
+  "cost_usd_est": 0.01157508,
+  "latency_s": 90.78,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

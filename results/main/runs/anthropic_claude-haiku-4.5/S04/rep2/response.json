@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a UV Sphere (glass sphere)\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(0, 0, 1))\nsphere = bpy.context.active_object\nsphere.name = \"GlassSphere\"\n\n# Create material for the glass sphere\nglass_material = bpy.data.materials.new(name=\"GlassMaterial\")\nglass_material.use_nodes = True\nglass_material.shadow_method = 'HASHED'\n\n# Clear default nodes\nglass_material.node_tree.nodes.clear()\n\n# Add Principled BSDF node\nprincipled = glass_material.node_tree.nodes.new(type='ShaderNodeBsdfPrincipled')\nprincipled.inputs['Transmission'].default_value = 1.0\nprincipled.inputs['Roughness'].default_value = 0.01\nprincipled.inputs['IOR'].default_value = 1.45\n\n# Add Material Output node\noutput = glass_material.node_tree.nodes.new(type='ShaderNodeOutputMaterial')\n\n# Connect Principled BSDF to Material Output\nglass_material.node_tree.links.new(principled.outputs['BSDF'], output.inputs['Surface'])\n\n# Assign material to sphere\nsphere.data.materials.append(glass_material)\n\n# Create a blue ground plane\nbpy.ops.mesh.primitive_plane_add(size=10, location=(0, 0, 0))\nplane = bpy.context.active_object\nplane.name = \"GroundPlane\"\n\n# Create blue material for the plane\nblue_material = bpy.data.materials.new(name=\"BlueMaterial\")\nblue_material.use_nodes = True\n\n# Clear default nodes\nblue_material.node_tree.nodes.clear()\n\n# Add Principled BSDF node for blue color\nprincipled_blue = blue_material.node_tree.nodes.new(type='ShaderNodeBsdfPrincipled')\nprincipled_blue.inputs['Base Color'].default_value = (0.0, 0.3, 0.8, 1.0)\n\n# Add Material Output node\noutput_blue = blue_material.node_tree.nodes.new(type='ShaderNodeOutputMaterial')\n\n# Connect Principled BSDF to Material Output\nblue_material.node_tree.links.new(principled_blue.outputs['BSDF'], output_blue.inputs['Surface'])\n\n# Assign material to plane\nplane.data.materials.append(blue_material)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 167,
+  "completion_tokens": 673,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.003532,
+  "latency_s": 4.48,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

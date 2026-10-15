@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Matrix\nimport math\n\n# Clear existing mesh objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create the mug body (cylinder)\nbpy.ops.mesh.primitive_cylinder_add(\n    radius=0.8,\n    depth=2.0,\n    vertices=16,\n    location=(0, 0, 1)\n)\nmug_body = bpy.context.active_object\nmug_body.name = \"MugBody\"\n\n# Enter edit mode and delete the top face to make it open\nbpy.context.view_layer.objects.active = mug_body\nbpy.ops.object.mode_set(mode='EDIT')\nbpy.ops.mesh.select_all(action='SELECT')\nbpy.ops.mesh.delete(type='ONLY_FACE')\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Add Solidify modifier to make it hollow\nsolidify = mug_body.modifiers.new(name=\"Solidify\", type='SOLIDIFY')\nsolidify.thickness = 0.1\nsolidify.offset = 0\n\n# Create the handle (half torus)\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=0.5,\n    minor_radius=0.1,\n    location=(0.8, 0, 1),\n    rotation=(math.pi/2, 0, 0)\n)\nhandle = bpy.context.active_object\nhandle.name = \"Handle\"\n\n# Delete half of the torus to make a handle shape\nbpy.context.view_layer.objects.active = handle\nbpy.ops.object.mode_set(mode='EDIT')\nbpy.ops.mesh.select_all(action='DESELECT')\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Select vertices on one side and delete them\nmesh = handle.data\nfor vertex in mesh.vertices:\n    if vertex.co.y > 0.05:\n        vertex.select = True\n\nbpy.ops.object.mode_set(mode='EDIT')\nbpy.ops.mesh.delete(type='VERT')\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Join the objects\nbpy.context.view_layer.objects.active = mug_body\nmug_body.select_set(True)\nhandle.select_set(True)\nbpy.ops.object.join()\n\n# Final object is now the mug with handle\nfinal_mug = bpy.context.active_object\nfinal_mug.name = \"CoffeeMug\"\n\n# Ensure we're in object mode\nbpy.ops.object.mode_set(mode='OBJECT')\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 178,
+  "completion_tokens": 696,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.003658,
+  "latency_s": 5.12,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

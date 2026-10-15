@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Helper to create a cube with applied dimensions\ndef create_cube(name, location, dimensions):\n    bpy.ops.mesh.primitive_cube_add(\n        size=1.0,\n        location=location\n    )\n    obj = bpy.context.active_object\n    obj.name = name\n    obj.dimensions = dimensions\n    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)\n    return obj\n\n# Table dimensions\ntable_width = 6.0\ntable_depth = 4.0\ntabletop_thickness = 0.35\nleg_height = 3.0\nleg_size = 0.45\n\n# Tabletop\ntabletop = create_cube(\n    \"Tabletop\",\n    (0.0, 0.0, leg_height + tabletop_thickness / 2.0),\n    (table_width, table_depth, tabletop_thickness)\n)\n\n# Bevel modifier on tabletop\nbevel = tabletop.modifiers.new(name=\"Tabletop Bevel\", type='BEVEL')\nbevel.width = 0.12\nbevel.segments = 1\nbevel.limit_method = 'ANGLE'\nbevel.angle_limit = 0.5\n\n# Four legs, inset slightly from tabletop edges\nx_offset = table_width / 2.0 - leg_size\ny_offset = table_depth / 2.0 - leg_size\nleg_z = leg_height / 2.0\n\ncreate_cube(\"Front Left Leg\", (-x_offset, -y_offset, leg_z), (leg_size, leg_size, leg_height))\ncreate_cube(\"Front Right Leg\", (x_offset, -y_offset, leg_z), (leg_size, leg_size, leg_height))\ncreate_cube(\"Back Left Leg\", (-x_offset, y_offset, leg_z), (leg_size, leg_size, leg_height))\ncreate_cube(\"Back Right Leg\", (x_offset, y_offset, leg_z), (leg_size, leg_size, leg_height))\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 149,
+  "completion_tokens": 664,
+  "reasoning_tokens": 227,
+  "cost_usd_est": 0.0008265999999999999,
+  "latency_s": 6.6,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

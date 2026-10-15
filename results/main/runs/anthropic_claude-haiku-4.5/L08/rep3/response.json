@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Matrix, Vector\nimport math\n\n# Clear existing mesh objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create the mug body (cylinder)\nbpy.ops.mesh.primitive_cylinder_add(\n    radius=0.8,\n    depth=2.0,\n    vertices=16,  # Keep low for face count\n    location=(0, 0, 1)\n)\nmug_body = bpy.context.active_object\nmug_body.name = \"MugBody\"\n\n# Remove the top face to make it open\nbpy.ops.object.mode_set(mode='EDIT')\nbm = bmesh.from_edit_mesh(mug_body.data)\n\n# Select top face\nfor face in bm.faces:\n    center = face.calc_center_median()\n    if center.z > 1.5:  # Top face\n        face.select = True\n    else:\n        face.select = False\n\n# Delete top face\nbpy.ops.mesh.delete(type='FACE')\nbmesh.update_edit_mesh(mug_body.data)\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Add Solidify modifier to make it hollow\nsolidify = mug_body.modifiers.new(name=\"Solidify\", type='SOLIDIFY')\nsolidify.thickness = 0.1\nsolidify.offset = 0\n\n# Create the handle (torus)\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=0.5,\n    minor_radius=0.15,\n    major_segments=12,\n    minor_segments=6,\n    location=(1.2, 0, 1)\n)\nhandle = bpy.context.active_object\nhandle.name = \"Handle\"\n\n# Rotate handle to be vertical and positioned correctly\nhandle.rotation_euler = (math.pi / 2, 0, 0)\nhandle.location = (1.1, 0, 1)\n\n# Delete half of the handle to make it a semi-circle\nbpy.ops.object.mode_set(mode='EDIT')\nbm = bmesh.from_edit_mesh(handle.data)\n\n# Select vertices on one side to delete\nfor vertex in bm.verts:\n    if vertex.co.y > 0.05:\n        vertex.select = True\n    else:\n        vertex.select = False\n\nbpy.ops.mesh.delete(type='VERT')\nbmesh.update_edit_mesh(handle.data)\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Join the objects\nbpy.context.view_layer.objects.active = mug_body\nmug_body.select_set(True)\nhandle.select_set(True)\nbpy.ops.object.join()\n\n# Ensure we're in object mode\nbpy.ops.object.mode_set(mode='OBJECT')\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 178,
+  "completion_tokens": 743,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.003893,
+  "latency_s": 5.91,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

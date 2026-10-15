@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Remove unused datablocks from the previous scene\nfor mesh in list(bpy.data.meshes):\n    if mesh.users == 0:\n        bpy.data.meshes.remove(mesh)\n\ndef create_cube(name, location, dimensions):\n    bpy.ops.mesh.primitive_cube_add(location=location)\n    obj = bpy.context.active_object\n    obj.name = name\n    obj.dimensions = dimensions\n    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)\n    return obj\n\n# Tabletop\ntabletop = create_cube(\n    \"Tabletop\",\n    (0.0, 0.0, 2.2),\n    (4.0, 2.4, 0.25)\n)\n\n# Low-poly bevel on the tabletop\nbevel = tabletop.modifiers.new(name=\"Tabletop Bevel\", type='BEVEL')\nbevel.width = 0.08\nbevel.segments = 1\nbevel.limit_method = 'ANGLE'\nbevel.angle_limit = 0.523599  # 30 degrees\n\n# Four square legs\nleg_width = 0.30\nleg_height = 2.1\nleg_x = 1.65\nleg_y = 0.85\nleg_z = leg_height / 2.0\n\nfor index, (x, y) in enumerate((\n    (-leg_x, -leg_y),\n    (-leg_x,  leg_y),\n    ( leg_x, -leg_y),\n    ( leg_x,  leg_y),\n), start=1):\n    create_cube(\n        f\"Leg_{index}\",\n        (x, y, leg_z),\n        (leg_width, leg_width, leg_height)\n    )\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 149,
+  "completion_tokens": 803,
+  "reasoning_tokens": 418,
+  "cost_usd_est": 0.0009934,
+  "latency_s": 8.52,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

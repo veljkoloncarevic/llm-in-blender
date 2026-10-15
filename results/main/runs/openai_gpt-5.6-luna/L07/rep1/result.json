@@ -1,0 +1,104 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.005,
+  "scene": {
+    "faces": 53,
+    "triangles": 126,
+    "vertices": 73,
+    "n_geometry_objects": 5,
+    "objects": [
+      {
+        "name": "Rocket_Body",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Rocket_Nose",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Rocket_Fin_1",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Rocket_Fin_2",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Rocket_Fin_3",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [],
+    "materials": [
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 0,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -0.699999988079071,
+      -0.8848651647567749,
+      -1.5
+    ],
+    "bbox_max": [
+      0.9900000095367432,
+      0.8848651647567749,
+      2.9000000953674316
+    ]
+  },
+  "render_time_s": 5.351,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

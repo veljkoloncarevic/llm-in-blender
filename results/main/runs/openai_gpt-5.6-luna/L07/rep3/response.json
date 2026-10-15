@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Rocket body\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=16,\n    radius=0.8,\n    depth=3.0,\n    location=(0.0, 0.0, 0.0)\n)\nbody = bpy.context.object\nbody.name = \"Rocket_Body\"\n\n# Nose cone\nbpy.ops.mesh.primitive_cone_add(\n    vertices=16,\n    radius1=0.8,\n    radius2=0.0,\n    depth=1.4,\n    location=(0.0, 0.0, 2.2)\n)\nnose = bpy.context.object\nnose.name = \"Rocket_Nose\"\n\n# Three evenly spaced fins\nfor i in range(3):\n    angle = math.radians(i * 120.0)\n    radial_distance = 0.8\n\n    x = radial_distance * math.cos(angle)\n    y = radial_distance * math.sin(angle)\n\n    bpy.ops.mesh.primitive_cube_add(\n        size=2.0,\n        location=(x, y, -1.0)\n    )\n    fin = bpy.context.object\n    fin.name = f\"Rocket_Fin_{i + 1}\"\n\n    # Local Y axis points radially outward; local X is tangential\n    fin.scale = (0.08, 0.325, 0.45)\n    fin.rotation_euler[2] = angle - math.pi / 2.0\n\n# Keep transforms as authored, with simple low-poly geometry\nbpy.context.view_layer.objects.active = body\nbody.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 156,
+  "completion_tokens": 890,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0010992,
+  "latency_s": 9.25,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.006,
+  "scene": {
+    "faces": 1280,
+    "triangles": 1280,
+    "vertices": 642,
+    "n_geometry_objects": 1,
+    "objects": [
+      {
+        "name": "Natural_Noise_Deformed_Rock",
+        "type": "MESH",
+        "modifiers": [
+          "DISPLACE",
+          "DISPLACE"
+        ],
+        "materials": [
+          "Weathered_Rock_Material"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "DISPLACE"
+    ],
+    "materials": [
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Weathered_Rock_Material",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.8799999952316284,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 1,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.4269884824752808,
+      -1.196843147277832,
+      -0.9129763841629028
+    ],
+    "bbox_max": [
+      1.4989233016967773,
+      1.1694713830947876,
+      0.9193991422653198
+    ]
+  },
+  "render_time_s": 6.331,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

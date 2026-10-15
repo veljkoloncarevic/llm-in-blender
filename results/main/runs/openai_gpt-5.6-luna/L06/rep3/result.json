@@ -1,0 +1,281 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.025,
+  "scene": {
+    "faces": 392,
+    "triangles": 1112,
+    "vertices": 600,
+    "n_geometry_objects": 22,
+    "objects": [
+      {
+        "name": "Rounded Die",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Ivory Die"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 1 Pip",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 6 Pip",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 6 Pip.001",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 6 Pip.002",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 6 Pip.003",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 6 Pip.004",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 6 Pip.005",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 2 Pip",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 2 Pip.001",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 5 Pip",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 5 Pip.001",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 5 Pip.002",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 5 Pip.003",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 5 Pip.004",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 3 Pip",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 3 Pip.001",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 3 Pip.002",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 4 Pip",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 4 Pip.001",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 4 Pip.002",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Face 4 Pip.003",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "BEVEL"
+    ],
+    "materials": [
+      {
+        "name": "Dark Pips",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Ivory Die",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 2,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.0505000352859497,
+      -1.0505000352859497,
+      -1.0505000352859497
+    ],
+    "bbox_max": [
+      1.0505000352859497,
+      1.0505000352859497,
+      1.0505000352859497
+    ]
+  },
+  "render_time_s": 6.33,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

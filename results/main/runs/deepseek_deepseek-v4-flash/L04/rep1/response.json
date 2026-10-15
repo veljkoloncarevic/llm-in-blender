@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove existing objects\nbpy.ops.object.mode_set(mode='OBJECT')\nbpy.ops.object.select_all(action='SELECT')\nif bpy.context.selected_objects:\n    bpy.ops.object.delete(use_global=False)\n\nparts = []\n\n# Base cylinder\nbpy.ops.mesh.primitive_cylinder_add(vertices=16, radius=0.6, depth=0.15, location=(0, 0, 0.075))\nparts.append(bpy.context.active_object)\n\n# Collar torus\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=0.42, minor_radius=0.05,\n    major_segments=16, minor_segments=8,\n    location=(0, 0, 0.28)\n)\nparts.append(bpy.context.active_object)\n\n# Tapered body (cone)\nbpy.ops.mesh.primitive_cone_add(\n    vertices=16, radius1=0.4, radius2=0.2, depth=0.8,\n    location=(0, 0, 0.15)\n)\nparts.append(bpy.context.active_object)\n\n# Head sphere\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=12, ring_count=8, radius=0.28,\n    location=(0, 0, 1.18)\n)\nparts.append(bpy.context.active_object)\n\n# Join all parts into a single object\nbpy.ops.object.select_all(action='DESELECT')\nfor obj in parts:\n    obj.select_set(True)\nbpy.context.view_layer.objects.active = parts[0]\nbpy.ops.object.join()\nbpy.context.active_object.name = \"ChessPawn\"\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 241,
+  "completion_tokens": 11128,
+  "reasoning_tokens": 10752,
+  "cost_usd_est": 0.014795000000000003,
+  "latency_s": 108.88,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

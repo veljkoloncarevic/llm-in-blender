@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# 1. Create base icosphere (subdivisions = 4 yields 5,120 faces, which is within the 2,000 - 60,000 range)\nbpy.ops.mesh.primitive_ico_sphere_add(\n    subdivisions=4,\n    radius=1.0,\n    location=(0, 0, 0)\n)\nrock = bpy.context.active_object\nrock.name = \"NaturalRock\"\n\n# Apply irregular non-uniform scale to the object to make it elongated/rock-like\nrock.scale = (1.2, 0.8, 1.6)\n\n# 2. Create a procedural noise texture for displacement\nnoise_texture = bpy.data.textures.new(name=\"RockNoise\", type='NOISE')\nnoise_texture.noise_scale = 0.8\nnoise_texture.noise_depth = 4\nnoise_texture.turbulence = 5.0\n\n# 3. Add a Displace modifier driven by the noise texture\ndisplace_mod = rock.modifiers.new(name=\"RockDisplace\", type='DISPLACE')\ndisplace_mod.texture = noise_texture\ndisplace_mod.strength = 0.35\ndisplace_mod.direction = 'NORMAL'\n\n# 4. Add a Subdivision Surface modifier for extra organic smoothness and density\nsubsurf_mod = rock.modifiers.new(name=\"RockSubsurf\", type='SUBSURF')\nsubsurf_mod.levels = 1\nsubsurf_mod.render_levels = 1\n\n# Optional: Set smooth shading for all faces\nfor poly in rock.data.polygons:\n    poly.use_smooth = True\n\n# Ensure the object is active and selected\nbpy.context.view_layer.objects.active = rock\nrock.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 172,
+  "completion_tokens": 448,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0011715999999999999,
+  "latency_s": 1.96,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

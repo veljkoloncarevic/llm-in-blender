@@ -1,0 +1,118 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.003,
+  "scene": {
+    "faces": 66,
+    "triangles": 252,
+    "vertices": 128,
+    "n_geometry_objects": 1,
+    "objects": [
+      {
+        "name": "Cylinder",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Rusty_Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [],
+    "materials": [
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Rusty_Metal",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 5,
+        "n_links": 4,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeMixShader",
+          "ShaderNodeOutputMaterial",
+          "ShaderNodeTexNoise"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeMixShader",
+          "ShaderNodeOutputMaterial",
+          "ShaderNodeTexNoise"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 1.0,
+            "Roughness": 0.30000001192092896,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          },
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 1.0,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 1,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.0,
+      -1.0,
+      -1.0
+    ],
+    "bbox_max": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "render_time_s": 7.565,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

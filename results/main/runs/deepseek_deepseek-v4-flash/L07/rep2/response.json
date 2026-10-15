@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\n\n# Ensure clean scene\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Parameters\nbody_radius = 0.5\nbody_height = 2.0\nnose_height = 1.5\nfin_thickness = 0.05\nfin_width = 0.4\nfin_height = 1.0\nfin_z_center = 1.0\n\n# Cylinder body\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=8,\n    radius=body_radius,\n    depth=body_height,\n    location=(0, 0, body_height / 2)\n)\n\n# Cone nose\nbpy.ops.mesh.primitive_cone_add(\n    vertices=8,\n    radius1=body_radius,\n    radius2=0,\n    depth=nose_height,\n    location=(0, 0, body_height + nose_height / 2)\n)\n\n# Three fins, 120\u00b0 apart\nfor i in range(3):\n    angle = i * 2 * math.pi / 3\n\n    bpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, 0))\n    fin = bpy.context.object\n    fin.scale = (fin_thickness, fin_width, fin_height)\n    fin.rotation_euler = (0, 0, angle)\n\n    dist = body_radius + fin_width / 2\n    fin.location = (\n        dist * (-math.sin(angle)),\n        dist * math.cos(angle),\n        fin_z_center\n    )\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 234,
+  "completion_tokens": 4617,
+  "reasoning_tokens": 4264,
+  "cost_usd_est": 0.0061974000000000005,
+  "latency_s": 49.92,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a torus (neon ring)\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=2.0,\n    minor_radius=0.3,\n    location=(0, 0, 1.5)\n)\ntorus = bpy.context.active_object\n\n# Create a material for the glowing cyan neon ring\nneon_material = bpy.data.materials.new(name=\"CyanNeon\")\nneon_material.use_nodes = True\nneon_material.shadow_method = 'NONE'\n\n# Clear default nodes\nneon_material.node_tree.nodes.clear()\n\n# Create shader nodes for emissive material\nnodes = neon_material.node_tree.nodes\nlinks = neon_material.node_tree.links\n\n# Add Principled BSDF\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\nprincipled.inputs['Base Color'].default_value = (0.0, 1.0, 1.0, 1.0)  # Cyan\nprincipled.inputs['Emission'].default_value = (0.0, 1.0, 1.0, 1.0)  # Cyan emission\nprincipled.inputs['Emission Strength'].default_value = 5.0\n\n# Add Material Output\noutput = nodes.new(type='ShaderNodeOutputMaterial')\nlinks.new(principled.outputs['BSDF'], output.inputs['Surface'])\n\n# Assign material to torus\ntorus.data.materials.append(neon_material)\n\n# Create a dark ground plane\nbpy.ops.mesh.primitive_plane_add(\n    size=10.0,\n    location=(0, 0, 0)\n)\nground = bpy.context.active_object\n\n# Create a dark material for the ground plane\nground_material = bpy.data.materials.new(name=\"DarkGround\")\nground_material.use_nodes = True\n\n# Clear default nodes\nground_material.node_tree.nodes.clear()\n\n# Create shader nodes for dark material\nground_nodes = ground_material.node_tree.nodes\nground_links = ground_material.node_tree.links\n\n# Add Principled BSDF\nground_principled = ground_nodes.new(type='ShaderNodeBsdfPrincipled')\nground_principled.inputs['Base Color'].default_value = (0.05, 0.05, 0.05, 1.0)  # Very dark gray\nground_principled.inputs['Roughness'].default_value = 0.8\n\n# Add Material Output\nground_output = ground_nodes.new(type='ShaderNodeOutputMaterial')\nground_links.new(ground_principled.outputs['BSDF'], ground_output.inputs['Surface'])\n\n# Assign material to ground plane\nground.data.materials.append(ground_material)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 160,
+  "completion_tokens": 756,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.00394,
+  "latency_s": 4.33,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

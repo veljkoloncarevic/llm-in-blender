@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\nfrom mathutils import noise\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Clean up orphan meshes\nfor mesh in list(bpy.data.meshes):\n    if mesh.users == 0:\n        bpy.data.meshes.remove(mesh)\n\n# Terrain parameters\nSUBDIV_X = 200\nSUBDIV_Y = 200\nSIZE = 60.0\nHEIGHT_SCALE = 4.0\n\n# Create a new mesh and object\nmesh = bpy.data.meshes.new(\"HillyTerrain\")\nobj = bpy.data.objects.new(\"HillyTerrain\", mesh)\nbpy.context.scene.collection.objects.link(obj)\n\n# Build a grid using bmesh\nbm = bmesh.new()\nbmesh.ops.create_grid(bm, x_segments=SUBDIV_X, y_segments=SUBDIV_Y, size=SIZE)\n\n# Displace vertices with a mix of noise octaves for rolling hills and detail\nfor v in bm.verts:\n    x = v.co.x\n    y = v.co.y\n\n    # Broad hills\n    n1 = noise.snoise(Vector((x * 0.03, y * 0.03, 0.0)))\n\n    # Medium-sized terrain features\n    n2 = noise.snoise(Vector((x * 0.08 + 10.0, y * 0.08 - 20.0, 0.0)))\n\n    # Finer details\n    n3 = noise.snoise(Vector((x * 0.25 + 100.0, y * 0.25 - 50.0, 0.0)))\n\n    v.co.z = n1 * HEIGHT_SCALE + n2 * HEIGHT_SCALE * 0.5 + n3 * HEIGHT_SCALE * 0.2\n\n# Write the bmesh into the mesh\nbm.to_mesh(mesh)\nbm.free()\n\n# Enable smooth shading for a natural terrain appearance\nfor poly in mesh.polygons:\n    poly.use_smooth = True\n\nmesh.update()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 252,
+  "completion_tokens": 4466,
+  "reasoning_tokens": 3988,
+  "cost_usd_est": 0.006006,
+  "latency_s": 25.07,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

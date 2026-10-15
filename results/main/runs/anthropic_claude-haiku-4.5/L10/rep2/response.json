@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Clear existing mesh objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create main house body (cube)\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 1))\nhouse_body = bpy.context.active_object\nhouse_body.name = \"HouseBody\"\n\n# Scale cube to be taller\nhouse_body.scale = (1, 1, 1.2)\nbpy.context.view_layer.objects.active = house_body\nbpy.ops.object.transform_apply(scale=True)\n\n# Create pyramid roof (4-sided cone)\nbpy.ops.mesh.primitive_cone_add(vertices=4, radius1=1.5, depth=1, location=(0, 0, 2.4))\nroof = bpy.context.active_object\nroof.name = \"Roof\"\n\n# Create door\nbpy.ops.mesh.primitive_cube_add(size=0.8, location=(0, 1.01, 0.6))\ndoor = bpy.context.active_object\ndoor.name = \"Door\"\ndoor.scale = (0.4, 0.1, 0.8)\nbpy.context.view_layer.objects.active = door\nbpy.ops.object.transform_apply(scale=True)\n\n# Create window (will be mirrored)\nbpy.ops.mesh.primitive_cube_add(size=0.4, location=(0.6, 1.01, 1.5))\nwindow = bpy.context.active_object\nwindow.name = \"Window\"\nwindow.scale = (0.5, 0.1, 0.5)\nbpy.context.view_layer.objects.active = window\nbpy.ops.object.transform_apply(scale=True)\n\n# Add Mirror modifier to window for symmetry\nbpy.context.view_layer.objects.active = window\nmirror_mod = window.modifiers.new(name=\"Mirror\", type='MIRROR')\nmirror_mod.use_axis[0] = True  # Mirror on X axis\n\n# Join door and windows into one object for easier management\nbpy.context.view_layer.objects.active = door\nbpy.ops.object.select_all(action='DESELECT')\ndoor.select_set(True)\nwindow.select_set(True)\nbpy.context.view_layer.objects.active = door\nbpy.ops.object.join()\ndoor.name = \"DoorAndWindows\"\n\n# Set object origins and ensure clean geometry\nfor obj in bpy.context.scene.objects:\n    if obj.type == 'MESH':\n        bpy.context.view_layer.objects.active = obj\n        obj.select_set(True)\n        bpy.ops.object.shade_smooth()\n        obj.select_set(False)\n\n# Verify face count by checking mesh data\ntotal_faces = 0\nfor obj in bpy.context.scene.objects:\n    if obj.type == 'MESH':\n        mesh = obj.data\n        total_faces += len(mesh.polygons)\n\nprint(f\"Total faces in scene: {total_faces}\")\n\n# Position all objects appropriately\nbpy.context.view_layer.objects.active = house_body\nhouse_body.location = (0, 0, 0)\nroof.location = (0, 0, 2.4)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 180,
+  "completion_tokens": 859,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004475,
+  "latency_s": 28.35,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

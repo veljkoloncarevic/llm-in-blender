@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Create the mug body as an open cylinder (open top, closed bottom)\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=32,\n    radius=1.0,\n    depth=1.5,\n    location=(0.0, 0.0, 0.75),\n    fill_type='NGON'\n)\nmug = bpy.context.active_object\nmug.name = \"Mug\"\n\n# Remove the top face so the cylinder is open at the top\nmesh = mug.data\nbm = bmesh.new()\nbm.from_mesh(mesh)\n\nfor f in list(bm.faces):\n    if all(v.co.z > 1.499 for v in f.verts):\n        bm.faces.remove(f)\n\nbm.to_mesh(mesh)\nbm.free()\n\n# Add a Solidify modifier to give the mug its wall thickness\nsolidify = mug.modifiers.new(name=\"Solidify\", type='SOLIDIFY')\nsolidify.thickness = 0.1\nsolidify.offset = -1  # thicken inward, keeping outer dimensions\n\n# Create the handle as a torus, rotated to stand vertically on the side\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=0.55,\n    minor_radius=0.12,\n    major_segments=32,\n    minor_segments=8,\n    location=(1.05, 0.0, 0.75),\n    rotation=(0.0, math.pi / 2.0, 0.0)\n)\nhandle = bpy.context.active_object\nhandle.name = \"Handle\"\n\n# The whole scene stays well below 3,000 faces\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 240,
+  "completion_tokens": 17209,
+  "reasoning_tokens": 16811,
+  "cost_usd_est": 0.022821479999999998,
+  "latency_s": 171.97,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

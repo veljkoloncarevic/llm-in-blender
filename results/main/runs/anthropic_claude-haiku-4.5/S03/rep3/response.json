@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Add Suzanne mesh\nbpy.ops.mesh.primitive_uv_sphere_add()\nbpy.ops.object.delete(use_global=False)\n\nbpy.ops.mesh.primitive_monkey_add(location=(0, 0, 0))\nsuzanne = bpy.context.active_object\n\n# Create a new material\nmat = bpy.data.materials.new(name=\"MarbleMaterial\")\nmat.use_nodes = True\n\n# Clear default nodes\nmat.node_tree.nodes.clear()\n\n# Create nodes\nnodes = mat.node_tree.nodes\nlinks = mat.node_tree.links\n\n# Add Principled BSDF\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\n\n# Add Material Output\noutput = nodes.new(type='ShaderNodeOutputMaterial')\n\n# Add Noise Texture\nnoise = nodes.new(type='ShaderNodeTexNoise')\nnoise.inputs['Detail'].default_value = 5.0\nnoise.inputs['Roughness'].default_value = 0.7\n\n# Add Color Ramp\ncolor_ramp = nodes.new(type='ShaderNodeValRamp')\ncolor_ramp.color_ramp.elements[0].color = (0.9, 0.9, 0.9, 1.0)  # Light gray/white\ncolor_ramp.color_ramp.elements[1].color = (0.3, 0.3, 0.3, 1.0)  # Dark gray\n\n# Add ColorRamp for RGB output\ncolor_ramp_rgb = nodes.new(type='ShaderNodeValRamp')\ncolor_ramp_rgb.color_ramp.elements[0].color = (1.0, 1.0, 1.0, 1.0)  # White\ncolor_ramp_rgb.color_ramp.elements[1].color = (0.7, 0.7, 0.7, 1.0)  # Light gray\n\n# Set Principled BSDF properties for marble\nprincipled.inputs['Roughness'].default_value = 0.2\nprincipled.inputs['Specular IOR'].default_value = 1.5\n\n# Connect nodes\n# Noise Fac output to Color Ramp Fac input\nlinks.new(noise.outputs['Fac'], color_ramp.inputs['Fac'])\n\n# Color Ramp Color output to Principled Base Color\nlinks.new(color_ramp.outputs['Color'], principled.inputs['Base Color'])\n\n# Principled BSDF to Material Output\nlinks.new(principled.outputs['BSDF'], output.inputs['Surface'])\n\n# Assign material to Suzanne\nsuzanne.data.materials.append(mat)\n\n# Add Coordinate and Mapping for better texture control\ncoord = nodes.new(type='ShaderNodeTexCoord')\nmapping = nodes.new(type='ShaderNodeMapping')\n\n# Connect Coordinate to Mapping to Noise\nlinks.new(coord.outputs['Generated'], mapping.inputs['Vector'])\nlinks.new(mapping.outputs['Vector'], noise.inputs['Vector'])\n\n# Set mapping scale for better marble pattern\nmapping.inputs['Scale'].default_value = (5.0, 5.0, 5.0)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 170,
+  "completion_tokens": 844,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.00439,
+  "latency_s": 5.57,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

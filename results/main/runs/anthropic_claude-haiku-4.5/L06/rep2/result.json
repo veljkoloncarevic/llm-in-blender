@@ -1,0 +1,227 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.018,
+  "scene": {
+    "faces": 308,
+    "triangles": 776,
+    "vertices": 432,
+    "n_geometry_objects": 22,
+    "objects": [
+      {
+        "name": "Die",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_0",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_1",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_2",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_3",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_4",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_5",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_6",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_7",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_8",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_9",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_10",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_11",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_12",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_13",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_14",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_15",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_16",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_17",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_18",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_19",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Pip_20",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "BEVEL"
+    ],
+    "materials": [
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 0,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.1099998950958252,
+      -1.1099998950958252,
+      -1.0724999904632568
+    ],
+    "bbox_max": [
+      1.1099998950958252,
+      1.1099998950958252,
+      1.0724999904632568
+    ]
+  },
+  "render_time_s": 6.066,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

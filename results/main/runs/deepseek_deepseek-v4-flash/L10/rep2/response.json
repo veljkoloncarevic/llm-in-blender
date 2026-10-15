@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Walls\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 1.5))\nwalls = bpy.context.active_object\nwalls.name = \"Walls\"\nwalls.scale = (2.0, 1.5, 1.5)\n\n# Roof (four-sided pyramid)\nbpy.ops.mesh.primitive_cone_add(vertices=4, radius=3.0, depth=2.5, location=(0, 0, 3.0))\nroof = bpy.context.active_object\nroof.name = \"Roof\"\nroof.rotation_euler = (0, 0, math.pi / 4)\n\n# Remove the closed bottom face of the cone so it's an open pyramid\nbm = bmesh.new()\nbm.from_mesh(roof.data)\nfaces_to_delete = [f for f in bm.faces if all(abs(v.co.z) < 1e-5 for v in f.verts)]\nfor f in faces_to_delete:\n    bm.faces.remove(f)\nbm.to_mesh(roof.data)\nbm.free()\n\ndef create_plane(name, verts_data, location):\n    mesh = bpy.data.meshes.new(name)\n    obj = bpy.data.objects.new(name, mesh)\n    bpy.context.collection.objects.link(obj)\n    obj.location = location\n\n    bm = bmesh.new()\n    verts = [bm.verts.new((x, y, z)) for (x, y, z) in verts_data]\n    bm.faces.new(verts)\n    bm.to_mesh(mesh)\n    bm.free()\n    return obj\n\nfront_y = 1.51\n\n# Door\ndoor_verts = [\n    (-0.6, 0.0, 0.0),\n    (-0.6, 0.0, 2.0),\n    (0.6, 0.0, 2.0),\n    (0.6, 0.0, 0.0),\n]\ndoor = create_plane(\"Door\", door_verts, (0, front_y, 0))\n\n# Window (left one, mirrored to create the right one)\nwin_w = 1.0\nwin_h = 1.0\nwin_x = -1.5\nwin_z = 1.7\nxmin = win_x - win_w / 2\nxmax = win_x + win_w / 2\nzmin = win_z - win_h / 2\nzmax = win_z + win_h / 2\nwindow_verts = [\n    (xmin, 0.0, zmin),\n    (xmin, 0.0, zmax),\n    (xmax, 0.0, zmax),\n    (xmax, 0.0, zmin),\n]\nwindow = create_plane(\"Window\", window_verts, (0, front_y, 0))\n\n# Mirror modifier to add the symmetric right window\nmirror = window.modifiers.new(name=\"WindowMirror\", type='MIRROR')\nmirror.axis[0] = True\nmirror.use_flip_normals = True\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 241,
+  "completion_tokens": 24667,
+  "reasoning_tokens": 23939,
+  "cost_usd_est": 0.032666480000000005,
+  "latency_s": 245.81,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

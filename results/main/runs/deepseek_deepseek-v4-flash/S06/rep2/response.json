@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\n\n# Remove all existing objects\nif bpy.context.object:\n    bpy.ops.object.mode_set(mode='OBJECT')\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a wooden plank mesh (4 x 0.4 x 0.1)\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 0))\nplank = bpy.context.active_object\nplank.scale = (2.0, 0.2, 0.05)\nbpy.ops.object.transform_apply(scale=True)\nplank.name = \"WoodenPlank\"\n\n# Build procedural wood material\nmat = bpy.data.materials.new(\"WoodMaterial\")\nmat.use_nodes = True\nntree = mat.node_tree\nntree.nodes.clear()\n\nnodes = ntree.nodes\nlinks = ntree.links\n\noutput = nodes.new(type='ShaderNodeOutputMaterial')\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\ntex_coord = nodes.new(type='ShaderNodeTexCoord')\nmapping = nodes.new(type='ShaderNodeMapping')\nnoise = nodes.new(type='ShaderNodeTexNoise')\nwave = nodes.new(type='ShaderNodeTexWave')\ncolor_ramp = nodes.new(type='ShaderNodeValToRGB')\nrgb_to_bw = nodes.new(type='ShaderNodeRGBToBW')\nbump = nodes.new(type='ShaderNodeBump')\n\n# Orient grain along the length of the plank\nmapping.rotation = (0.0, 0.0, math.pi / 2.0)\nmapping.inputs[\"Scale\"].default_value = (1.0, 1.0, 1.0)\n\nwave.wave_type = 'BANDS'\nwave.inputs[\"Scale\"].default_value = 5.0\nwave.inputs[\"Distortion\"].default_value = 2.0\n\nnoise.inputs[\"Scale\"].default_value = 3.0\nnoise.inputs[\"Detail\"].default_value = 2.0\nnoise.inputs[\"Roughness\"].default_value = 0.5\n\n# Brown wood color ramp\ncolor_ramp.color_ramp.elements[0].color = (0.15, 0.08, 0.04, 1.0)\ncolor_ramp.color_ramp.elements[0].position = 0.0\ncolor_ramp.color_ramp.elements[1].color = (0.7, 0.5, 0.3, 1.0)\ncolor_ramp.color_ramp.elements[1].position = 1.0\n\nbump.inputs[\"Strength\"].default_value = 0.2\nprincipled.inputs[\"Roughness\"].default_value = 0.6\n\n# Connections\nlinks.new(tex_coord.outputs[\"Object\"], mapping.inputs[\"Vector\"])\nlinks.new(mapping.outputs[\"Vector\"], noise.inputs[\"Vector\"])\nlinks.new(mapping.outputs[\"Vector\"], wave.inputs[\"Vector\"])\n\nlinks.new(noise.outputs[\"Fac\"], wave.inputs[\"Distortion\"])\n\nlinks.new(wave.outputs[\"Fac\"], color_ramp.inputs[\"Fac\"])\nlinks.new(color_ramp.outputs[\"Color\"], principled.inputs[\"Base Color\"])\n\nlinks.new(color_ramp.outputs[\"Color\"], rgb_to_bw.inputs[\"Color\"])\nlinks.new(rgb_to_bw.outputs[\"Val\"], bump.inputs[\"Height\"])\nlinks.new(bump.outputs[\"Normal\"], principled.inputs[\"Normal\"])\n\nlinks.new(principled.outputs[\"BSDF\"], output.inputs[\"Surface\"])\n\nplank.data.materials.append(mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 246,
+  "completion_tokens": 14283,
+  "reasoning_tokens": 13479,
+  "cost_usd_est": 0.018961800000000004,
+  "latency_s": 189.2,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

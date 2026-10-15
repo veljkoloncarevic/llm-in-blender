@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a cube (default size = 2)\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 0))\ncube = bpy.context.active_object\n\n# Create three materials: red, green, blue\nmat_red = bpy.data.materials.new(\"RedMaterial\")\nmat_red.use_nodes = True\nred_bsdf = mat_red.node_tree.nodes.get(\"Principled BSDF\")\nif red_bsdf:\n    red_bsdf.inputs[\"Base Color\"].default_value = (1, 0, 0, 1)\n\nmat_green = bpy.data.materials.new(\"GreenMaterial\")\nmat_green.use_nodes = True\ngreen_bsdf = mat_green.node_tree.nodes.get(\"Principled BSDF\")\nif green_bsdf:\n    green_bsdf.inputs[\"Base Color\"].default_value = (0, 1, 0, 1)\n\nmat_blue = bpy.data.materials.new(\"BlueMaterial\")\nmat_blue.use_nodes = True\nblue_bsdf = mat_blue.node_tree.nodes.get(\"Principled BSDF\")\nif blue_bsdf:\n    blue_bsdf.inputs[\"Base Color\"].default_value = (0, 0, 1, 1)\n\n# Append materials to the cube (creates material slots)\ncube.data.materials.append(mat_red)\ncube.data.materials.append(mat_green)\ncube.data.materials.append(mat_blue)\n\n# Assign material indices to faces based on their normal direction\nmesh = cube.data\nbm = bmesh.new()\nbm.from_mesh(mesh)\nfor face in bm.faces:\n    if abs(face.normal.z) > 0.5:      # top/bottom -> red\n        face.material_index = 0\n    elif abs(face.normal.x) > 0.5:   # left/right -> green\n        face.material_index = 1\n    else:                             # front/back -> blue\n        face.material_index = 2\nbm.to_mesh(mesh)\nbm.free()\n\n# Ensure mesh data is up to date\nmesh.update()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 224,
+  "completion_tokens": 3672,
+  "reasoning_tokens": 3171,
+  "cost_usd_est": 0.0049456000000000005,
+  "latency_s": 39.47,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

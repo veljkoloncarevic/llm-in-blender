@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\n\n# Make sure we're in Object Mode and remove all existing objects\nif bpy.context.active_object and bpy.context.active_object.mode != 'OBJECT':\n    bpy.ops.object.mode_set(mode='OBJECT')\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create a vertical wall from a plane\nbpy.ops.mesh.primitive_plane_add(size=4, enter_editmode=False, align='WORLD', location=(0, 0, 0))\nwall = bpy.context.active_object\nwall.name = \"Wall\"\nwall.rotation_euler = (math.radians(90), 0, 0)\nwall.scale = (2.0, 1.5, 1.0)  # 8 units wide, 6 units tall\n\n# Create the procedural brick material\nmat = bpy.data.materials.new(name=\"BrickMaterial\")\nmat.use_nodes = True\nntree = mat.node_tree\nnodes = ntree.nodes\nlinks = ntree.links\n\n# Clear default shader nodes\nnodes.clear()\n\n# Add required nodes\ntex_coord = nodes.new(type='ShaderNodeTexCoord')\nbrick = nodes.new(type='ShaderNodeTexBrick')\nbump = nodes.new(type='ShaderNodeBump')\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\noutput = nodes.new(type='ShaderNodeOutputMaterial')\n\n# Arrange nodes in the editor\ntex_coord.location = (-800, 0)\nbrick.location = (-500, 0)\nbump.location = (-200, -250)\nprincipled.location = (-200, 200)\noutput.location = (100, 0)\n\n# Configure the brick texture\nbrick.color1 = (0.45, 0.15, 0.08)   # Main brick colour\nbrick.color2 = (0.38, 0.12, 0.06)   # Brick colour variation\nbrick.mortar = (0.85, 0.83, 0.80)   # Mortar colour\nbrick.scale = 2.0\nbrick.mortar_size = 0.02\nbrick.mortar_smooth = 0.1\nbrick.bias = 0.0\nbrick.brick_width = 0.6\nbrick.row_height = 0.3\n\n# Configure the bump node\nbump.inputs['Strength'].default_value = 1.0\nbump.inputs['Distance'].default_value = 0.05\n\n# Build node connections\nlinks.new(tex_coord.outputs['Object'], brick.inputs['Vector'])\nlinks.new(brick.outputs['Color'], principled.inputs['Base Color'])\nlinks.new(brick.outputs['Fac'], bump.inputs['Height'])\nlinks.new(bump.outputs['Normal'], principled.inputs['Normal'])\nlinks.new(principled.outputs['BSDF'], output.inputs['Surface'])\n\n# Assign the material to the wall\nwall.data.materials.append(mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 229,
+  "completion_tokens": 8319,
+  "reasoning_tokens": 7656,
+  "cost_usd_est": 0.01108184,
+  "latency_s": 85.81,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Clear existing mesh objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a cylinder\nbpy.ops.mesh.primitive_cylinder_add(radius=1, depth=2, location=(0, 0, 0))\ncylinder = bpy.context.active_object\n\n# Create a new material\nmat = bpy.data.materials.new(name=\"RustyMetal\")\nmat.use_nodes = True\nmat.blend_method = 'BLEND'\n\n# Clear default nodes\nnodes = mat.node_tree.nodes\nnodes.clear()\n\n# Create shader nodes\nlinks = mat.node_tree.links\n\n# Main output node\noutput_node = nodes.new(type='ShaderNodeOutputMaterial')\noutput_node.location = (400, 0)\n\n# Mix Shader to blend metallic and rust\nmix_shader = nodes.new(type='ShaderNodeMixShader')\nmix_shader.location = (200, 0)\nlinks.new(mix_shader.outputs[0], output_node.inputs[0])\n\n# Principled BSDF for metallic surface (grey)\nmetallic_shader = nodes.new(type='ShaderNodeBsdfPrincipled')\nmetallic_shader.location = (0, 100)\nmetallic_shader.inputs['Base Color'].default_value = (0.5, 0.5, 0.5, 1.0)  # Grey\nmetallic_shader.inputs['Metallic'].default_value = 1.0\nmetallic_shader.inputs['Roughness'].default_value = 0.3\nlinks.new(metallic_shader.outputs[0], mix_shader.inputs[1])\n\n# Principled BSDF for rust surface (orange-brown)\nrust_shader = nodes.new(type='ShaderNodeBsdfPrincipled')\nrust_shader.location = (0, -100)\nrust_shader.inputs['Base Color'].default_value = (0.8, 0.4, 0.1, 1.0)  # Orange-brown\nrust_shader.inputs['Metallic'].default_value = 0.2\nrust_shader.inputs['Roughness'].default_value = 0.8\nlinks.new(rust_shader.outputs[0], mix_shader.inputs[2])\n\n# Noise texture as mask\nnoise_texture = nodes.new(type='ShaderNodeTexNoise')\nnoise_texture.location = (-200, 0)\nnoise_texture.inputs['Scale'].default_value = 15.0\nnoise_texture.inputs['Detail'].default_value = 5.0\nnoise_texture.inputs['Roughness'].default_value = 0.5\n\n# ColorRamp to control the mix factor\ncolor_ramp = nodes.new(type='ShaderNodeValRamp')\ncolor_ramp.location = (-50, 0)\ncolor_ramp.color_ramp.elements[0].position = 0.3\ncolor_ramp.color_ramp.elements[1].position = 0.7\nlinks.new(noise_texture.outputs['Fac'], color_ramp.inputs[0])\nlinks.new(color_ramp.outputs[0], mix_shader.inputs[0])\n\n# Add texture coordinates\ntex_coord = nodes.new(type='ShaderNodeTexCoord')\ntex_coord.location = (-400, 0)\nlinks.new(tex_coord.outputs[0], noise_texture.inputs[0])\n\n# Assign material to cylinder\ncylinder.data.materials.append(mat)\n\n# Smooth shading for better appearance\nbpy.context.view_layer.objects.active = cylinder\nbpy.ops.object.shade_smooth()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 168,
+  "completion_tokens": 924,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004788,
+  "latency_s": 6.09,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

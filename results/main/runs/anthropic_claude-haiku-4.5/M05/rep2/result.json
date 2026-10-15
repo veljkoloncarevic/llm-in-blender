@@ -1,0 +1,10 @@
+{
+  "status": "exec_error",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": false,
+  "error_type": "ValueError",
+  "error_message": "1-2 args execution context is supported",
+  "error_line": 93,
+  "traceback": "Traceback (most recent call last):\n  File \"/app/src/blender_harness.py\", line 60, in <module>\n    exec(compiled, {\"__name__\": \"__main__\", \"__file__\": \"llm_script.py\"})\n  File \"llm_script.py\", line 93, in <module>\n  File \"/opt/blender/4.2/scripts/modules/bpy/ops.py\", line 106, in __call__\n    C_exec, C_undo = _BPyOpsSubModOp._parse_args(args)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/blender/4.2/scripts/modules/bpy/ops.py\", line 60, in _parse_args\n    raise ValueError(\"1-2 args execution context is supported\")\nValueError: 1-2 args execution context is supported\n",
+  "exec_time_s": 0.017
+}

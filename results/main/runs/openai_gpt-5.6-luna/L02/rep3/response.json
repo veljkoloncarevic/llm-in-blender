@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Materials\ndef make_material(name, color):\n    mat = bpy.data.materials.new(name)\n    mat.diffuse_color = (*color, 1.0)\n    return mat\n\nsnow_mat = make_material(\"Snow\", (0.92, 0.97, 1.0))\nblack_mat = make_material(\"Coal\", (0.015, 0.012, 0.01))\norange_mat = make_material(\"Carrot\", (1.0, 0.22, 0.015))\n\ndef smooth_object(obj, material):\n    obj.data.materials.append(material)\n    for polygon in obj.data.polygons:\n        polygon.use_smooth = True\n    return obj\n\ndef add_sphere(name, radius, location, material):\n    bpy.ops.mesh.primitive_uv_sphere_add(\n        segments=24,\n        ring_count=12,\n        radius=radius,\n        location=location\n    )\n    obj = bpy.context.object\n    obj.name = name\n    return smooth_object(obj, material)\n\n# Three stacked snow spheres\nadd_sphere(\"Bottom Snowball\", 1.15, (0.0, 0.0, 1.15), snow_mat)\nadd_sphere(\"Middle Snowball\", 0.88, (0.0, 0.0, 2.72), snow_mat)\nadd_sphere(\"Head\", 0.66, (0.0, 0.0, 3.92), snow_mat)\n\n# Carrot nose, pointing toward negative Y\nbpy.ops.mesh.primitive_cone_add(\n    vertices=20,\n    radius1=0.22,\n    radius2=0.0,\n    depth=0.70,\n    location=(0.0, -0.86, 3.92),\n    rotation=(math.radians(90.0), 0.0, 0.0)\n)\nnose = bpy.context.object\nnose.name = \"Carrot Nose\"\nnose.data.materials.append(orange_mat)\nfor polygon in nose.data.polygons:\n    polygon.use_smooth = True\n\n# Coal eyes\nadd_sphere(\"Left Eye\", 0.105, (-0.255, -0.585, 4.10), black_mat)\nadd_sphere(\"Right Eye\", 0.105, (0.255, -0.585, 4.10), black_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 156,
+  "completion_tokens": 1061,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0013044,
+  "latency_s": 11.12,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\nfor datablocks in (bpy.data.meshes, bpy.data.curves, bpy.data.materials):\n    pass\n\n# Materials\nmug_mat = bpy.data.materials.new(\"Ceramic\")\nmug_mat.diffuse_color = (0.16, 0.055, 0.025, 1.0)\nmug_mat.roughness = 0.28\n\nhandle_mat = mug_mat\n\n# Mug body: open-top outer surface with a bottom face\nsegments = 48\nradius = 1.5\nheight = 2.4\nz_bottom = -height / 2\nz_top = height / 2\n\nverts = []\nfor z in (z_bottom, z_top):\n    for i in range(segments):\n        angle = 2.0 * math.pi * i / segments\n        verts.append((radius * math.cos(angle),\n                      radius * math.sin(angle),\n                      z))\n\nfaces = []\n\n# Outer cylindrical wall\nfor i in range(segments):\n    j = (i + 1) % segments\n    faces.append((i, j, segments + j, segments + i))\n\n# Bottom face, oriented downward\nfaces.append(tuple(reversed(range(segments))))\n\nmesh = bpy.data.meshes.new(\"MugBodyMesh\")\nmesh.from_pydata(verts, [], faces)\nmesh.update()\n\nmug = bpy.data.objects.new(\"CoffeeMug\", mesh)\nbpy.context.collection.objects.link(mug)\nmug.data.materials.append(mug_mat)\n\n# Smooth shading\nfor poly in mug.data.polygons:\n    poly.use_smooth = True\n\n# Create the hollow interior and wall thickness\nsolidify = mug.modifiers.new(\"Hollow ceramic wall\", 'SOLIDIFY')\nsolidify.thickness = 0.14\nsolidify.offset = -1.0\nsolidify.use_rim = True\n\n# Subtle edge softening\nbevel = mug.modifiers.new(\"Rounded ceramic edges\", 'BEVEL')\nbevel.width = 0.035\nbevel.segments = 2\nbevel.limit_method = 'ANGLE'\n\n# Handle: vertical torus intersecting the mug side\nbpy.ops.mesh.primitive_torus_add(\n    major_segments=32,\n    minor_segments=10,\n    mode='MAJOR_MINOR',\n    major_radius=0.92,\n    minor_radius=0.17,\n    location=(1.43, 0.0, 0.0),\n    rotation=(math.radians(90.0), 0.0, 0.0)\n)\n\nhandle = bpy.context.object\nhandle.name = \"MugHandle\"\nhandle.data.materials.append(handle_mat)\n\nfor poly in handle.data.polygons:\n    poly.use_smooth = True\n\nhandle_bevel = handle.modifiers.new(\"Handle edge softening\", 'BEVEL')\nhandle_bevel.width = 0.018\nhandle_bevel.segments = 2\nhandle_bevel.limit_method = 'ANGLE'\n\n# Keep the mug body selected and active\nbpy.context.view_layer.objects.active = mug\nmug.select_set(True)\nhandle.select_set(False)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 163,
+  "completion_tokens": 1500,
+  "reasoning_tokens": 813,
+  "cost_usd_est": 0.0018326,
+  "latency_s": -7.0,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

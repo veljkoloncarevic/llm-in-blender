@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects in the scene\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create a UV Sphere\nbpy.ops.mesh.primitive_uv_sphere_add(radius=2.0, segments=64, ring_count=32)\nsphere = bpy.active_object\nsphere.name = \"CarPaintSphere\"\n\n# Apply smooth shading to the sphere\nfor face in sphere.data.polygons:\n    face.use_smooth = True\n\n# Create a new material for the car paint effect\nmaterial = bpy.data.materials.new(name=\"DeepRedCarPaint\")\nmaterial.use_nodes = True\nnodes = material.node_tree.nodes\nlinks = material.node_tree.links\n\n# Clear default nodes to start fresh\nnodes.clear()\n\n# Create Output Node\nnode_output = nodes.new(type='ShaderNodeOutputMaterial')\nnode_output.location = (400, 0)\n\n# Create Principled BSDF Node\nnode_principled = nodes.new(type='ShaderNodeBsdfPrincipled')\nnode_principled.location = (0, 0)\n\n# Configure Principled BSDF parameters for deep red car paint\n# Deep red base color\nnode_principled.inputs['Base Color'].default_value = (0.05, 0.0, 0.0, 1.0)\n# Metallic factor around 0.5\nnode_principled.inputs['Metallic'].default_value = 0.5\n# Slight roughness for the base coat metallic flakes look\nnode_principled.inputs['Roughness'].default_value = 0.2\n# Strong clear coat (at least 0.8)\nnode_principled.inputs['Coat Weight'].default_value = 1.0\n# Clear coat roughness for a glossy, wet finish\nnode_principled.inputs['Coat Roughness'].default_value = 0.03\n# Index of refraction for the clear coat layer\nnode_principled.inputs['Coat IOR'].default_value = 1.5\n\n# Link Principled BSDF to Material Output\nlinks.new(node_principled.outputs['BSDF'], node_output.inputs['Surface'])\n\n# Assign the material to the sphere\nif sphere.data.materials:\n    sphere.data.materials[0] = material\nelse:\n    sphere.data.materials.append(material)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 150,
+  "completion_tokens": 553,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0014275,
+  "latency_s": 2.08,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

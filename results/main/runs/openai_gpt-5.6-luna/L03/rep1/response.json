@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Materials\ntrunk_mat = bpy.data.materials.new(\"Trunk Brown\")\ntrunk_mat.diffuse_color = (0.24, 0.09, 0.025, 1.0)\n\ncanopy_mat = bpy.data.materials.new(\"Canopy Green\")\ncanopy_mat.diffuse_color = (0.08, 0. thirty, 0.06, 1.0)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 153,
+  "completion_tokens": 621,
+  "reasoning_tokens": 498,
+  "cost_usd_est": 0.0007758,
+  "latency_s": 8.65,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

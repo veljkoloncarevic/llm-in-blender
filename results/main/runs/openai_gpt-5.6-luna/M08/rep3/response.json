@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Spring parameters\nturns = 8\ncoil_radius = 1.0\nheight = 4.0\nwire_radius = 0.12\nlongitudinal_segments = 256\nradial_segments = 16\n\n# Helix pitch per radian\npitch_per_radian = height / (turns * 2.0 * math.pi)\nframe_scale = math.sqrt(1.0 + pitch_per_radian * pitch_per_radian)\n\nvertices = []\nfaces = []\n\n# Build swept circular tube along the helix\nfor i in range(longitudinal_segments + 1):\n    t = (i / longitudinal_segments) * turns * 2.0 * math.pi\n    ct = math.cos(t)\n    st = math.sin(t)\n\n    center = (\n        coil_radius * ct,\n        coil_radius * st,\n        -height * 0.5 + pitch_per_radian * t\n    )\n\n    # Frenet frame for the helix\n    normal = (-ct, -st, 0.0)\n    tangent = (-st / frame_scale, ct / frame_scale, pitch_per_radian / frame_scale)\n    binormal = (\n        tangent[1] * normal[2] - tangent[2] * normal[1],\n        tangent[2] * normal[0] - tangent[0] * normal[2],\n        tangent[0] * normal[1] - tangent[1] * normal[0],\n    )\n\n    for j in range(radial_segments):\n        a = (j / radial_segments) * 2.0 * math.pi\n        ca = math.cos(a)\n        sa = math.sin(a)\n\n        vertices.append((\n            center[0] + wire_radius * (normal[0] * ca + binormal[0] * sa),\n            center[1] + wire_radius * (normal[1] * ca + binormal[1] * sa),\n            center[2] + wire_radius * (normal[2] * ca + binormal[2] * sa),\n        ))\n\n# Connect tube rings\nfor i in range(longitudinal_segments):\n    ring_a = i * radial_segments\n    ring_b = (i + 1) * radial_segments\n\n    for j in range(radial_segments):\n        nj = (j + 1) % radial_segments\n        faces.append((\n            ring_a + j,\n            ring_a + nj,\n            ring_b + nj,\n            ring_b + j,\n        ))\n\n# End caps\nstart_ring = list(range(radial_segments - 1, -1, -1))\nend_base = longitudinal_segments * radial_segments\nend_ring = [end_base + j for j in range(radial_segments)]\n\nfaces.append(tuple(start_ring))\nfaces.append(tuple(end_ring))\n\n# Create mesh and object\nmesh = bpy.data.meshes.new(\"CoilSpringMesh\")\nmesh.from_pydata(vertices, [], faces)\nmesh.update()\n\nspring = bpy.data.objects.new(\"CoilSpring\", mesh)\nbpy.context.collection.objects.link(spring)\n\n# Smooth shading\nfor polygon in mesh.polygons:\n    polygon.use_smooth = True\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 164,
+  "completion_tokens": 1207,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0014811999999999998,
+  "latency_s": 32.9,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

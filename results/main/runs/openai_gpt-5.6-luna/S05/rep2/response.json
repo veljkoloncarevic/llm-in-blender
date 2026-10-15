@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Dark ground plane\nbpy.ops.mesh.primitive_plane_add(size=20.0, location=(0.0, 0.0, 0.0))\nground = bpy.context.object\nground.name = \"Dark Ground\"\n\nground_mat = bpy.data.materials.new(\"Dark Ground Material\")\nground_mat.use_nodes = True\nground_nodes = ground_mat.node_tree.nodes\nground_links = ground_mat.node_tree.links\nground_nodes.clear()\n\nground_output = ground_nodes.new(\"ShaderNodeOutputMaterial\")\nground_output.location = (300, 0)\n\nground_shader = ground_nodes.new(\"ShaderNodeBsdfPrincipled\")\nground_shader.location = (0, 0)\nground_shader.inputs[\"Base Color\"].default_value = (0.008, 0.012, 0.018, 1.0)\nground_shader.inputs[\"Roughness\"].default_value = 0.82\nground_shader.inputs[\"Metallic\"].default_value = 0.05\n\nground_links.new(ground_shader.outputs[\"BSDF\"], ground_output.inputs[\"Surface\"])\nground.data.materials.append(ground_mat)\n\n# Cyan neon torus\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=2.0,\n    minor_radius=0.14,\n    major_segments=96,\n    minor_segments=24,\n    location=(0.0, 0.0, 0.45)\n)\ntorus = bpy.context.object\ntorus.name = \"Cyan Neon Ring\"\n\nfor polygon in torus.data.polygons:\n    polygon.use_smooth = True\n\nneon_mat = bpy.data.materials.new(\"Cyan Neon Emission\")\nneon_mat.use_nodes = True\nneon_nodes = neon_mat.node_tree.nodes\nneon_links = neon_mat.node_tree.links\nneon_nodes.clear()\n\nneon_output = neon_nodes.new(\"ShaderNodeOutputMaterial\")\nneon_output.location = (320, 0)\n\nemission = neon_nodes.new(\"ShaderNodeEmission\")\nemission.location = (0, 0)\nemission.inputs[\"Color\"].default_value = (0.0, 1.0, 1.0, 1.0)\nemission.inputs[\"Strength\"].default_value = 10.0\n\nneon_links.new(emission.outputs[\"Emission\"], neon_output.inputs[\"Surface\"])\ntorus.data.materials.append(neon_mat)\n\n# Set viewport display colors for clear material preview visibility\nground.color = (0.008, 0.012, 0.018, 1.0)\ntorus.color = (0.0, 1.0, 1.0, 1.0)\n\n# Dark world background\nworld = bpy.context.scene.world\nif world is None:\n    world = bpy.data.worlds.new(\"Dark World\")\n    bpy.context.scene.world = world\n\nworld.use_nodes = True\nworld_nodes = world.node_tree.nodes\nworld_background = world_nodes.get(\"Background\")\nif world_background:\n    world_background.inputs[\"Color\"].default_value = (0.001, 0.003, 0.006, 1.0)\n    world_background.inputs[\"Strength\"].default_value = 0.05\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 145,
+  "completion_tokens": 1097,
+  "reasoning_tokens": 410,
+  "cost_usd_est": 0.0013453999999999999,
+  "latency_s": 10.09,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

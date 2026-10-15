@@ -1,0 +1,128 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.004,
+  "scene": {
+    "faces": 674,
+    "triangles": 1532,
+    "vertices": 768,
+    "n_geometry_objects": 1,
+    "objects": [
+      {
+        "name": "Rusty Metal Cylinder",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Rusty Metal"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "BEVEL"
+    ],
+    "materials": [
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Rusty Metal",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 8,
+        "n_links": 9,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeBump",
+          "ShaderNodeMixShader",
+          "ShaderNodeOutputMaterial",
+          "ShaderNodeTexCoord",
+          "ShaderNodeTexNoise",
+          "ShaderNodeValToRGB"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeBump",
+          "ShaderNodeMixShader",
+          "ShaderNodeOutputMaterial",
+          "ShaderNodeTexCoord",
+          "ShaderNodeTexNoise",
+          "ShaderNodeValToRGB"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.8799999952316284,
+            "Roughness": 0.2800000011920929,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          },
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.07999999821186066,
+            "Roughness": 0.8600000143051147,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 1,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.0,
+      -1.0,
+      -1.5
+    ],
+    "bbox_max": [
+      1.0,
+      1.0,
+      1.5
+    ]
+  },
+  "render_time_s": 8.964,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

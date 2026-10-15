@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Parameters for the coil spring\nturns = 8\nradius = 1.0\nheight = 4.0\nwire_radius = 0.1\nresolution_turns = 32  # Segments per turn (vertices along the helix path)\nresolution_wire = 12   # Segments for the circular cross-section of the wire\n\ntotal_path_verts = turns * resolution_turns\n\n# Create curve data for the helix\ncurve_data = bpy.data.curves.new('SpringCurve', type='CURVE')\ncurve_data.dimensions = '3D'\ncurve_data.resolution_u = resolution_turns\n\nspline = curve_data.splines.new(type='POLY')\nspline.points.add(total_path_verts - 1)\n\n# Generate helix coordinates\nfor i in range(total_path_verts):\n    t = i / (resolution_turns - 1)  # goes from 0 to turns\n    angle = t * 2.0 * math.pi * (turns / (turns if resolution_turns == 0 else 1)) # Wait, let's do it precisely:\n    \n# Let's rewrite the point loop correctly:\n# We want 'turns' full rotations over the height.\n# i goes from 0 to total_path_verts - 1.\n# max t = turns.\nfor i in range(total_path_verts):\n    fraction = i / resolution_turns\n    angle = fraction * 2.0 * math.pi\n    x = radius * math.cos(angle)\n    y = radius * math.sin(angle)\n    z = (i / total_path_verts) * height\n    \n    # Set coordinates (w = 1.0 for homogeneous)\n    spline.points[i].co = (x, y, z, 1.0)\n\n# Set up bevel for the curve to make it a swept tube (circular wire cross-section)\ncurve_data.bevel_depth = wire_radius\ncurve_data.bevel_resolution = resolution_wire\ncurve_data.fill_mode = 'FULL'\n\n# Create object from curve\ncurve_obj = bpy.data.objects.new('CoilSpring', curve_data)\nbpy.context.collection.objects.link(curve_obj)\n\n# Convert to mesh to ensure exact face count and structure\nbpy.context.view_layer.objects.active = curve_obj\ncurve_obj.select_set(True)\nbpy.ops.object.convert(target='MESH')\n\n# Verify mesh and face count (should be well within 2,000 to 60,000 range)\n# total_path_verts * resolution_wire * 2 approximately\nmesh = curve_obj.data\nprint(f\"Spring generated with {len(mesh.polygons)} faces and {len(mesh.vertices)} vertices.\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 165,
+  "completion_tokens": 691,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.001777,
+  "latency_s": 2.69,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

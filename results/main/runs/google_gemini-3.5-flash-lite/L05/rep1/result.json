@@ -1,0 +1,10 @@
+{
+  "status": "exec_error",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": false,
+  "error_type": "ValueError",
+  "error_message": "Converting py args to operator properties: sequence expected at dimension 1, not 'int'",
+  "error_line": 89,
+  "traceback": "Traceback (most recent call last):\n  File \"/app/src/blender_harness.py\", line 60, in <module>\n    exec(compiled, {\"__name__\": \"__main__\", \"__file__\": \"llm_script.py\"})\n  File \"llm_script.py\", line 89, in <module>\n  File \"/opt/blender/4.2/scripts/modules/bpy/ops.py\", line 109, in __call__\n    ret = _op_call(self.idname_py(), kw)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Converting py args to operator properties: sequence expected at dimension 1, not 'int'\n",
+  "exec_time_s": 0.012
+}

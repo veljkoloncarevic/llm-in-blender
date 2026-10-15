@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\nimport random\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create icosphere with 4 subdivisions\nbpy.ops.mesh.primitive_uv_sphere_add(\n    radius=1,\n    location=(0, 0, 0)\n)\nsphere = bpy.context.active_object\nsphere.name = \"Rock\"\n\n# Apply non-uniform scale for irregular shape\nsphere.scale = (\n    random.uniform(0.8, 1.3),\n    random.uniform(0.7, 1.2),\n    random.uniform(0.9, 1.4)\n)\nbpy.context.view_layer.objects.active = sphere\nbpy.ops.object.transform_apply(scale=True)\n\n# Subdivide the mesh to get more geometry (4+ subdivisions)\nbpy.ops.object.mode_set(mode='EDIT')\nbpy.ops.mesh.select_all(action='SELECT')\nfor _ in range(4):\n    bpy.ops.mesh.subdivide()\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Create a noise texture for displacement\nnoise_texture = bpy.data.textures.new(\"RockNoise\", type='CLOUDS')\nnoise_texture.cloud_type = 'COLOR'\nnoise_texture.noise_scale = 2.5\nnoise_texture.noise_basis = 'PERLIN'\n\n# Create material and add texture\nmaterial = bpy.data.materials.new(\"RockMaterial\")\nmaterial.use_nodes = True\nbsdf = material.node_tree.nodes[\"Principled BSDF\"]\nbsdf.inputs['Base Color'].default_value = (0.4, 0.35, 0.3, 1.0)\nbsdf.inputs['Roughness'].default_value = 0.8\n\nsphere.data.materials.append(material)\n\n# Add Displace modifier with noise texture\ndisplace_mod = sphere.modifiers.new(name=\"DisplaceRock\", type='DISPLACE')\ndisplace_mod.texture = noise_texture\ndisplace_mod.strength = 0.15\ndisplace_mod.mid_level = 0.5\n\n# Add some additional deformation with a second displacement\nnoise_texture2 = bpy.data.textures.new(\"RockNoise2\", type='CLOUDS')\nnoise_texture2.cloud_type = 'COLOR'\nnoise_texture2.noise_scale = 5.0\nnoise_texture2.noise_basis = 'PERLIN'\n\ndisplace_mod2 = sphere.modifiers.new(name=\"DisplaceRock2\", type='DISPLACE')\ndisplace_mod2.texture = noise_texture2\ndisplace_mod2.strength = 0.08\ndisplace_mod2.mid_level = 0.5\n\n# Apply a smooth modifier for more natural look\nsmooth_mod = sphere.modifiers.new(name=\"Smooth\", type='SMOOTH')\nsmooth_mod.factor = 0.3\nsmooth_mod.iterations = 2\n\n# Check face count\nbpy.ops.object.shade_smooth()\nsphere.select_set(True)\nbpy.context.view_layer.objects.active = sphere\n\n# Get face count after all modifiers\nbpy.ops.object.mode_set(mode='OBJECT')\nface_count = len(sphere.data.polygons)\n\nprint(f\"Rock created with {face_count} faces\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 188,
+  "completion_tokens": 876,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004568,
+  "latency_s": 6.15,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

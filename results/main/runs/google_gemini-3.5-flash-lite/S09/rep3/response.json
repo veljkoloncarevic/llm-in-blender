@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects in the scene\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create a UV Sphere\nbpy.ops.mesh.primitive_uv_sphere_add(\n    radius=2.0, \n    segments=64, \n    ring_count=32, \n    location=(0, 0, 0)\n)\nsphere = bpy.active_object\nsphere.name = \"CarPaintSphere\"\n\n# Apply smooth shading to the sphere\nfor face in sphere.data.polygons:\n    face.use_smooth = True\n\n# Create a new material for the deep red car paint\ncar_paint_mat = bpy.data.materials.new(name=\"DeepRedCarPaint\")\ncar_paint_mat.use_nodes = True\nnodes = car_paint_mat.node_tree.nodes\nlinks = car_paint_mat.node_tree.links\n\n# Clear default nodes\nnodes.clear()\n\n# Add Principled BSDF node\nprincipled_node = nodes.new(type='ShaderNodeBsdfPrincipled')\nprincipled_node.location = (0, 0)\n\n# Configure Car Paint properties\n# Deep Red Base Color\nprincipled_node.inputs['Base Color'].default_value = (0.18, 0.005, 0.008, 1.0)\n\n# Metallic (around 0.5)\nprincipled_node.inputs['Metallic'].default_value = 0.5\n\n# Roughness (low roughness for a shiny, polished car paint look)\nprincipled_node.inputs['Roughness'].default_value = 0.15\n\n# Strong Clear Coat (at least 0.8)\nprincipled_node.inputs['Coat Weight'].default_value = 1.0\nprincipled_node.inputs['Coat Roughness'].default_value = 0.03\nprincipled_node.inputs['Coat IOR'].default_value = 1.5\n\n# Add Material Output node\noutput_node = nodes.new(type='ShaderNodeOutputMaterial')\noutput_node.location = (300, 0)\n\n# Link Principled BSDF to Material Output\nlinks.new(principled_node.outputs['BSDF'], output_node.inputs['Surface'])\n\n# Assign material to the sphere\nif sphere.data.materials:\n    sphere.data.materials[0] = car_paint_mat\nelse:\n    sphere.data.materials.append(car_paint_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 150,
+  "completion_tokens": 581,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0014975,
+  "latency_s": 24.18,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

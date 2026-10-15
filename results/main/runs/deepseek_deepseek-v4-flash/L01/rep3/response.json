@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects and orphan meshes\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\nfor mesh in list(bpy.data.meshes):\n    if mesh.users == 0:\n        bpy.data.meshes.remove(mesh)\n\n# Create tabletop: 2m x 1m x 0.1m, centered at z=1.0\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 1.0))\ntabletop = bpy.context.object\ntabletop.name = \"Tabletop\"\ntabletop.scale = (1.0, 0.5, 0.05)\n\n# Create four legs: each 0.1m x 0.1m x 1.0m, at table corners\nleg_positions = [\n    (0.9, 0.45),\n    (0.9, -0.45),\n    (-0.9, 0.45),\n    (-0.9, -0.45),\n]\nfor i, (x, y) in enumerate(leg_positions):\n    bpy.ops.mesh.primitive_cube_add(size=1, location=(x, y, 0.5))\n    leg = bpy.context.object\n    leg.name = f\"Leg_{i+1}\"\n    leg.scale = (0.1, 0.1, 1.0)\n\n# Add a low-segment bevel modifier to the tabletop\nbevel_mod = tabletop.modifiers.new(name=\"Bevel\", type='BEVEL')\nbevel_mod.width = 0.02\nbevel_mod.segments = 1\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 229,
+  "completion_tokens": 3479,
+  "reasoning_tokens": 3103,
+  "cost_usd_est": 0.004693040000000001,
+  "latency_s": 37.64,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

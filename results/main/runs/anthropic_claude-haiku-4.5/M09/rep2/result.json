@@ -1,0 +1,10 @@
+{
+  "status": "exec_error",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": false,
+  "error_type": "TypeError",
+  "error_message": "bpy_struct: item.attr = val: enum \"PERLIN\" not found in ('BLENDER_ORIGINAL', 'ORIGINAL_PERLIN', 'IMPROVED_PERLIN', 'VORONOI_F1', 'VORONOI_F2', 'VORONOI_F3', 'VORONOI_F4', 'VORONOI_F2_F1', 'VORONOI_CRACKLE', 'CELL_NOISE')",
+  "error_line": 38,
+  "traceback": "Traceback (most recent call last):\n  File \"/app/src/blender_harness.py\", line 60, in <module>\n    exec(compiled, {\"__name__\": \"__main__\", \"__file__\": \"llm_script.py\"})\n  File \"llm_script.py\", line 38, in <module>\nTypeError: bpy_struct: item.attr = val: enum \"PERLIN\" not found in ('BLENDER_ORIGINAL', 'ORIGINAL_PERLIN', 'IMPROVED_PERLIN', 'VORONOI_F1', 'VORONOI_F2', 'VORONOI_F3', 'VORONOI_F4', 'VORONOI_F2_F1', 'VORONOI_CRACKLE', 'CELL_NOISE')\n",
+  "exec_time_s": 0.377
+}

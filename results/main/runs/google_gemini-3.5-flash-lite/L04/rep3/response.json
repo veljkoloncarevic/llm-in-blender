@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects in the scene\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\ndef create_pawn():\n    # 1. Wide Cylinder Base\n    bpy.ops.mesh.primitive_cylinder_add(\n        radius=1.2,\n        depth=0.3,\n        vertices=32,\n        location=(0, 0, 0.15)\n    )\n    base = bpy.context.active_object\n    base.name = \"Pawn_Base\"\n    \n    # 2. Torus Collar\n    bpy.ops.mesh.primitive_torus_add(\n        major_radius=0.9,\n        minor_radius=0.12,\n        major_segments=32,\n        minor_segments=16,\n        location=(0, 0, 0.35)\n    )\n    collar = bpy.context.active_object\n    collar.name = \"Pawn_Collar\"\n    \n    # 3. Tapered Cylinder Body\n    # Using a cone with a flat top (or adjusted radii)\n    bpy.ops.mesh.primitive_cone_add(\n        radius1=0.75,\n        radius2=0.35,\n        depth=1.6,\n        vertices=32,\n        location=(0, 0, 1.2)\n    )\n    body = bpy.context.active_object\n    body.name = \"Pawn_Body\"\n    \n    # 4. Sphere Head\n    bpy.ops.mesh.primitive_uv_sphere_add(\n        radius=0.55,\n        segments=32,\n        ring_count=16,\n        location=(0, 0, 2.3)\n    )\n    head = bpy.context.active_object\n    head.name = \"Pawn_Head\"\n    \n    # Optional: Join them into a single mesh to keep the scene clean and unified\n    bpy.ops.object.select_all(action='DESELECT')\n    base.select_set(True)\n    collar.select_set(True)\n    body.select_set(True)\n    head.select_set(True)\n    \n    bpy.context.view_layer.objects.active = base\n    bpy.ops.object.join()\n    \n    # Rename the combined object\n    base.name = \"Chess_Pawn\"\n    \n    # Smooth shading for a polished look\n    bpy.ops.object.shade_smooth()\n\ncreate_pawn()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 160,
+  "completion_tokens": 608,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.001568,
+  "latency_s": 1.84,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

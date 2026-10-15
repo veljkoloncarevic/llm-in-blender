@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Material\nwood = bpy.data.materials.new(\"Warm Wood\")\nwood.diffuse_color = (0. thirty if False else 0.32, 0.12, 0.045, 1.0)\nwood.roughness = 0.8\n\ndef make_cube(name, location, dimensions, bevel=0.04):\n    bpy.ops.mesh.primitive_cube_add(location=location)\n    obj = bpy.context.object\n    obj.name = name\n    obj.dimensions = dimensions\n    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)\n    obj.data.materials.append(wood)\n\n    if bevel > 0:\n        bevel_mod = obj.modifiers.new(\"Soft Wood Edges\", 'BEVEL')\n        bevel_mod.width = bevel\n        bevel_mod.segments = 1\n        bevel_mod.limit_method = 'ANGLE'\n\n    return obj\n\n# One source post, duplicated across the fence by an Array modifier\npost = make_cube(\n    \"Fence Post\",\n    location=(0.0, 0.0, 1.25),\n    dimensions=(0.24, 0.24, 2.5),\n    bevel=0.045\n)\n\narray_mod = post.modifiers.new(\"Eight Fence Posts\", 'ARRAY')\narray_mod.count = 8\narray_mod.use_relative_offset = False\narray_mod.use_constant_offset = True\narray_mod.constant_offset_displace = (1.35, 0.0, 0.0)\n\n# Horizontal rails connecting the posts\nrail_length = 1.35 * 7 + 0.24\nmake_cube(\n    \"Lower Horizontal Rail\",\n    location=(1.35 * 3.5, 0.0, 0.78),\n    dimensions=(rail_length, 0.16, 0.18),\n    bevel=0.035\n)\n\nmake_cube(\n    \"Upper Horizontal Rail\",\n    location=(1.35 * 3.5, 0.0, 1.72),\n    dimensions=(rail_length, 0.16, 0.18),\n    bevel=0.035\n)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 154,
+  "completion_tokens": 994,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0012235999999999998,
+  "latency_s": 10.71,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

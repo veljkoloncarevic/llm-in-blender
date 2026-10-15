@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# 1. Create a dark ground plane\nbpy.ops.mesh.primitive_plane_size = 10.0\nbpy.ops.mesh.primitive_plane_add(size=20.0, location=(0, 0, 0))\nground_obj = bpy.context.active_object\nground_obj.name = \"GroundPlane\"\n\n# Create dark matte material for the ground\nground_mat = bpy.data.materials.new(name=\"GroundMaterial\")\nground_mat.use_nodes = True\nground_nodes = ground_mat.node_tree.nodes\nground_nodes.clear()\n\n# Add Principled BSDF and Material Output\nground_bsdf = ground_nodes.ShaderNodeBsdfPrincipled(name=\"Principled BSDF\")\nground_bsdf.inputs['Base Color'].default_value = (0.02, 0.02, 0.02, 1.0)\nground_bsdf.inputs['Roughness'].default_value = 0.4\n\nground_out = ground_nodes.ShaderNodeOutputMaterial(name=\"Material Output\")\nground_mat.node_tree.links.new(ground_bsdf.outputs['BSDF'], ground_out.inputs['Surface'])\nground_obj.data.materials.append(ground_mat)\n\n\n# 2. Create the neon torus ring\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=2.0,\n    minor_radius=0.15,\n    major_segments=64,\n    minor_segments=32,\n    location=(0, 0, 1.5),\n    rotation=(1.5708, 0, 0) # Rotate to stand vertically\n)\nring_obj = bpy.context.active_object\nring_obj.name = \"NeonRing\"\n\n# Apply smooth shading to torus\nfor face in ring_obj.data.polygons:\n    face.use_smooth = True\n\n# Create glowing cyan emission material\nring_mat = bpy.data.materials.new(name=\"NeonCyanMaterial\")\nring_mat.use_nodes = True\nring_nodes = ring_mat.node_tree.nodes\nring_nodes.clear()\n\n# Add Emission shader\nemission_node = ring_nodes.ShaderNodeEmission(name=\"Emission\")\nemission_node.inputs['Color'].default_value = (0.0, 1.0, 1.0, 1.0) # Cyan\nemission_node.inputs['Strength'].default_value = 15.0 # Greater than 5\n\nring_out = ring_nodes.ShaderNodeOutputMaterial(name=\"Material Output\")\nring_mat.node_tree.links.new(emission_node.outputs['Emission'], ring_out.inputs['Surface'])\nring_obj.data.materials.append(ring_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 140,
+  "completion_tokens": 684,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.001752,
+  "latency_s": 2.31,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

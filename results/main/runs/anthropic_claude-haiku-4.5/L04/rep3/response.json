@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Clear all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a material for the pawn\nmat = bpy.data.materials.new(name=\"PawnMaterial\")\nmat.use_nodes = True\nmat.node_tree.nodes[\"Principled BSDF\"].inputs[0].default_value = (0.9, 0.9, 0.9, 1.0)\n\ndef create_pawn():\n    \"\"\"Create a chess pawn from primitives\"\"\"\n    \n    # 1. Base - Wide cylinder\n    bpy.ops.mesh.primitive_cylinder_add(\n        radius=0.8,\n        depth=0.3,\n        vertices=16,\n        location=(0, 0, 0.15)\n    )\n    base = bpy.context.active_object\n    base.name = \"Pawn_Base\"\n    base.data.materials.append(mat)\n    \n    # 2. Collar - Torus\n    bpy.ops.mesh.primitive_torus_add(\n        major_radius=0.6,\n        minor_radius=0.15,\n        major_segments=12,\n        minor_segments=8,\n        location=(0, 0, 0.5)\n    )\n    collar = bpy.context.active_object\n    collar.name = \"Pawn_Collar\"\n    collar.data.materials.append(mat)\n    \n    # 3. Body - Tapered cylinder (using cone with appropriate parameters)\n    bpy.ops.mesh.primitive_cone_add(\n        radius1=0.5,\n        radius2=0.25,\n        depth=1.2,\n        vertices=12,\n        location=(0, 0, 1.1)\n    )\n    body = bpy.context.active_object\n    body.name = \"Pawn_Body\"\n    body.data.materials.append(mat)\n    \n    # 4. Head - Sphere\n    bpy.ops.mesh.primitive_uv_sphere_add(\n        radius=0.35,\n        segments=10,\n        ring_count=8,\n        location=(0, 0, 2.0)\n    )\n    head = bpy.context.active_object\n    head.name = \"Pawn_Head\"\n    head.data.materials.append(mat)\n    \n    # Join all objects into one mesh\n    bpy.context.view_layer.objects.active = base\n    base.select_set(True)\n    collar.select_set(True)\n    body.select_set(True)\n    head.select_set(True)\n    \n    bpy.ops.object.join()\n    \n    pawn = bpy.context.active_object\n    pawn.name = \"Chess_Pawn\"\n    \n    return pawn\n\n# Create the pawn\npawn = create_pawn()\n\n# Verify face count\nface_count = len(pawn.data.polygons)\nprint(f\"Total faces in pawn: {face_count}\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 179,
+  "completion_tokens": 779,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004074,
+  "latency_s": 4.87,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport mathutils\n\n# Switch to object mode to avoid edit mode issues\nif bpy.ops.object.mode_set.poll():\n    bpy.ops.object.mode_set(mode='OBJECT')\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create floor plane\nbpy.ops.mesh.primitive_plane_add(size=10, location=(0, 0, 0))\nfloor = bpy.context.active_object\nfloor.name = \"Floor\"\n\n# Create red glossy cube, sitting on the floor\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 1.001))\ncube = bpy.context.active_object\ncube.name = \"RedGlossyCube\"\n\n# --- Floor material: black and white checker ---\nmat_floor = bpy.data.materials.new(name=\"FloorChecker\")\nmat_floor.use_nodes = True\nnt_floor = mat_floor.node_tree\nnt_floor.nodes.clear()\n\nprincipled_floor = nt_floor.nodes.new(type='ShaderNodeBsdfPrincipled')\nchecker = nt_floor.nodes.new(type='ShaderNodeTexChecker')\nout_floor = nt_floor.nodes.new(type='ShaderNodeOutputMaterial')\n\nchecker.inputs['Color1'].default_value = (0, 0, 0, 1)\nchecker.inputs['Color2'].default_value = (1, 1, 1, 1)\nchecker.inputs['Scale'].default_value = 2.0\n\n# Position nodes for readability\nprincipled_floor.location = (0, 0)\nchecker.location = (-300, 0)\nout_floor.location = (200, 0)\n\nnt_floor.links.new(checker.outputs['Color'], principled_floor.inputs['Base Color'])\nnt_floor.links.new(principled_floor.outputs['BSDF'], out_floor.inputs['Surface'])\n\nfloor.data.materials.append(mat_floor)\n\n# --- Cube material: glossy red ---\nmat_cube = bpy.data.materials.new(name=\"RedGlossy\")\nmat_cube.use_nodes = True\nnt_cube = mat_cube.node_tree\nnt_cube.nodes.clear()\n\nglossy = nt_cube.nodes.new(type='ShaderNodeBsdfGlossy')\nout_cube = nt_cube.nodes.new(type='ShaderNodeOutputMaterial')\n\nglossy.inputs['Color'].default_value = (1, 0, 0, 1)\nglossy.inputs['Roughness'].default_value = 0.1\n\nglossy.location = (0, 0)\nout_cube.location = (200, 0)\n\nnt_cube.links.new(glossy.outputs['BSDF'], out_cube.inputs['Surface'])\n\ncube.data.materials.append(mat_cube)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 220,
+  "completion_tokens": 4295,
+  "reasoning_tokens": 3671,
+  "cost_usd_est": 0.005766200000000001,
+  "latency_s": 44.52,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

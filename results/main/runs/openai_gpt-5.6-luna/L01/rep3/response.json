@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create the rectangular tabletop\nbpy.ops.mesh.primitive_cube_add(location=(0.0, 0.0, 2.2))\ntabletop = bpy.context.object\ntabletop.name = \"Tabletop\"\ntabletop.dimensions = (6.0, 4.0, 0.35)\nbpy.ops.object.transform_apply(location=False, rotation=False, scale=True)\n\n# Add a low-poly bevel modifier to the tabletop\nbevel = tabletop.modifiers.new(name=\"Tabletop Bevel\", type='BEVEL')\nbevel.width = 0.12\nbevel.segments = 1\nbevel.profile = 0.5\nbevel.limit_method = 'ANGLE'\n\n# Create four legs\nleg_positions = [\n    (-2.55, -1.55),\n    (-2.55,  1.55),\n    ( 2.55, -1.55),\n    ( 2.55,  1.55),\n]\n\nfor index, (x, y) in enumerate(leg_positions, start=1):\n    bpy.ops.mesh.primitive_cube_add(location=(x, y, 1.05))\n    leg = bpy.context.object\n    leg.name = f\"Leg_{index}\"\n    leg.dimensions = (0.45, 0.45, 2.1)\n    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 149,
+  "completion_tokens": 763,
+  "reasoning_tokens": 434,
+  "cost_usd_est": 0.0009454,
+  "latency_s": 8.63,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Spring parameters\nmajor_radius = 1.0\nheight = 4.0\nturns = 8\nwire_radius = 0.1\n\n# Mesh resolution\nhelix_segments = 400      # number of segments along the helix\ncross_sides = 24          # number of sides for the circular cross-section\n\ntotal_theta = 2 * math.pi * turns\nc = height / total_theta  # dz/dtheta for the helix\n\nbm = bmesh.new()\n\n# Create all vertices: (helix_segments+1) rings, each with cross_sides vertices\nfor i in range(helix_segments + 1):\n    theta = total_theta * i / helix_segments\n    center = Vector((\n        major_radius * math.cos(theta),\n        major_radius * math.sin(theta),\n        c * theta\n    ))\n\n    # Tangent vector at this point\n    tangent = Vector((\n        -major_radius * math.sin(theta),\n        major_radius * math.cos(theta),\n        c\n    ))\n    tangent.normalize()\n\n    # Radial normal in the XY plane (always perpendicular to tangent)\n    normal = Vector((math.cos(theta), math.sin(theta), 0.0))\n\n    # Binormal to complete the perpendicular basis\n    binormal = tangent.cross(normal)\n    binormal.normalize()\n\n    # Place the cross-section vertices\n    for j in range(cross_sides):\n        phi = 2 * math.pi * j / cross_sides\n        offset = normal * (wire_radius * math.cos(phi)) + binormal * (wire_radius * math.sin(phi))\n        bm.verts.new(center + offset)\n\nbm.verts.ensure_lookup_table()\n\n# Create faces connecting consecutive rings\nfor i in range(helix_segments):\n    for j in range(cross_sides):\n        v0 = bm.verts[i * cross_sides + j]\n        v1 = bm.verts[i * cross_sides + (j + 1) % cross_sides]\n        v2 = bm.verts[(i + 1) * cross_sides + (j + 1) % cross_sides]\n        v3 = bm.verts[(i + 1) * cross_sides + j]\n        face = bm.faces.new((v0, v1, v2, v3))\n        face.smooth = True\n\nbmesh.ops.recalc_face_normals(bm, faces=bm.faces)\n\n# Create mesh object\nmesh_data = bpy.data.meshes.new(\"CoilSpring\")\nbm.to_mesh(mesh_data)\nbm.free()\n\nobj = bpy.data.objects.new(\"CoilSpring\", mesh_data)\nbpy.context.collection.objects.link(obj)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 241,
+  "completion_tokens": 9503,
+  "reasoning_tokens": 8858,
+  "cost_usd_est": 0.012650000000000002,
+  "latency_s": 98.65,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

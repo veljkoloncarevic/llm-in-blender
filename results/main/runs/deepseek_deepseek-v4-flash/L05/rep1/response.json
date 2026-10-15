@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n\ndef clear_scene():\n    \"\"\"Remove all existing objects from the scene.\"\"\"\n    bpy.ops.object.select_all(action='SELECT')\n    bpy.ops.object.delete(use_global=False)\n\n\ndef add_box(name, dims, loc):\n    \"\"\"Add a cube of given dimensions (x,y,z) at loc, with scale applied to mesh.\"\"\"\n    bpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, 0))\n    obj = bpy.context.object\n    obj.name = name\n    obj.scale = dims\n    obj.location = loc\n    bpy.ops.object.transform_apply(scale=True)\n    return obj\n\n\ndef add_book_row(name, shelf_z, book_count, thickness, depth, height, gap, shelf_thickness):\n    \"\"\"Create a row of book boxes using an Array modifier.\"\"\"\n    offset = thickness + gap\n    start_x = -((book_count - 1) * offset) / 2.0\n\n    bpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, 0))\n    obj = bpy.context.object\n    obj.name = name\n    obj.scale = (thickness, depth, height)\n    bpy.ops.object.transform_apply(scale=True)\n\n    array_mod = obj.modifiers.new(name=\"BookArray\", type='ARRAY')\n    array_mod.count = book_count\n    array_mod.use_relative_offset = False\n    array_mod.use_constant_offset = True\n    array_mod.constant_offset_displace[0] = offset\n\n    obj.location = (start_x, 0.0, shelf_z + shelf_thickness / 2.0 + height / 2.0)\n    return obj\n\n\n# Scene reset\nclear_scene()\n\n# Bookshelf dimensions\nW = 2.0      # outer width\nH = 3.0      # outer height\nD = 0.5      # depth\nT = 0.1      # board thickness\n\n# Frame panels\nadd_box(\"LeftPanel\", (T, D, H), (-(W / 2 - T / 2), 0.0, H / 2))\nadd_box(\"RightPanel\", (T, D, H), (W / 2 - T / 2, 0.0, H / 2))\nadd_box(\"TopPanel\", (W, D, T), (0.0, 0.0, H - T / 2))\nadd_box(\"BottomPanel\", (W, D, T), (0.0, 0.0, T / 2))\n\n# Three shelves\ninner_width = W - 2 * T\nshelf_heights = [0.8, 1.6, 2.4]\nfor i, z in enumerate(shelf_heights):\n    add_box(f\"Shelf{i + 1}\", (inner_width, D, T), (0.0, 0.0, z))\n\n# Books on each shelf\nbook_count = 12\nbook_thickness = 0.06\nbook_depth = 0.35\nbook_height = 0.4\nbook_gap = 0.02\n\nfor i, z in enumerate(shelf_heights):\n    add_book_row(\n        name=f\"BookRow_{i + 1}\",\n        shelf_z=z,\n        book_count=book_count,\n        thickness=book_thickness,\n        depth=book_depth,\n        height=book_height,\n        gap=book_gap,\n        shelf_thickness=T,\n    )\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 242,
+  "completion_tokens": 12284,
+  "reasoning_tokens": 11515,
+  "cost_usd_est": 0.01632136,
+  "latency_s": 131.78,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

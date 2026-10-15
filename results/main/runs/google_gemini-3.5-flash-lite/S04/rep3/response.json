@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects in the scene\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# --- 1. Create Ground Plane ---\nbpy.ops.mesh.primitive_plane_size(size=10.0)\nground = bpy.context.active_object\nground.name = \"GroundPlane\"\n\n# --- 2. Create Glass Sphere ---\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1.5, segments=64, ring_count=32, location=(0, 0, 1.5))\nsphere = bpy.context.active_object\nsphere.name = \"GlassSphere\"\n\n# Apply smooth shading to the sphere\nfor face in sphere.data.polygons:\n    face.use_smooth = True\n\n# --- 3. Create Materials ---\n\n# Blue Ground Material\nmat_ground = bpy.data.materials.new(name=\"BlueGroundMaterial\")\nmat_ground.use_nodes = True\nnodes_ground = mat_ground.node_tree.nodes\nbsdf_ground = nodes_ground.get(\"Principled BSDF\")\n\nif bsdf_ground:\n    # Set a vibrant blue base color and slightly lower roughness\n    bsdf_ground.inputs[\"Base Color\"].default_value = (0.05, 0.2, 0.6, 1.0)\n    bsdf_ground.inputs[\"Roughness\"].default_value = 0.3\n\nground.data.materials.append(mat_ground)\n\n# Clear Glass Material\nmat_glass = bpy.data.materials.new(name=\"ClearGlassMaterial\")\nmat_glass.use_nodes = True\nnodes_glass = mat_glass.node_tree.nodes\nbsdf_glass = nodes_glass.get(\"Principled BSDF\")\n\nif bsdf_glass:\n    # Configure Principled BSDF for clear glass\n    bsdf_glass.inputs[\"Base Color\"].default_value = (1.0, 1.0, 1.0, 1.0)\n    bsdf_glass.inputs[\"Roughness\"].default_value = 0.02\n    bsdf_glass.inputs[\"IOR\"].default_value = 1.45\n    bsdf_glass.inputs[\"Transmission Weight\"].default_value = 1.0\n\nsphere.data.materials.append(mat_glass)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 146,
+  "completion_tokens": 547,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0014112999999999999,
+  "latency_s": -20.13,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

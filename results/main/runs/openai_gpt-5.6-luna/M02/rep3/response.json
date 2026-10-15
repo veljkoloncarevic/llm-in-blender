@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nfrom mathutils import Vector, noise\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Terrain resolution: 100 x 100 quad faces\ngrid_x = 100\ngrid_y = 100\nsize_x = 40.0\nsize_y = 40.0\n\nvertices = []\nfaces = []\n\ndef terrain_height(x, y):\n    # Layered procedural Perlin noise for broad hills and smaller surface variation\n    broad = noise.noise_vector(\n        Vector((x * 0.075, y * 0.075, 0.0))\n    )[0]\n    medium = noise.noise_vector(\n        Vector((x * 0.16 + 31.7, y * 0.16 - 12.4, 4.0))\n    )[1]\n    detail = noise.noise_vector(\n        Vector((x * 0.42 - 8.2, y * 0.42 + 19.6, 11.0))\n    )[2]\n\n    # Make the broad component dominate to create rolling hills\n    return broad * 6.5 + medium * 2.0 + detail * 0.55\n\n# Generate the terrain vertices\nfor iy in range(grid_y + 1):\n    y = (iy / grid_y - 0.5) * size_y\n    for ix in range(grid_x + 1):\n        x = (ix / grid_x - 0.5) * size_x\n        z = terrain_height(x, y)\n        vertices.append((x, y, z))\n\n# Generate quad faces\nrow_width = grid_x + 1\nfor iy in range(grid_y):\n    for ix in range(grid_x):\n        a = iy * row_width + ix\n        b = a + 1\n        d = (iy + 1) * row_width + ix\n        c = d + 1\n        faces.append((a, b, c, d))\n\n# Create mesh and object\nmesh = bpy.data.meshes.new(\"Procedural_Hilly_Terrain\")\nmesh.from_pydata(vertices, [], faces)\nmesh.update()\n\nterrain = bpy.data.objects.new(\"Procedural Hilly Terrain\", mesh)\nbpy.context.collection.objects.link(terrain)\n\n# Smooth shading\nfor polygon in mesh.polygons:\n    polygon.use_smooth = True\n\n# Slightly improve the visual terrain normals\nmesh.set_sharp_from_angle(angle=0.785398)\n\n# Select the generated terrain\nbpy.context.view_layer.objects.active = terrain\nterrain.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 175,
+  "completion_tokens": 1071,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0013202,
+  "latency_s": -10.27,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

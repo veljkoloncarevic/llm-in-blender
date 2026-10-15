@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a single fence post\npost_width = 0.1\npost_height = 2.0\npost_depth = 0.1\n\nbpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, 1))\npost = bpy.context.active_object\npost.scale = (post_width, post_depth, post_height)\npost.name = \"FencePost\"\n\n# Apply scale to geometry\nbpy.context.view_layer.objects.active = post\nbpy.ops.object.transform_apply(scale=True)\n\n# Add Array modifier to duplicate posts\narray_mod = post.modifiers.new(name=\"ArrayPosts\", type='ARRAY')\narray_mod.count = 8\narray_mod.relative = True\narray_mod.use_relative_offset = True\narray_mod.relative_offset_displace = (0.5, 0, 0)  # 0.5 units apart\n\n# Create first horizontal rail (top)\nrail_width = 4.0  # Spans across all posts\nrail_height = 0.08\nrail_depth = 0.08\nrail_y_offset = 0.0\nrail_z_top = 1.6\n\nbpy.ops.mesh.primitive_cube_add(size=1, location=(1.75, rail_y_offset, rail_z_top))\nrail_top = bpy.context.active_object\nrail_top.scale = (rail_width, rail_depth, rail_height)\nrail_top.name = \"RailTop\"\n\nbpy.context.view_layer.objects.active = rail_top\nbpy.ops.object.transform_apply(scale=True)\n\n# Create second horizontal rail (bottom)\nrail_z_bottom = 0.6\n\nbpy.ops.mesh.primitive_cube_add(size=1, location=(1.75, rail_y_offset, rail_z_bottom))\nrail_bottom = bpy.context.active_object\nrail_bottom.scale = (rail_width, rail_depth, rail_height)\nrail_bottom.name = \"RailBottom\"\n\nbpy.context.view_layer.objects.active = rail_bottom\nbpy.ops.object.transform_apply(scale=True)\n\n# Apply wood-style material to all objects\nwood_material = bpy.data.materials.new(name=\"WoodMaterial\")\nwood_material.use_nodes = True\nbsdf = wood_material.node_tree.nodes[\"Principled BSDF\"]\nbsdf.inputs[0].default_value = (0.6, 0.4, 0.2, 1.0)  # Wood color\nbsdf.inputs[9].default_value = 0.3  # Roughness\n\nfor obj in [post, rail_top, rail_bottom]:\n    if obj.data.materials:\n        obj.data.materials[0] = wood_material\n    else:\n        obj.data.materials.append(wood_material)\n\n# Ensure we're under 1000 faces\n# Post: 12 faces * 8 posts = 96 faces\n# Rail top: 12 faces\n# Rail bottom: 12 faces\n# Total: ~120 faces (well under 1000)\n\nprint(\"Fence scene created successfully!\")\nprint(f\"Post face count: {len(post.data.polygons)}\")\nprint(f\"Rail top face count: {len(rail_top.data.polygons)}\")\nprint(f\"Rail bottom face count: {len(rail_bottom.data.polygons)}\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 170,
+  "completion_tokens": 918,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.00476,
+  "latency_s": 6.17,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

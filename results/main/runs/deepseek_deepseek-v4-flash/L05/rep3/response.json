@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\n\n\ndef clear_scene():\n    bpy.ops.object.select_all(action='SELECT')\n    bpy.ops.object.delete()\n\n\ndef create_cube_mesh(name, dims):\n    mesh = bpy.data.meshes.new(name)\n    bm = bmesh.new()\n    bmesh.ops.create_cube(bm, size=1.0)\n    for v in bm.verts:\n        v.co.x *= dims[0] / 2.0\n        v.co.y *= dims[1] / 2.0\n        v.co.z *= dims[2] / 2.0\n    bm.to_mesh(mesh)\n    bm.free()\n    return mesh\n\n\ndef add_cube_object(name, center, dims):\n    mesh = create_cube_mesh(name + \"_Mesh\", dims)\n    obj = bpy.data.objects.new(name, mesh)\n    bpy.context.scene.collection.objects.link(obj)\n    obj.location = center\n    return obj\n\n\ndef main():\n    clear_scene()\n\n    # Dimensions\n    W = 8.0\n    D = 2.0\n    H = 6.0\n    t = 0.15\n\n    # Frame\n    add_cube_object(\"Frame_Bottom\", (W / 2, 0.0, t / 2), (W, D, t))\n    add_cube_object(\"Frame_Top\", (W / 2, 0.0, H - t / 2), (W, D, t))\n    add_cube_object(\"Frame_Left\", (t / 2, 0.0, H / 2), (t, D, H))\n    add_cube_object(\"Frame_Right\", (W - t / 2, 0.0, H / 2), (t, D, H))\n    add_cube_object(\"Frame_Back\", (W / 2, -D / 2 + t / 2, H / 2), (W, t, H))\n\n    # Shelves\n    z_bottom = t\n    z_top = H - t\n    inner_h = z_top - z_bottom\n    shelf_dims = (W - 2 * t, D - t, t)\n\n    shelf_top_zs = []\n    for i in range(3):\n        fraction = (i + 1) / 4.0\n        shelf_top_z = z_bottom + fraction * inner_h\n        shelf_top_zs.append(shelf_top_z)\n        center_z = shelf_top_z - t / 2\n        add_cube_object(f\"Shelf_{i + 1}\", (W / 2, t / 2, center_z), shelf_dims)\n\n    # Books\n    book_w = 0.5\n    book_d = 1.5\n    book_h = 1.2\n    book_mesh = create_cube_mesh(\"BookMesh\", (book_w, book_d, book_h))\n\n    count = 12\n    total_row_width = book_w * count\n    start_x = (W - total_row_width) / 2.0\n    row_center_x = start_x + book_w / 2.0\n\n    for i in range(3):\n        object_name = f\"BookRow_{i + 1}\"\n        obj = bpy.data.objects.new(object_name, book_mesh)\n        bpy.context.scene.collection.objects.link(obj)\n\n        book_z = shelf_top_zs[i] + book_h / 2.0\n        obj.location = (row_center_x, t / 2, book_z)\n\n        mod = obj.modifiers.new(\"Array\", 'ARRAY')\n        mod.count = count\n        mod.relative_offset_displace = (1.0, 0.0, 0.0)\n\n\nmain()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 242,
+  "completion_tokens": 13787,
+  "reasoning_tokens": 12954,
+  "cost_usd_est": 0.01830532,
+  "latency_s": 151.34,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\n\n# Remove all existing objects\nif bpy.context.mode != 'OBJECT':\n    bpy.ops.object.mode_set(mode='OBJECT')\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Gear parameters\nnum_teeth = 24\nthickness = 0.3\nouter_radius = 2.5\nroot_radius = 2.0\nhole_radius = 0.8\n\npitch = 2.0 * math.pi / num_teeth\nhalf_tip = 0.25 * pitch\n\n# Build angle list for one tooth: root, tip start, tip end\nangles = []\nfor i in range(num_teeth):\n    a = i * pitch\n    angles.append(a - 0.5 * pitch)   # root point before the tooth\n    angles.append(a - half_tip)      # tip leading edge\n    angles.append(a + half_tip)      # tip trailing edge\n\n# Create bmesh\nbm = bmesh.new()\n\nouter_top = []\nouter_bot = []\ninner_top = []\ninner_bot = []\n\nz_top = thickness / 2.0\nz_bot = -thickness / 2.0\n\nfor a in angles:\n    c = math.cos(a)\n    s = math.sin(a)\n\n    # Outer ring\n    outer_top.append(bm.verts.new((outer_radius * c, outer_radius * s, z_top)))\n    outer_bot.append(bm.verts.new((outer_radius * c, outer_radius * s, z_bot)))\n\n    # Inner hole ring\n    inner_top.append(bm.verts.new((hole_radius * c, hole_radius * s, z_top)))\n    inner_bot.append(bm.verts.new((hole_radius * c, hole_radius * s, z_bot)))\n\nn = len(angles)\n\n# Outer side faces (normals outward)\nfor i in range(n):\n    j = (i + 1) % n\n    bm.faces.new((outer_top[i], outer_bot[i], outer_bot[j], outer_top[j]))\n\n# Inner hole side faces (normals inward)\nfor i in range(n):\n    j = (i + 1) % n\n    bm.faces.new((inner_bot[i], inner_top[i], inner_top[j], inner_bot[j]))\n\n# Top annular face (normal +Z)\nfor i in range(n):\n    j = (i + 1) % n\n    bm.faces.new((outer_top[i], outer_top[j], inner_top[j], inner_top[i]))\n\n# Bottom annular face (normal -Z)\nfor i in range(n):\n    j = (i + 1) % n\n    bm.faces.new((outer_bot[i], inner_bot[i], inner_bot[j], outer_bot[j]))\n\n# Ensure consistent outward orientation\nbmesh.ops.recalc_face_normals(bm, faces=bm.faces)\n\n# Build mesh object\nmesh = bpy.data.meshes.new(\"SpurGear\")\nbm.to_mesh(mesh)\nbm.free()\n\nobj = bpy.data.objects.new(\"SpurGear\", mesh)\nbpy.context.scene.collection.objects.link(obj)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 247,
+  "completion_tokens": 13359,
+  "reasoning_tokens": 12647,
+  "cost_usd_est": 0.01774256,
+  "latency_s": 142.44,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create ground plane\nbpy.ops.mesh.primitive_plane_add(size=2, location=(0, 0, 0))\nground = bpy.context.active_object\nground.name = \"Ground\"\nground.scale = (10, 10, 1)\n\n# Create glass sphere\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(0, 0, 1))\nsphere = bpy.context.active_object\nsphere.name = \"GlassSphere\"\n\n# Smooth shading for sphere\nmesh = sphere.data\nfor poly in mesh.polygons:\n    poly.use_smooth = True\n\n# Create glass material\nglass_mat = bpy.data.materials.new(name=\"GlassMaterial\")\nglass_mat.use_nodes = True\nnodes = glass_mat.node_tree.nodes\nprincipled = nodes.get(\"Principled BSDF\")\nif principled is not None:\n    principled.inputs[\"Transmission\"].default_value = 1.0\n    principled.inputs[\"Roughness\"].default_value = 0.01\n    principled.inputs[\"IOR\"].default_value = 1.45\n\n# Assign glass material to sphere\nif sphere.data.materials:\n    sphere.data.materials[0] = glass_mat\nelse:\n    sphere.data.materials.append(glass_mat)\n\n# Create blue ground material\nground_mat = bpy.data.materials.new(name=\"BlueGround\")\nground_mat.use_nodes = True\nnodes = ground_mat.node_tree.nodes\nprincipled = nodes.get(\"Principled BSDF\")\nif principled is not None:\n    principled.inputs[\"Base Color\"].default_value = (0.0, 0.1, 0.8, 1.0)\n    principled.inputs[\"Roughness\"].default_value = 0.5\n\n# Assign ground material to plane\nif ground.data.materials:\n    ground.data.materials[0] = ground_mat\nelse:\n    ground.data.materials.append(ground_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 227,
+  "completion_tokens": 1097,
+  "reasoning_tokens": 641,
+  "cost_usd_est": 0.0015479200000000002,
+  "latency_s": 12.65,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

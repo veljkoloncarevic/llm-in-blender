@@ -1,0 +1,10 @@
+{
+  "status": "exec_error",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": false,
+  "error_type": "AttributeError",
+  "error_message": "module 'mathutils.noise' has no attribute 'snoise'",
+  "error_line": 36,
+  "traceback": "Traceback (most recent call last):\n  File \"/app/src/blender_harness.py\", line 60, in <module>\n    exec(compiled, {\"__name__\": \"__main__\", \"__file__\": \"llm_script.py\"})\n  File \"llm_script.py\", line 36, in <module>\nAttributeError: module 'mathutils.noise' has no attribute 'snoise'\n",
+  "exec_time_s": 0.026
+}

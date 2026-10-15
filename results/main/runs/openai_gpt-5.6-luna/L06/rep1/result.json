@@ -1,0 +1,281 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.034,
+  "scene": {
+    "faces": 770,
+    "triangles": 1196,
+    "vertices": 642,
+    "n_geometry_objects": 22,
+    "objects": [
+      {
+        "name": "Rounded Die",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Die Ivory"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_1",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_6",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_6.001",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_6.002",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_6.003",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_6.004",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_6.005",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_3",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_3.001",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_3.002",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_4",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_4.001",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_4.002",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_4.003",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_2",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_2.001",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_5",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_5.001",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_5.002",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_5.003",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip_5.004",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Pip Dark"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "BEVEL"
+    ],
+    "materials": [
+      {
+        "name": "Die Ivory",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Pip Dark",
+        "assigned": true,
+        "use_nodes": false
+      }
+    ],
+    "n_materials_assigned": 2,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.0399999618530273,
+      -1.0399999618530273,
+      -1.040000081062317
+    ],
+    "bbox_max": [
+      1.0399999618530273,
+      1.0399999618530273,
+      1.0399999618530273
+    ]
+  },
+  "render_time_s": 6.056,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects in the scene\nbpy.ops.wm.read_factory_settings(use_empty=True)\n\n# 1. Create a smooth UV sphere\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1.0, segments=64, ring_count=32, location=(0, 0, 1.0))\nsphere = bpy.active_object\nsphere.name = \"GoldSphere\"\n\n# Apply smooth shading to the sphere\nfor face in sphere.data.polygons:\n    face.use_smooth = True\n\n# 2. Create a ground plane\nbpy.ops.mesh.primitive_plane_add(size=10.0, location=(0, 0, 0))\nground = bpy.active_object\nground.name = \"GroundPlane\"\n\n# 3. Create and assign the Polished Gold material for the sphere\ngold_mat = bpy.data.materials.new(name=\"PolishedGold\")\ngold_mat.use_nodes = True\ngold_nodes = gold_mat.node_tree.nodes\ngold_links = gold_mat.node_tree.links\n\n# Clear default nodes\ngold_nodes.clear()\n\n# Add Material Output and Principled BSDF\ngold_output = gold_nodes.new(type='ShaderNodeOutputMaterial')\ngold_output.location = (300, 0)\n\ngold_principled = gold_nodes.new(type='ShaderNodeBsdfPrincipled')\ngold_principled.location = (0, 0)\n# Set gold properties: Metallic 1.0, warm gold base color, low roughness\ngold_principled.inputs['Base Color'].default_value = (1.0, 0.766, 0.336, 1.0)\ngold_principled.inputs['Metallic'].default_value = 1.0\ngold_principled.inputs['Roughness'].default_value = 0.1\n\ngold_links.new(gold_principled.outputs['BSDF'], gold_output.inputs['Surface'])\nsphere.data.materials.append(gold_mat)\n\n# 4. Create and assign the Neutral Grey material for the ground plane\ngrey_mat = bpy.data.materials.new(name=\"NeutralGrey\")\ngrey_mat.use_nodes = True\ngrey_nodes = grey_mat.node_tree.nodes\ngrey_links = grey_mat.node_tree.links\n\n# Clear default nodes\ngrey_nodes.clear()\n\n# Add Material Output and Principled BSDF\ngrey_output = grey_nodes.new(type='ShaderNodeOutputMaterial')\ngrey_output.location = (300, 0)\n\ngrey_principled = grey_nodes.new(type='ShaderNodeBsdfPrincipled')\ngrey_principled.location = (0, 0)\n# Set neutral grey properties: mid-grey base color, matte roughness\ngrey_principled.inputs['Base Color'].default_value = (0.2, 0.2, 0.2, 1.0)\ngrey_principled.inputs['Roughness'].default_value = 0.7\n\ngrey_links.new(grey_principled.outputs['BSDF'], grey_output.inputs['Surface'])\nground.data.materials.append(grey_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 152,
+  "completion_tokens": 755,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0019330999999999999,
+  "latency_s": -19.72,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

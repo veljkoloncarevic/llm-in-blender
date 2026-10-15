@@ -1,0 +1,116 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.007,
+  "scene": {
+    "faces": 7872,
+    "triangles": 15744,
+    "vertices": 7958,
+    "n_geometry_objects": 1,
+    "objects": [
+      {
+        "name": "Suzanne",
+        "type": "MESH",
+        "modifiers": [
+          "SUBSURF"
+        ],
+        "materials": [
+          "White Marble"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "SUBSURF"
+    ],
+    "materials": [
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "White Marble",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 5,
+        "n_links": 4,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial",
+          "ShaderNodeTexCoord",
+          "ShaderNodeTexNoise",
+          "ShaderNodeValToRGB"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial",
+          "ShaderNodeTexCoord",
+          "ShaderNodeTexNoise",
+          "ShaderNodeValToRGB"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.2800000011920929,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 1,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.3166272640228271,
+      -0.8224414587020874,
+      -0.9665798544883728
+    ],
+    "bbox_max": [
+      1.328185796737671,
+      0.7714775800704956,
+      0.9314744472503662
+    ]
+  },
+  "render_time_s": 8.894,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

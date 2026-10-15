@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport mathutils\nimport random\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a 4-subdivision icosphere (20 * 4^4 = 5120 faces)\nbpy.ops.mesh.primitive_ico_sphere_add(subdivisions=4, radius=1.0, location=(0, 0, 0))\nrock = bpy.context.active_object\nrock.name = \"Rock\"\n\n# Ensure we're in object mode\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Create a noise-based texture\nnoise_tex = bpy.data.textures.new(\"RockNoise\", type='NOISE')\nnoise_tex.noise_scale = 0.6\nnoise_tex.noise_depth = 4\nnoise_tex.noise_basis = 'BLENDER'\n\n# Add and configure a Displace modifier\ndisplace = rock.modifiers.new(name=\"RockDisplace\", type='DISPLACE')\ndisplace.texture = noise_tex\ndisplace.strength = 0.7\ndisplace.mid_level = 0.5\n\n# Apply irregular non-uniform scale\nrock.scale = (1.0, 0.7, 1.4)\n\n# Verify face count is within allowed range (should be 5120)\nface_count = len(rock.data.polygons)\nassert 2000 <= face_count <= 60000, f\"Face count {face_count} out of range\"\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 245,
+  "completion_tokens": 1565,
+  "reasoning_tokens": 1223,
+  "cost_usd_est": 0.0021736000000000004,
+  "latency_s": 15.74,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

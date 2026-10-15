@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects in the scene\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create a new cube mesh and object\nbpy.ops.mesh.primitive_cube_size(size=2.0)\ncube_obj = bpy.context.active_object\ncube_obj.name = \"ColorCube\"\nmesh = cube_obj.data\n\n# Create materials\nmat_red = bpy.data.materials.new(name=\"RedMaterial\")\nmat_red.use_nodes = False\nmat_red.diffuse_color = (1.0, 0.0, 0.0, 1.0)\n\nmat_green = bpy.data.materials.new(name=\"GreenMaterial\")\nmat_green.use_nodes = False\nmat_green.diffuse_color = (0.0, 1.0, 0.0, 1.0)\n\nmat_blue = bpy.data.materials.new(name=\"BlueMaterial\")\nmat_blue.use_nodes = False\nmat_blue.diffuse_color = (0.0, 0.0, 1.0, 1.0)\n\n# Assign materials to the object's material slots\ncube_obj.data.materials.append(mat_red)   # Slot 0\ncube_obj.data.materials.append(mat_green) # Slot 1\ncube_obj.data.materials.append(mat_blue)  # Slot 2\n\n# Assign faces to material indices\n# A standard cube has 6 faces (indices 0 to 5)\nfor poly in mesh.polygons:\n    if poly.index in (0, 1):\n        poly.material_index = 0  # Red\n    elif poly.index in (2, 3):\n        poly.material_index = 1  # Green\n    else:\n        poly.material_index = 2  # Blue\n\n# Ensure the view displays materials correctly\nfor area in bpy.context.screen.areas:\n    if area.type == 'VIEW_3D':\n        for space in area.spaces:\n            if space.type == 'VIEW_3D':\n                space.shading.type = 'MATERIAL'\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 143,
+  "completion_tokens": 515,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0013304,
+  "latency_s": -20.23,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

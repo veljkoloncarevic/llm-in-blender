@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\nfor datablocks in (bpy.data.meshes, bpy.data.curves, bpy.data.materials, bpy.data.cameras, bpy.data.lights):\n    if datablocks != bpy.data.materials:\n        for datablock in list(datablocks):\n            if datablock.users == 0:\n                datablocks.remove(datablock)\n\n# Materials\nwood = bpy.data.materials.new(\"Warm Wood\")\nwood.diffuse_color = (0.28, 0.10, 0.035, 1.0)\nwood.roughness = 0.82\n\nrail_wood = bpy.data.materials.new(\"Rail Wood\")\nrail_wood.diffuse_color = (0.40, 0.17, 0.055, 1.0)\nrail_wood.roughness = 0.86\n\ndef make_beveled_cube(name, location, scale, material, bevel_width=0.035):\n    bpy.ops.mesh.primitive_cube_add(location=location)\n    obj = bpy.context.object\n    obj.name = name\n    obj.scale = (scale[0] / 2.0, scale[1] / 2.0, scale[2] / 2.0)\n    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)\n\n    obj.data.materials.append(material)\n\n    bevel = obj.modifiers.new(\"Small softened edges\", 'BEVEL')\n    bevel.width = bevel_width\n    bevel.segments = 1\n    bevel.limit_method = 'ANGLE'\n\n    return obj\n\n# One source post, duplicated to eight posts using an Array modifier\npost_spacing = 1.2\npost = make_beveled_cube(\n    \"FencePost_ArraySource\",\n    (-4.2, 0.0, 1.15),\n    (0.24, 0.24, 2.3),\n    wood,\n    0.035\n)\n\narray = post.modifiers.new(\"Eight Fence Posts\", 'ARRAY')\narray.count = 8\narray.use_relative_offset = False\narray.use_constant_offset = True\narray.constant_offset_displace = (post_spacing, 0.0, 0.0)\n\n# Two horizontal rails spanning the posts\nrail_length = post_spacing * 7.0 + 0.18\n\nupper_rail = make_beveled_cube(\n    \"Upper Horizontal Rail\",\n    (0.0, 0.0, 1.65),\n    (rail_length, 0.17, 0.18),\n    rail_wood,\n    0.025\n)\n\nlower_rail = make_beveled_cube(\n    \"Lower Horizontal Rail\",\n    (0.0, 0.0, 0.72),\n    (rail_length, 0.17, 0.18),\n    rail_wood,\n    0.025\n)\n\n# Keep the source post active and selected\nbpy.ops.object.select_all(action='DESELECT')\npost.select_set(True)\nbpy.context.view_layer.objects.active = post\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 154,
+  "completion_tokens": 1180,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0014468,
+  "latency_s": 11.52,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

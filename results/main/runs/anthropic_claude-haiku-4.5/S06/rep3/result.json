@@ -1,0 +1,10 @@
+{
+  "status": "exec_error",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": false,
+  "error_type": "RuntimeError",
+  "error_message": "Error: Node type ShaderNodeValRamp undefined\n",
+  "error_line": 32,
+  "traceback": "Traceback (most recent call last):\n  File \"/app/src/blender_harness.py\", line 60, in <module>\n    exec(compiled, {\"__name__\": \"__main__\", \"__file__\": \"llm_script.py\"})\n  File \"llm_script.py\", line 32, in <module>\nRuntimeError: Error: Node type ShaderNodeValRamp undefined\n\n",
+  "exec_time_s": 0.002
+}

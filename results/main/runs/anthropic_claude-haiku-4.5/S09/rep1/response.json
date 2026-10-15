@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a sphere\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(0, 0, 0))\nsphere = bpy.context.active_object\n\n# Create a new material\nmaterial = bpy.data.materials.new(name=\"Deep_Red_Car_Paint\")\nmaterial.use_nodes = True\n\n# Clear default nodes\nmaterial.node_tree.nodes.clear()\n\n# Create nodes\nnodes = material.node_tree.nodes\nlinks = material.node_tree.links\n\n# Create Principled BSDF node\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\nprincipled.inputs['Base Color'].default_value = (0.5, 0.0, 0.0, 1.0)  # Deep red\nprincipled.inputs['Metallic'].default_value = 0.5\nprincipled.inputs['Roughness'].default_value = 0.2\nprincipled.inputs['Coat Weight'].default_value = 0.85  # Strong clear coat\nprincipled.inputs['Coat Roughness'].default_value = 0.1\n\n# Create Material Output node\nmaterial_output = nodes.new(type='ShaderNodeOutputMaterial')\n\n# Connect Principled BSDF to Material Output\nlinks.new(principled.outputs['BSDF'], material_output.inputs['Surface'])\n\n# Assign material to sphere\nsphere.data.materials.append(material)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 171,
+  "completion_tokens": 404,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.002191,
+  "latency_s": 3.08,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

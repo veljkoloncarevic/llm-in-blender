@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import noise\n\n# 1. Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# 2. Create base grid mesh (subdivisions: 150x150 -> 22,500 vertices, ~44,000 faces)\n# This fits comfortably within the 5,000 to 120,000 face count requirement.\nsubdiv = 150\nsize = 20.0\n\nmesh = bpy.data.meshes.new(name=\"TerrainMesh\")\nobj = bpy.data.objects.new(\"Terrain\", mesh)\nbpy.context.collection.objects.link(obj)\n\nbm = bmesh.new()\nbmesh.ops.create_grid(bm, x_segments=subdiv, y_segments=subdiv, size=size)\n\n# 3. Apply procedural height using mathutils.noise.turbulence (Fractal Brownian Motion)\n# This gives realistic multi-octave hilly terrain.\nscale = 0.15\ndepth = 4\nroughness = 0.5\nheight_multiplier = 3.5\n\nfor v in bm.verts:\n    # Scale coordinates for noise sampling\n    nx = v.co.x * scale\n    ny = v.co.y * scale\n    \n    # turbulence returns a noise value, we offset z based on it\n    n_val = noise.turbulence((nx, ny, 0.0), depth, fractal_type='FBM', roughness=roughness)\n    v.co.z = n_val * height_multiplier\n\n# Write back to mesh\nbm.to_mesh(mesh)\nbm.free()\n\n# 4. Smooth shading and update normals\nmesh.update()\nfor poly in mesh.polygons:\n    poly.use_smooth = True\n\n# 5. Set active object\nbpy.view_layer.objects.active = obj\nobj.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 179,
+  "completion_tokens": 461,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0012062,
+  "latency_s": 1.87,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

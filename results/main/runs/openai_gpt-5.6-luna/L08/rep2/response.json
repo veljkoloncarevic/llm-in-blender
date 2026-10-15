@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create an open-topped mug body mesh\nradius = 1.0\nheight = 1.8\nsegments = 48\nbottom_z = 0.0\ntop_z = height\n\nverts = []\nfor z in (bottom_z, top_z):\n    for i in range(segments):\n        angle = 2.0 * math.pi * i / segments\n        verts.append((radius * math.cos(angle), radius * math.sin(angle), z))\n\nfaces = []\n\n# Outer cylindrical wall\nfor i in range(segments):\n    j = (i + 1) % segments\n    faces.append((i, j, segments + j, segments + i))\n\n# Bottom face, oriented inward\nfaces.append(tuple(reversed(range(segments))))\n\nmesh = bpy.data.meshes.new(\"MugBodyMesh\")\nmesh.from_pydata(verts, [], faces)\nmesh.update()\n\nmug = bpy.data.objects.new(\"MugBody\", mesh)\nbpy.context.collection.objects.link(mug)\n\n# Smooth shading\nfor poly in mesh.polygons:\n    poly.use_smooth = True\n\n# Hollow the mug with Solidify\nsolidify = mug.modifiers.new(\"Hollow Wall\", 'SOLIDIFY')\nsolidify.thickness = 0.12\nsolidify.offset = -1.0\nsolidify.use_rim = True\nsolidify.material_offset = 0\n\n# Slightly soften the edges while keeping the polygon count low\nbevel = mug.modifiers.new(\"Soft Ceramic Edges\", 'BEVEL')\nbevel.width = 0.035\nbevel.segments = 2\nbevel.limit_method = 'ANGLE'\n\n# Mug material\nmug_material = bpy.data.materials.new(\"Ceramic\")\nmug_material.diffuse_color = (0.34, 0.10, 0.035, 1.0)\nmug_material.roughness = 0.3\nmug.data.materials.append(mug_material)\n\n# Create a torus handle in a vertical XZ plane\nbpy.ops.mesh.primitive_torus_add(\n    major_segments=32,\n    minor_segments=10,\n    location=(1.02, 0.0, 0.9),\n    major_radius=0.62,\n    minor_radius=0.115,\n    rotation=(math.pi / 2.0, 0.0, 0.0)\n)\nhandle = bpy.context.object\nhandle.name = \"MugHandle\"\n\nfor poly in handle.data.polygons:\n    poly.use_smooth = True\n\nhandle_bevel = handle.modifiers.new(\"Handle Edge Softening\", 'BEVEL')\nhandle_bevel.width = 0.018\nhandle_bevel.segments = 2\nhandle_bevel.limit_method = 'ANGLE'\n\nhandle.data.materials.append(mug_material)\n\n# Keep the mug centered neatly in the scene\nmug.location.z = -height / 2.0\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 163,
+  "completion_tokens": 1165,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0014306,
+  "latency_s": 11.43,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

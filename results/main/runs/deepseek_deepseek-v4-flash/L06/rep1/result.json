@@ -1,0 +1,10 @@
+{
+  "status": "exec_error",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": false,
+  "error_type": "TypeError",
+  "error_message": "create_cone: keyword \"diameter1\" is invalid for this operator",
+  "error_line": 37,
+  "traceback": "Traceback (most recent call last):\n  File \"/app/src/blender_harness.py\", line 60, in <module>\n    exec(compiled, {\"__name__\": \"__main__\", \"__file__\": \"llm_script.py\"})\n  File \"llm_script.py\", line 90, in <module>\n  File \"llm_script.py\", line 85, in main\n  File \"llm_script.py\", line 76, in add_pips\n  File \"llm_script.py\", line 37, in create_pip\nTypeError: create_cone: keyword \"diameter1\" is invalid for this operator\n",
+  "exec_time_s": 0.004
+}

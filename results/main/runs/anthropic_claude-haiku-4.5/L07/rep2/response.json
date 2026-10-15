@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector, Matrix\nimport math\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create rocket body (cylinder)\nbpy.ops.mesh.primitive_cylinder_add(\n    radius=0.5,\n    depth=3.0,\n    vertices=8,\n    location=(0, 0, 0)\n)\nbody = bpy.context.active_object\nbody.name = \"RocketBody\"\n\n# Create nose cone\nbpy.ops.mesh.primitive_cone_add(\n    radius1=0.5,\n    radius2=0,\n    depth=1.0,\n    vertices=8,\n    location=(0, 0, 2.0)\n)\nnose = bpy.context.active_object\nnose.name = \"NoseCone\"\n\n# Create fins as scaled cubes\nfin_positions = [\n    (0, 120, 0),\n    (120, 120, 0),\n    (240, 120, 0)\n]\n\nfor i, rotation_z in enumerate(fin_positions):\n    # Create a cube\n    bpy.ops.mesh.primitive_cube_add(\n        size=1.0,\n        location=(0, 0, 0)\n    )\n    fin = bpy.context.active_object\n    fin.name = f\"Fin{i+1}\"\n    \n    # Scale the cube to make it fin-shaped (thin, tall, wide)\n    fin.scale = (0.3, 0.05, 0.6)\n    \n    # Position the fin away from the body center\n    fin.location = (0.65, 0, 0.5)\n    \n    # Rotate around Z axis to distribute fins evenly (120 degrees apart)\n    angle = math.radians(rotation_z)\n    rotation_matrix = Matrix.Rotation(angle, 4, 'Z')\n    fin.matrix_world = rotation_matrix @ Matrix.Translation(fin.location)\n    fin.location = (fin.matrix_world @ Vector((0.65, 0, 0.5)))\n    \n    # Apply rotation\n    fin.rotation_euler = (0, 0, angle)\n\n# Join all objects into one\nbpy.context.view_layer.objects.active = body\nbody.select_set(True)\nnose.select_set(True)\nfor i in range(3):\n    bpy.data.objects[f\"Fin{i+1}\"].select_set(True)\n\nbpy.ops.object.join()\n\n# Rename final object\nbpy.context.active_object.name = \"Rocket\"\n\n# Apply all transforms\nbpy.ops.object.transform_apply(\n    location=False,\n    rotation=True,\n    scale=True\n)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 173,
+  "completion_tokens": 703,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.003688,
+  "latency_s": 5.53,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

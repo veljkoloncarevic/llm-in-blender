@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a ground plane\nbpy.ops.mesh.primitive_plane_add(size=10, location=(0, 0, 0))\nground_plane = bpy.context.active_object\nground_plane.name = \"GroundPlane\"\n\n# Create blue material for ground plane\nblue_material = bpy.data.materials.new(name=\"BlueMaterial\")\nblue_material.use_nodes = True\nblue_material.node_tree.nodes[\"Principled BSDF\"].inputs[\"Base Color\"].default_value = (0.0, 0.0, 1.0, 1.0)\nground_plane.data.materials.append(blue_material)\n\n# Create a glass sphere\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1.5, location=(0, 0, 1.5))\nsphere = bpy.context.active_object\nsphere.name = \"GlassSphere\"\n\n# Create clear glass material\nglass_material = bpy.data.materials.new(name=\"ClearGlass\")\nglass_material.use_nodes = True\nnodes = glass_material.node_tree.nodes\nlinks = glass_material.node_tree.links\n\n# Clear default nodes\nnodes.clear()\n\n# Create Principled BSDF node\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\nprincipled.inputs[\"Transmission\"].default_value = 1.0  # Full transmission\nprincipled.inputs[\"Roughness\"].default_value = 0.01    # Near 0 roughness\nprincipled.inputs[\"IOR\"].default_value = 1.45          # IOR for glass\n\n# Create Material Output node\noutput = nodes.new(type='ShaderNodeOutputMaterial')\n\n# Connect Principled BSDF to Material Output\nlinks.new(principled.outputs[\"BSDF\"], output.inputs[\"Surface\"])\n\n# Add material to sphere\nsphere.data.materials.append(glass_material)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 167,
+  "completion_tokens": 533,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.002832,
+  "latency_s": -18.54,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

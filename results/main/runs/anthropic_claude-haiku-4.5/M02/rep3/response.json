@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector, noise\nimport random\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Set random seed for reproducibility\nrandom.seed(42)\n\n# Create a plane mesh\nmesh = bpy.data.meshes.new(\"Terrain\")\nobj = bpy.data.objects.new(\"Terrain\", mesh)\nbpy.context.collection.objects.link(obj)\nbpy.context.view_layer.objects.active = obj\nobj.select_set(True)\n\n# Use bmesh to create the terrain\nbm = bmesh.new()\n\n# Grid parameters\ngrid_size = 120  # 120x120 grid = 14,400 faces (within 5k-120k range)\nscale = 0.5  # Spacing between vertices\nheight_scale = 5.0  # Height variation\n\n# Create vertices with noise-based heights\nvertices = []\nfor y in range(grid_size + 1):\n    row = []\n    for x in range(grid_size + 1):\n        # Use Perlin noise for natural-looking terrain\n        # Scale coordinates for noise function\n        nx = x * 0.05\n        ny = y * 0.05\n        \n        # Get noise value (range approximately -1 to 1)\n        height = noise.noise(Vector((nx, ny, 0))) * height_scale\n        \n        # Add additional noise octave for more detail\n        height += noise.noise(Vector((nx * 2, ny * 2, 1))) * height_scale * 0.5\n        \n        # Create vertex position\n        pos = Vector((x * scale, y * scale, height))\n        vert = bm.verts.new(pos)\n        row.append(vert)\n    vertices.append(row)\n\n# Ensure lookup table is built\nbm.verts.ensure_lookup_table()\n\n# Create faces (quads) from the grid\nfor y in range(grid_size):\n    for x in range(grid_size):\n        v0 = vertices[y][x]\n        v1 = vertices[y][x + 1]\n        v2 = vertices[y + 1][x + 1]\n        v3 = vertices[y + 1][x]\n        \n        # Create quad face\n        bm.faces.new([v0, v1, v2, v3])\n\n# Write bmesh to mesh\nbm.to_mesh(mesh)\nbm.free()\n\n# Update mesh\nmesh.update()\n\n# Apply smooth shading for better appearance\nbpy.context.view_layer.objects.active = obj\nbpy.ops.object.shade_smooth()\n\n# Center the object at origin\nbpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')\n\nprint(f\"Terrain created with {len(mesh.vertices)} vertices and {len(mesh.polygons)} faces\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 194,
+  "completion_tokens": 727,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.003829,
+  "latency_s": -16.29,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

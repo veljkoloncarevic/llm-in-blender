@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport mathutils\nimport math\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Helper to turn a bmesh into a mesh data-block\ndef mesh_from_bmesh(name, bm):\n    mesh = bpy.data.meshes.new(name)\n    bm.to_mesh(mesh)\n    bm.free()\n    return mesh\n\n# Rocket body: 8-sided cylinder, height 4, radius 1, from z=0 to z=4\nbm = bmesh.new()\nbmesh.ops.create_cone(\n    bm,\n    cap_ends=True,\n    cap_tris=False,\n    segments=8,\n    diameter1=1,\n    diameter2=1,\n    depth=4,\n)\nbmesh.ops.translate(bm, vec=mathutils.Vector((0.0, 0.0, 2.0)), verts=bm.verts)\nbody_mesh = mesh_from_bmesh(\"BodyMesh\", bm)\nbody_obj = bpy.data.objects.new(\"Body\", body_mesh)\nbpy.context.scene.collection.objects.link(body_obj)\n\n# Nose cone: 8-sided pointed cone, height 2, base at z=4, tip at z=6\nbm = bmesh.new()\nbmesh.ops.create_cone(\n    bm,\n    cap_ends=False,\n    cap_tris=False,\n    segments=8,\n    diameter1=1,\n    diameter2=0,\n    depth=2,\n)\nbmesh.ops.translate(bm, vec=mathutils.Vector((0.0, 0.0, 5.0)), verts=bm.verts)\nnose_mesh = mesh_from_bmesh(\"NoseMesh\", bm)\nnose_obj = bpy.data.objects.new(\"Nose\", nose_mesh)\nbpy.context.scene.collection.objects.link(nose_obj)\n\n# Fin base: cube shifted so it spans x = [0, 1] in local space\nbm = bmesh.new()\nbmesh.ops.create_cube(bm, size=1)\nbmesh.ops.translate(bm, vec=mathutils.Vector((0.5, 0.0, 0.0)), verts=bm.verts)\nfin_mesh = mesh_from_bmesh(\"FinMesh\", bm)\n\n# Three fins, rotated 120 degrees apart around the rocket's Z axis\nfor angle in (0, 120, 240):\n    theta = math.radians(angle)\n    fin_obj = bpy.data.objects.new(\"Fin\", fin_mesh)\n    bpy.context.scene.collection.objects.link(fin_obj)\n    fin_obj.scale = (1.0, 0.15, 2.0)\n    fin_obj.rotation_euler = (0.0, 0.0, theta)\n    fin_obj.location = (math.cos(theta), math.sin(theta), 1.5)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 234,
+  "completion_tokens": 12434,
+  "reasoning_tokens": 11791,
+  "cost_usd_est": 0.01651584,
+  "latency_s": 132.93,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\nimport mathutils\n\n# --- Cleanup Scene ---\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# --- Parameters ---\ncols = 10\nrows = 10\nradius = 1.0          # Outer radius of the hexagon\nwall_gap = 0.1        # Gap between adjacent cells\nextrusion_height = 2.5\n\n# Hexagon geometry math\n# Distance from center to flat side is r * sqrt(3)/2\n# For a honeycomb grid, the spacing must account for the gap.\n# Let's scale down the individual hexagons to create the gap.\n# Effective radius for the outer boundary of a cell:\nr_eff = radius - wall_gap * 0.5\n\ndx = r_eff * math.sqrt(3)\ndy = r_eff * 1.5\n\n# Create a new mesh and object for the honeycomb\nmesh = bpy.data.meshes.new(\"HoneycombMesh\")\nobj = bpy.data.object.new(\"HoneycombPanel\", mesh)\nbpy.context.collection.objects.link(obj)\n\nbm = bmesh.new()\n\n# Helper function to create a single hexagonal prism bmesh\ndef create_hex_prism(bm, center_x, center_y, r, height):\n    verts = []\n    # Create bottom and top loops\n    for z_val in (0.0, height):\n        loop_verts = []\n        for i in range(6):\n            angle = math.radians(60 * i + 30) # Pointy topped\n            x = center_x + r * math.cos(angle)\n            y = center_y + r * math.sin(angle)\n            loop_verts.append(bm.verts.new((x, y, z_val)))\n        verts.append(loop_verts)\n    \n    # Bottom face (reversed normal)\n    bottom_face_verts = list(reversed(verts[0]))\n    bm.faces.new(bottom_face_verts)\n    \n    # Top face\n    top_face_verts = verts[1]\n    bm.faces.new(top_face_verts)\n    \n    # Side faces\n    for i in range(6):\n            v1 = verts[0][i]\n            v2 = verts[0][(i + 1) % 6]\n            v3 = verts[1][(i + 1) % 6]\n            v4 = verts[1][i]\n            bm.faces.new((v1, v2, v3, v4))\n\n# Generate the 10x10 grid with alternating row offsets\nfor r_idx in range(rows):\n    # Offset every second row\n    row_offset = (dx / 2.0) if (r_idx % 2 == 1) else 0.0\n    y_pos = r_idx * dy\n    \n    for c_idx in range(cols):\n        x_pos = c_idx * dx + row_offset\n        create_hex_prism(bm, x_pos, y_pos, r_eff, extrusion_height)\n\n# Finalize mesh\nbm.to_mesh(mesh)\nbm.free()\n\n# Optional: Center the origin of the geometry\nbpy.context.view_layer.objects.active = obj\nobj.select_set(True)\nbpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')\n\n# Shade smooth for clean look\nfor f in mesh.polygons:\n    f.use_smooth = True\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 160,
+  "completion_tokens": 837,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0021405,
+  "latency_s": 2.89,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

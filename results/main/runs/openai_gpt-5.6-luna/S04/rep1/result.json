@@ -1,0 +1,115 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.033,
+  "scene": {
+    "faces": 2049,
+    "triangles": 3970,
+    "vertices": 1990,
+    "n_geometry_objects": 2,
+    "objects": [
+      {
+        "name": "Blue Ground Plane",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Blue Ground Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Clear Glass Sphere",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Clear Glass Material"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [],
+    "materials": [
+      {
+        "name": "Blue Ground Material",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.41999998688697815,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Clear Glass Material",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 1.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.009999999776482582,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      }
+    ],
+    "n_materials_assigned": 2,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -6.0,
+      -6.0,
+      0.0
+    ],
+    "bbox_max": [
+      6.0,
+      6.0,
+      2.0
+    ]
+  },
+  "render_time_s": 6.161,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

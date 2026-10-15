@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\ndef clear_scene():\n    \"\"\"Remove all existing objects from the scene.\"\"\"\n    bpy.ops.object.select_all(action='SELECT')\n    bpy.ops.object.delete()\n\ndef create_floor():\n    \"\"\"Create a floor plane with a black-and-white checker texture as Base Color.\"\"\"\n    bpy.ops.mesh.primitive_plane_add(size=10, location=(0, 0, 0))\n    floor = bpy.context.active_object\n\n    mat = bpy.data.materials.new(\"FloorChecker\")\n    mat.use_nodes = True\n    nodes = mat.node_tree.nodes\n    links = mat.node_tree.links\n\n    principled = nodes.get(\"Principled BSDF\")\n    checker = nodes.new(\"ShaderNodeTexChecker\")\n    checker.inputs[\"Scale\"].default_value = 5.0\n\n    # Checker defaults are black and white, connect to Base Color\n    links.new(checker.outputs[\"Color\"], principled.inputs[\"Base Color\"])\n\n    floor.data.materials.append(mat)\n    return floor\n\ndef create_cube():\n    \"\"\"Create a glossy red cube sitting on the floor plane.\"\"\"\n    bpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 1))\n    cube = bpy.context.active_object\n\n    mat = bpy.data.materials.new(\"RedGlossy\")\n    mat.use_nodes = True\n    nodes = mat.node_tree.nodes\n\n    principled = nodes.get(\"Principled BSDF\")\n    principled.inputs[\"Base Color\"].default_value = (0.8, 0.0, 0.0, 1.0)\n    principled.inputs[\"Roughness\"].default_value = 0.1\n\n    cube.data.materials.append(mat)\n    return cube\n\ndef main():\n    clear_scene()\n    create_floor()\n    create_cube()\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 220,
+  "completion_tokens": 2205,
+  "reasoning_tokens": 1793,
+  "cost_usd_est": 0.0030074000000000004,
+  "latency_s": 24.21,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

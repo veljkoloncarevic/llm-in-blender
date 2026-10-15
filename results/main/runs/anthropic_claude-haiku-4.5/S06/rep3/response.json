@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a wooden plank (scaled cube)\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 0))\nplank = bpy.context.active_object\nplank.scale = (4, 0.5, 1)  # Scale to look like a plank\nbpy.context.view_layer.objects.active = plank\nplank.name = \"WoodenPlank\"\n\n# Create a new material\nmat = bpy.data.materials.new(name=\"WoodMaterial\")\nmat.use_nodes = True\nnodes = mat.node_tree.nodes\nlinks = mat.node_tree.links\n\n# Clear default nodes\nnodes.clear()\n\n# Create nodes\nbsdf = nodes.new(type='ShaderNodeBsdfPrincipled')\noutput = nodes.new(type='ShaderNodeOutputMaterial')\n\n# Texture nodes for the base color pattern\nnoise_texture = nodes.new(type='ShaderNodeTexNoise')\nwave_texture = nodes.new(type='ShaderNodeTexWave')\ncolor_ramp = nodes.new(type='ShaderNodeValRamp')\nbump_node = nodes.new(type='ShaderNodeBump')\n\n# Configure noise texture\nnoise_texture.inputs['Scale'].default_value = 15.0\nnoise_texture.inputs['Detail'].default_value = 5.0\n\n# Configure wave texture\nwave_texture.inputs['Scale'].default_value = 5.0\nwave_texture.inputs['Distortion'].default_value = 1.0\n\n# Configure color ramp for brown wood tones\ncolor_ramp.color_ramp.elements[0].color = (0.3, 0.2, 0.1, 1.0)  # Dark brown\ncolor_ramp.color_ramp.elements[1].color = (0.6, 0.4, 0.2, 1.0)  # Light brown\n\n# Configure bump node\nbump_node.inputs['Strength'].default_value = 0.5\n\n# Connect nodes for base color\n# Noise distorts the wave texture\nlinks.new(noise_texture.outputs['Fac'], wave_texture.inputs['Distortion'])\n# Wave output goes to color ramp\nlinks.new(wave_texture.outputs['Fac'], color_ramp.inputs['Fac'])\n# Color ramp output to base color\nlinks.new(color_ramp.outputs['Color'], bsdf.inputs['Base Color'])\n\n# Connect nodes for bump/normal\n# Same distortion pattern drives bump\nlinks.new(noise_texture.outputs['Fac'], bump_node.inputs['Height'])\n# Bump output to normal\nlinks.new(bump_node.outputs['Normal'], bsdf.inputs['Normal'])\n\n# Connect BSDF to output\nlinks.new(bsdf.outputs['BSDF'], output.inputs['Surface'])\n\n# Assign material to plank\nplank.data.materials.append(mat)\n\n# Set viewport shading to material preview or rendered to see the material\nfor area in bpy.context.screen.areas:\n    if area.type == 'VIEW_3D':\n        for space in area.spaces:\n            if space.type == 'VIEW_3D':\n                space.shading.type = 'MATERIAL'\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 187,
+  "completion_tokens": 853,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004452,
+  "latency_s": 5.67,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

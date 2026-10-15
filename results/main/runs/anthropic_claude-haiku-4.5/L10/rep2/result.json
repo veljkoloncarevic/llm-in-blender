@@ -1,0 +1,90 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.006,
+  "scene": {
+    "faces": 23,
+    "triangles": 42,
+    "vertices": 29,
+    "n_geometry_objects": 3,
+    "objects": [
+      {
+        "name": "HouseBody",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Roof",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "DoorAndWindows",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [],
+    "materials": [
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 0,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.5,
+      -1.5,
+      -0.20000004768371582
+    ],
+    "bbox_max": [
+      1.5,
+      1.5,
+      2.9000000953674316
+    ]
+  },
+  "render_time_s": 5.584,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

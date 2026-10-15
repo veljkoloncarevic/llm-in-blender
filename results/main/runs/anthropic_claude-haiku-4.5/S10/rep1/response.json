@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a new cube mesh\nmesh = bpy.data.meshes.new(\"CubeMesh\")\nobj = bpy.data.objects.new(\"Cube\", mesh)\nbpy.context.collection.objects.link(obj)\nbpy.context.view_layer.objects.active = obj\nobj.select_set(True)\n\n# Create cube geometry using bmesh\nbm = bmesh.new()\nvertices = [\n    bm.verts.new((-1, -1, -1)),\n    bm.verts.new((1, -1, -1)),\n    bm.verts.new((1, 1, -1)),\n    bm.verts.new((-1, 1, -1)),\n    bm.verts.new((-1, -1, 1)),\n    bm.verts.new((1, -1, 1)),\n    bm.verts.new((1, 1, 1)),\n    bm.verts.new((-1, 1, 1)),\n]\n\n# Create cube faces\nfaces = [\n    bm.faces.new([vertices[0], vertices[1], vertices[2], vertices[3]]),  # bottom\n    bm.faces.new([vertices[4], vertices[7], vertices[6], vertices[5]]),  # top\n    bm.faces.new([vertices[0], vertices[4], vertices[5], vertices[1]]),  # front\n    bm.faces.new([vertices[2], vertices[6], vertices[7], vertices[3]]),  # back\n    bm.faces.new([vertices[0], vertices[3], vertices[7], vertices[4]]),  # left\n    bm.faces.new([vertices[1], vertices[5], vertices[6], vertices[2]]),  # right\n]\n\nbm.to_mesh(mesh)\nbm.free()\nmesh.update()\n\n# Create three materials (red, green, blue)\nred_mat = bpy.data.materials.new(name=\"Red\")\nred_mat.use_nodes = True\nred_mat.node_tree.nodes[\"Principled BSDF\"].inputs[0].default_value = (1.0, 0.0, 0.0, 1.0)\n\ngreen_mat = bpy.data.materials.new(name=\"Green\")\ngreen_mat.use_nodes = True\ngreen_mat.node_tree.nodes[\"Principled BSDF\"].inputs[0].default_value = (0.0, 1.0, 0.0, 1.0)\n\nblue_mat = bpy.data.materials.new(name=\"Blue\")\nblue_mat.use_nodes = True\nblue_mat.node_tree.nodes[\"Principled BSDF\"].inputs[0].default_value = (0.0, 0.0, 1.0, 1.0)\n\n# Add materials to the object's material slots\nobj.data.materials.append(red_mat)\nobj.data.materials.append(green_mat)\nobj.data.materials.append(blue_mat)\n\n# Assign materials to faces using material indices\nfor i, face in enumerate(mesh.polygons):\n    if i < 2:\n        face.material_index = 0  # Red for first two faces\n    elif i < 4:\n        face.material_index = 1  # Green for next two faces\n    else:\n        face.material_index = 2  # Blue for last two faces\n\nmesh.update()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 160,
+  "completion_tokens": 901,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004665,
+  "latency_s": 6.48,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

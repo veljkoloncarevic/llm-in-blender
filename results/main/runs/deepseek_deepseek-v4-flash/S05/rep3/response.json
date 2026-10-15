@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create the glowing neon ring (torus)\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=1.0,\n    minor_radius=0.1,\n    location=(0.0, 0.0, 1.0)\n)\ntorus = bpy.context.object\ntorus.name = \"NeonRing\"\n\n# Create emissive cyan material for the ring\nmat = bpy.data.materials.new(name=\"NeonCyanMaterial\")\nmat.use_nodes = True\nnodes = mat.node_tree.nodes\nlinks = mat.node_tree.links\n\n# Clear default nodes\nnodes.clear()\n\n# Emission node with cyan color and high strength\nemission = nodes.new(type='ShaderNodeEmission')\nemission.inputs['Color'].default_value = (0.0, 1.0, 1.0, 1.0)\nemission.inputs['Strength'].default_value = 10.0\n\n# Output node and link\noutput = nodes.new(type='ShaderNodeOutputMaterial')\nlinks.new(emission.outputs['Emission'], output.inputs['Surface'])\n\n# Assign material to torus\nif torus.data.materials:\n    torus.data.materials[0] = mat\nelse:\n    torus.data.materials.append(mat)\n\n# Create dark ground plane\nbpy.ops.mesh.primitive_plane_add(size=10.0, location=(0.0, 0.0, 0.0))\nground = bpy.context.object\nground.name = \"DarkGroundPlane\"\n\n# Dark, rough material for the ground\nground_mat = bpy.data.materials.new(name=\"DarkGroundMaterial\")\nground_mat.use_nodes = True\nground_nodes = ground_mat.node_tree.nodes\nground_nodes.clear()\n\nbsdf = ground_nodes.new(type='ShaderNodeBsdfPrincipled')\nbsdf.inputs['Base Color'].default_value = (0.02, 0.02, 0.02, 1.0)\nbsdf.inputs['Roughness'].default_value = 1.0\n\nground_output = ground_nodes.new(type='ShaderNodeOutputMaterial')\nground_links = ground_mat.node_tree.links\nground_links.new(bsdf.outputs['BSDF'], ground_output.inputs['Surface'])\n\nif ground.data.materials:\n    ground.data.materials[0] = ground_mat\nelse:\n    ground.data.materials.append(ground_mat)\n\n# Smooth shading for the ring\nbpy.ops.object.select_all(action='DESELECT')\ntorus.select_set(True)\nbpy.context.view_layer.objects.active = torus\nbpy.ops.object.shade_smooth()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 222,
+  "completion_tokens": 1925,
+  "reasoning_tokens": 1331,
+  "cost_usd_est": 0.00263868,
+  "latency_s": 18.79,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

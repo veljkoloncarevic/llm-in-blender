@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Parameters\np = 2\nq = 3\nR = 2.0          # torus major radius\nr = 1.0          # torus minor radius\ntube_radius = 0.1\n\nN = 512          # segments along the curve\nS = 24           # sides around the tube\n\n# Precompute frames using the torus parameterization\npoints = []\nframes = []  # (position, tangent_hat, normal1, normal2)\n\nfor i in range(N):\n    t = 2.0 * math.pi * i / N\n    theta = p * t\n    phi = q * t\n\n    cos_theta = math.cos(theta)\n    sin_theta = math.sin(theta)\n    cos_phi = math.cos(phi)\n    sin_phi = math.sin(phi)\n\n    center = R + r * cos_phi\n    pos = Vector((\n        center * cos_theta,\n        center * sin_theta,\n        r * sin_phi\n    ))\n\n    # Derivative with respect to t\n    dtheta = p\n    dphi = q\n    dx = -r * sin_phi * dphi * cos_theta - center * sin_theta * dtheta\n    dy = -r * sin_phi * dphi * sin_theta + center * cos_theta * dtheta\n    dz = r * cos_phi * dphi\n    tangent = Vector((dx, dy, dz)).normalized()\n\n    # Torus surface normal (radial outward)\n    radial = Vector((cos_theta * cos_phi, sin_theta * cos_phi, sin_phi))\n\n    # Orthogonalize radial against tangent\n    radial -= radial.dot(tangent) * tangent\n    radial.normalize()\n\n    binormal = tangent.cross(radial).normalized()\n    frames.append((pos, tangent, radial, binormal))\n\n# Build mesh\nbm = bmesh.new()\n\nfor pos, tangent, radial, binormal in frames:\n    for k in range(S):\n        angle = 2.0 * math.pi * k / S\n        cos_a = math.cos(angle)\n        sin_a = math.sin(angle)\n        offset = tube_radius * (cos_a * radial + sin_a * binormal)\n        bm.verts.new(pos + offset)\n\nbm.verts.ensure_lookup_table()\n\n# Add quad faces\nfor i in range(N):\n    for k in range(S):\n        v0 = bm.verts[i * S + k]\n        v1 = bm.verts[i * S + (k + 1) % S]\n        v2 = bm.verts[((i + 1) % N) * S + (k + 1) % S]\n        v3 = bm.verts[((i + 1) % N) * S + k]\n        bm.faces.new((v0, v1, v2, v3))\n\n# Recalculate normals so they point outward\nbmesh.ops.recalc_face_normals(bm, faces=bm.faces)\n\n# Create mesh object\nme = bpy.data.meshes.new(\"TorusKnotMesh\")\nbm.to_mesh(me)\nbm.free()\n\nobj = bpy.data.objects.new(\"TorusKnot\", me)\nbpy.context.collection.objects.link(obj)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 243,
+  "completion_tokens": 7662,
+  "reasoning_tokens": 6896,
+  "cost_usd_est": 0.01022076,
+  "latency_s": 81.81,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

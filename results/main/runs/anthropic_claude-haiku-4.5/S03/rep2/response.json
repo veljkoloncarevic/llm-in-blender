@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Add Suzanne mesh\nbpy.ops.mesh.primitive_uv_sphere_add(location=(0, 0, 0))\nsuzanne_obj = bpy.context.active_object\nbpy.ops.object.delete(use_global=False)\n\n# Add Suzanne using the correct operator\nbpy.ops.mesh.primitive_monkey_add(location=(0, 0, 0))\nsuzanne_obj = bpy.context.active_object\nsuzanne_obj.name = \"Suzanne\"\n\n# Create material\nmat = bpy.data.materials.new(name=\"WhiteMarble\")\nmat.use_nodes = True\nnodes = mat.node_tree.nodes\nlinks = mat.node_tree.links\n\n# Clear default nodes\nnodes.clear()\n\n# Create shader nodes\n# Noise Texture\nnoise_node = nodes.new(type='ShaderNodeTexNoise')\nnoise_node.inputs['Detail'].default_value = 5.0\nnoise_node.inputs['Roughness'].default_value = 0.7\n\n# Color Ramp\ncolor_ramp = nodes.new(type='ShaderNodeValRamp')\ncolor_ramp.color_ramp.elements[0].color = (0.1, 0.1, 0.1, 1.0)  # Dark gray\ncolor_ramp.color_ramp.elements[1].color = (1.0, 1.0, 1.0, 1.0)  # White\n\n# Principled BSDF\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\nprincipled.inputs['Base Color'].default_value = (1.0, 1.0, 1.0, 1.0)\nprincipled.inputs['Roughness'].default_value = 0.2\nprincipled.inputs['Specular IOR'].default_value = 1.5\n\n# Material Output\noutput_node = nodes.new(type='ShaderNodeOutputMaterial')\n\n# Connect nodes\nlinks.new(noise_node.outputs['Fac'], color_ramp.inputs['Fac'])\nlinks.new(color_ramp.outputs['Color'], principled.inputs['Base Color'])\nlinks.new(principled.outputs['BSDF'], output_node.inputs['Surface'])\n\n# Assign material to Suzanne\nsuzanne_obj.data.materials.append(mat)\n\n# Set viewport shading to show materials\nfor area in bpy.context.screen.areas:\n    if area.type == 'VIEW_3D':\n        for space in area.spaces:\n            if space.type == 'VIEW_3D':\n                space.shading.type = 'MATERIAL'\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 170,
+  "completion_tokens": 710,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.00372,
+  "latency_s": 5.44,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

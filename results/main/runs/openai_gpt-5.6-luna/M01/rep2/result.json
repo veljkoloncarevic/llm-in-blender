@@ -1,0 +1,429 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.016,
+  "scene": {
+    "faces": 7870,
+    "triangles": 16564,
+    "vertices": 8360,
+    "n_geometry_objects": 28,
+    "objects": [
+      {
+        "name": "Stair Step 01",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 02",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 03",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 04",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 05",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 06",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 07",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 08",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 09",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 10",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 11",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 12",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 13",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 14",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 15",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 16",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 17",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 18",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 19",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 20",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 21",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 22",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 23",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Stair Step 24",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Central Cylindrical Column",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Central Column"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Continuous Helical Handrail",
+        "type": "CURVE",
+        "modifiers": [],
+        "materials": [
+          "Handrail"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Lower Handrail Post",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Upper Handrail Post",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "BEVEL"
+    ],
+    "materials": [
+      {
+        "name": "Central Column",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.25,
+            "Roughness": 0.30000001192092896,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Handrail",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.6499999761581421,
+            "Roughness": 0.2199999988079071,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Step Material",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.05000000074505806,
+            "Roughness": 0.3799999952316284,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 3,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -3.1709835529327393,
+      -3.1718671321868896,
+      -0.11999988555908203
+    ],
+    "bbox_max": [
+      3.174274206161499,
+      3.1746277809143066,
+      6.989999771118164
+    ]
+  },
+  "render_time_s": 6.278,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\ndef create_snowman():\n    # 1. Body spheres (Bottom, Middle, Head)\n    # Using low segment/ring counts to keep the face count well under 3,000\n    \n    # Bottom sphere\n    bpy.ops.mesh.primitive_uv_sphere_add(\n        segments=24, ring_count=16, radius=1.5, location=(0, 0, 1.5)\n    )\n    bottom_sphere = bpy.context.active_object\n    bottom_sphere.name = \"Snowman_Bottom\"\n    \n    # Middle sphere\n    bpy.ops.mesh.primitive_uv_sphere_add(\n        segments=20, ring_count=14, radius=1.0, location=(0, 0, 3.4)\n    )\n    middle_sphere = bpy.context.active_object\n    middle_sphere.name = \"Snowman_Middle\"\n    \n    # Head sphere\n    bpy.ops.mesh.primitive_uv_sphere_add(\n        segments=16, ring_count=12, radius=0.6, location=(0, 0, 4.8)\n    )\n    head_sphere = bpy.context.active_object\n    head_sphere.name = \"Snowman_Head\"\n    \n    # 2. Carrot Nose (Cone)\n    bpy.ops.mesh.primitive_cone_add(\n        vertices=12, radius1=0.15, depth=0.8, location=(0, -0.6, 4.85), rotation=(1.5708, 0, 0)\n    )\n    nose = bpy.context.active_object\n    nose.name = \"Snowman_Nose\"\n    \n    # 3. Eyes (Small spheres)\n    # Left eye\n    bpy.ops.mesh.primitive_uv_sphere_add(\n        segments=8, ring_count=6, radius=0.08, location=(-0.18, -0.5, 5.0)\n    )\n    eye_left = bpy.context.active_object\n    eye_left.name = \"Snowman_Eye_Left\"\n    \n    # Right eye\n    bpy.ops.mesh.primitive_uv_sphere_add(\n        segments=8, ring_count=6, radius=0.08, location=(0.18, -0.5, 5.0)\n    )\n    eye_right = bpy.context.active_object\n    eye_right.name = \"Snowman_Eye_Right\"\n\n    # Optional: Join all parts into a single snowman object for cleanliness\n    bpy.ops.object.select_all(action='DESELECT')\n    for obj in [bottom_sphere, middle_sphere, head_sphere, nose, eye_left, eye_right]:\n        obj.select_set(True)\n    \n    bpy.context.view_layer.objects.active = bottom_sphere\n    bpy.ops.object.join()\n    \n    snowman = bpy.context.active_object\n    snowman.name = \"Snowman\"\n    \n    # Apply smooth shading to the snowman\n    for face in snowman.data.polygons:\n        face.use_smooth = True\n\ncreate_snowman()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 153,
+  "completion_tokens": 795,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0020334,
+  "latency_s": 2.9,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

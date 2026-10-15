@@ -1,0 +1,623 @@
+{
+  "version": 1,
+  "prompts": [
+    {
+      "id": "L01",
+      "tier": 1,
+      "tier_name": "Low-poly primitives & modifiers",
+      "title": "Table",
+      "prompt": "Model a low-poly table: a rectangular tabletop and four legs. Add a Bevel modifier to the tabletop. Keep the whole scene under 1,000 faces.",
+      "caption": "a 3D render of a simple table with four legs",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 12,
+          "max": 1000
+        },
+        {
+          "type": "min_objects",
+          "n": 1
+        },
+        {
+          "type": "modifier_any",
+          "types": [
+            "BEVEL"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L02",
+      "tier": 1,
+      "tier_name": "Low-poly primitives & modifiers",
+      "title": "Snowman",
+      "prompt": "Model a snowman from primitives only: three stacked UV spheres of decreasing size, a cone for the carrot nose and two small spheres for eyes. Keep the whole scene under 3,000 faces.",
+      "caption": "a 3D render of a snowman made of three stacked spheres",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 50,
+          "max": 3000
+        },
+        {
+          "type": "min_objects",
+          "n": 6
+        }
+      ]
+    },
+    {
+      "id": "L03",
+      "tier": 1,
+      "tier_name": "Low-poly primitives & modifiers",
+      "title": "Low-poly tree",
+      "prompt": "Model a stylised low-poly tree: a cylinder trunk with 8 sides and an icosphere canopy with at most 2 subdivisions. Keep the whole scene under 400 faces.",
+      "caption": "a 3D render of a low-poly tree with a trunk and a round canopy",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 20,
+          "max": 400
+        },
+        {
+          "type": "min_objects",
+          "n": 2
+        }
+      ]
+    },
+    {
+      "id": "L04",
+      "tier": 1,
+      "tier_name": "Low-poly primitives & modifiers",
+      "title": "Chess pawn",
+      "prompt": "Model a chess pawn using primitives only: a wide cylinder base, a torus collar, a tapered cylinder or cone body and a sphere head, all aligned on the Z axis. Keep the whole scene under 3,000 faces.",
+      "caption": "a 3D render of a chess pawn",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 50,
+          "max": 3000
+        },
+        {
+          "type": "min_objects",
+          "n": 3
+        }
+      ]
+    },
+    {
+      "id": "L05",
+      "tier": 1,
+      "tier_name": "Low-poly primitives & modifiers",
+      "title": "Bookshelf",
+      "prompt": "Model a bookshelf: a box frame made of thin cubes with three horizontal shelves. On each shelf place a row of at least 10 thin book-like boxes created with an Array modifier. Keep the whole scene under 2,000 faces.",
+      "caption": "a 3D render of a bookshelf with rows of books",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 60,
+          "max": 2000
+        },
+        {
+          "type": "modifier_any",
+          "types": [
+            "ARRAY"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L06",
+      "tier": 1,
+      "tier_name": "Low-poly primitives & modifiers",
+      "title": "Die",
+      "prompt": "Model a six-sided die: a cube with rounded edges using a Bevel modifier with 3 segments, and the pips modelled as shallow spheres or cylinders on the faces (1 to 6). Keep the whole scene under 4,000 faces.",
+      "caption": "a 3D render of a six-sided die with dots",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 30,
+          "max": 4000
+        },
+        {
+          "type": "modifier_any",
+          "types": [
+            "BEVEL"
+          ]
+        },
+        {
+          "type": "min_objects",
+          "n": 2
+        }
+      ]
+    },
+    {
+      "id": "L07",
+      "tier": 1,
+      "tier_name": "Low-poly primitives & modifiers",
+      "title": "Rocket",
+      "prompt": "Model a low-poly rocket: a cylinder body, a cone nose and three fins made from scaled cubes arranged evenly (120 degrees apart) around the body. Keep the whole scene under 800 faces.",
+      "caption": "a 3D render of a toy rocket with three fins",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 20,
+          "max": 800
+        },
+        {
+          "type": "min_objects",
+          "n": 5
+        }
+      ]
+    },
+    {
+      "id": "L08",
+      "tier": 1,
+      "tier_name": "Low-poly primitives & modifiers",
+      "title": "Mug",
+      "prompt": "Model a coffee mug: an open-topped cylinder made hollow with a Solidify modifier, and a torus (or half torus) as the handle attached to the side. Keep the whole scene under 3,000 faces.",
+      "caption": "a 3D render of a coffee mug with a handle",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 30,
+          "max": 3000
+        },
+        {
+          "type": "modifier_any",
+          "types": [
+            "SOLIDIFY"
+          ]
+        },
+        {
+          "type": "min_objects",
+          "n": 2
+        }
+      ]
+    },
+    {
+      "id": "L09",
+      "tier": 1,
+      "tier_name": "Low-poly primitives & modifiers",
+      "title": "Fence",
+      "prompt": "Model a straight wooden-style fence section: one post duplicated to 8 posts with an Array modifier, and two horizontal rails connecting them. Keep the whole scene under 1,000 faces.",
+      "caption": "a 3D render of a fence with posts and rails",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 20,
+          "max": 1000
+        },
+        {
+          "type": "modifier_any",
+          "types": [
+            "ARRAY"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L10",
+      "tier": 1,
+      "tier_name": "Low-poly primitives & modifiers",
+      "title": "House",
+      "prompt": "Model a simple low-poly house: a cube for the walls, a four-sided pyramid roof (cone with 4 vertices), a door, and windows placed symmetrically using a Mirror modifier. Keep the whole scene under 500 faces.",
+      "caption": "a 3D render of a small house with a pyramid roof",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 10,
+          "max": 500
+        },
+        {
+          "type": "modifier_any",
+          "types": [
+            "MIRROR"
+          ]
+        },
+        {
+          "type": "min_objects",
+          "n": 3
+        }
+      ]
+    },
+    {
+      "id": "M01",
+      "tier": 2,
+      "tier_name": "Medium-poly procedural geometry",
+      "title": "Spiral staircase",
+      "prompt": "Procedurally generate a spiral staircase with 24 steps winding around a central cylindrical column: each step rotated 15 degrees and raised relative to the previous one, plus a helical handrail along the outer edge. Total face count between 1,000 and 60,000.",
+      "caption": "a 3D render of a spiral staircase around a central column",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 1000,
+          "max": 60000
+        },
+        {
+          "type": "min_objects",
+          "n": 1
+        }
+      ]
+    },
+    {
+      "id": "M02",
+      "tier": 2,
+      "tier_name": "Medium-poly procedural geometry",
+      "title": "Terrain",
+      "prompt": "Procedurally generate a hilly terrain: a grid of at least 100 x 100 subdivisions whose vertex heights come from a noise function (for example mathutils.noise or a Displace modifier with a Clouds texture). Total face count between 5,000 and 120,000.",
+      "caption": "a 3D render of hilly terrain landscape",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 5000,
+          "max": 120000
+        }
+      ]
+    },
+    {
+      "id": "M03",
+      "tier": 2,
+      "tier_name": "Medium-poly procedural geometry",
+      "title": "Lathed vase",
+      "prompt": "Create a vase by revolving a 2D profile around the Z axis (for example with a Screw modifier or by building the lathe mesh in Python). It should have a narrow neck, wide body and flat base, with smooth shading and a Subdivision Surface modifier. Total face count between 2,000 and 60,000.",
+      "caption": "a 3D render of a smooth vase",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 2000,
+          "max": 60000
+        },
+        {
+          "type": "modifier_any",
+          "types": [
+            "SCREW",
+            "SUBSURF"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M04",
+      "tier": 2,
+      "tier_name": "Medium-poly procedural geometry",
+      "title": "Torus knot",
+      "prompt": "Generate a (2,3) torus knot as a tube: compute the parametric curve in Python, then give it a circular cross-section (curve bevel or swept mesh). Total face count between 2,000 and 60,000.",
+      "caption": "a 3D render of a torus knot",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 2000,
+          "max": 60000
+        }
+      ]
+    },
+    {
+      "id": "M05",
+      "tier": 2,
+      "tier_name": "Medium-poly procedural geometry",
+      "title": "Honeycomb",
+      "prompt": "Procedurally generate a honeycomb panel: a 10 x 10 grid of hexagonal prisms with small gaps between cells, correctly offset in alternating rows. Total face count between 600 and 60,000.",
+      "caption": "a 3D render of a honeycomb pattern of hexagonal cells",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 600,
+          "max": 60000
+        }
+      ]
+    },
+    {
+      "id": "M06",
+      "tier": 2,
+      "tier_name": "Medium-poly procedural geometry",
+      "title": "Spur gear",
+      "prompt": "Procedurally generate a spur gear with 24 teeth, a thickness of 0.3, and a circular hole through the centre, built as a single mesh using bmesh or vertex/face lists. Total face count between 200 and 60,000.",
+      "caption": "a 3D render of a mechanical gear with teeth",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 200,
+          "max": 60000
+        },
+        {
+          "type": "min_objects",
+          "n": 1
+        }
+      ]
+    },
+    {
+      "id": "M07",
+      "tier": 2,
+      "tier_name": "Medium-poly procedural geometry",
+      "title": "Scattered pebbles",
+      "prompt": "Using a Geometry Nodes modifier, scatter about 200 small icosphere pebbles of random size and rotation over a 4 x 4 plane (Distribute Points on Faces then Instance on Points). Total face count, including instances, between 5,000 and 150,000.",
+      "caption": "a 3D render of many small pebbles scattered on a flat ground",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 5000,
+          "max": 150000
+        },
+        {
+          "type": "modifier_any",
+          "types": [
+            "NODES"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M08",
+      "tier": 2,
+      "tier_name": "Medium-poly procedural geometry",
+      "title": "Coil spring",
+      "prompt": "Generate a coil spring: a helix with 8 turns, radius 1 and height 4, with a circular wire cross-section (curve bevel or swept tube). Total face count between 2,000 and 60,000.",
+      "caption": "a 3D render of a metal coil spring",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 2000,
+          "max": 60000
+        }
+      ]
+    },
+    {
+      "id": "M09",
+      "tier": 2,
+      "tier_name": "Medium-poly procedural geometry",
+      "title": "Rock",
+      "prompt": "Create a natural-looking rock: start from an icosphere with at least 4 subdivisions and deform it with a Displace modifier driven by a noise-based texture, with irregular non-uniform scale. Total face count between 2,000 and 60,000.",
+      "caption": "a 3D render of a rough natural rock",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 2000,
+          "max": 60000
+        },
+        {
+          "type": "modifier_any",
+          "types": [
+            "DISPLACE"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M10",
+      "tier": 2,
+      "tier_name": "Medium-poly procedural geometry",
+      "title": "Chain",
+      "prompt": "Generate a chain of 12 interlocking oval links, each link rotated 90 degrees around the chain axis relative to its neighbour so that the links pass through each other. Total face count between 3,000 and 60,000.",
+      "caption": "a 3D render of a metal chain with interlocking links",
+      "checks": [
+        {
+          "type": "face_range",
+          "min": 3000,
+          "max": 60000
+        }
+      ]
+    },
+    {
+      "id": "S01",
+      "tier": 3,
+      "tier_name": "Texturing & shader-node materials",
+      "title": "Gold sphere",
+      "prompt": "Create a smooth UV sphere with a polished gold material: Principled BSDF with Metallic 1.0, a gold base colour and low roughness. Add a ground plane with a neutral grey material.",
+      "caption": "a 3D render of a shiny gold metal sphere",
+      "checks": [
+        {
+          "type": "min_materials",
+          "n": 2
+        },
+        {
+          "type": "nodes_connected_all",
+          "nodes": [
+            "ShaderNodeBsdfPrincipled"
+          ]
+        },
+        {
+          "type": "principled_min",
+          "input": "Metallic",
+          "value": 0.9
+        }
+      ]
+    },
+    {
+      "id": "S02",
+      "tier": 3,
+      "tier_name": "Texturing & shader-node materials",
+      "title": "Checker floor",
+      "prompt": "Create a floor plane with a black-and-white Checker Texture node driving the Base Color, and a glossy red cube sitting on it.",
+      "caption": "a 3D render of a red cube on a black and white checkered floor",
+      "checks": [
+        {
+          "type": "min_materials",
+          "n": 2
+        },
+        {
+          "type": "nodes_connected_all",
+          "nodes": [
+            "ShaderNodeTexChecker"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S03",
+      "tier": 3,
+      "tier_name": "Texturing & shader-node materials",
+      "title": "Marble",
+      "prompt": "Add a Suzanne (monkey) mesh with a white marble material: a Noise or Wave texture fed through a Color Ramp into the Base Color of a Principled BSDF.",
+      "caption": "a 3D render of a white marble monkey head sculpture",
+      "checks": [
+        {
+          "type": "min_materials",
+          "n": 1
+        },
+        {
+          "type": "nodes_connected_all",
+          "nodes": [
+            "ShaderNodeValToRGB"
+          ]
+        },
+        {
+          "type": "nodes_connected_any",
+          "nodes": [
+            "ShaderNodeTexNoise",
+            "ShaderNodeTexWave"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S04",
+      "tier": 3,
+      "tier_name": "Texturing & shader-node materials",
+      "title": "Glass",
+      "prompt": "Create a clear glass sphere (Principled BSDF with full transmission, roughness near 0 and IOR 1.45) resting on a blue ground plane.",
+      "caption": "a 3D render of a clear glass sphere on a blue floor",
+      "checks": [
+        {
+          "type": "min_materials",
+          "n": 2
+        },
+        {
+          "type": "principled_min",
+          "input": "Transmission",
+          "value": 0.9
+        }
+      ]
+    },
+    {
+      "id": "S05",
+      "tier": 3,
+      "tier_name": "Texturing & shader-node materials",
+      "title": "Neon ring",
+      "prompt": "Create a glowing cyan neon ring: a torus with an emissive material of emission strength at least 5, above a dark ground plane.",
+      "caption": "a 3D render of a glowing cyan neon ring",
+      "checks": [
+        {
+          "type": "min_materials",
+          "n": 1
+        },
+        {
+          "type": "emissive",
+          "min_strength": 5
+        }
+      ]
+    },
+    {
+      "id": "S06",
+      "tier": 3,
+      "tier_name": "Texturing & shader-node materials",
+      "title": "Wood",
+      "prompt": "Create a wooden plank (a scaled cube) with a procedural wood material: a Wave texture distorted by a Noise texture, mapped through a Color Ramp of brown tones into the Base Color, and the same pattern driving a Bump node connected to the Normal input.",
+      "caption": "a 3D render of a wooden plank with wood grain",
+      "checks": [
+        {
+          "type": "min_materials",
+          "n": 1
+        },
+        {
+          "type": "nodes_connected_all",
+          "nodes": [
+            "ShaderNodeTexWave",
+            "ShaderNodeBump"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S07",
+      "tier": 3,
+      "tier_name": "Texturing & shader-node materials",
+      "title": "Rusty metal",
+      "prompt": "Create a cylinder with a rusty metal material: blend a grey metallic surface with an orange-brown rough rust surface using a Noise texture as the mask (Mix Shader or Mix node).",
+      "caption": "a 3D render of a rusty metal cylinder",
+      "checks": [
+        {
+          "type": "min_materials",
+          "n": 1
+        },
+        {
+          "type": "nodes_connected_all",
+          "nodes": [
+            "ShaderNodeTexNoise"
+          ]
+        },
+        {
+          "type": "nodes_connected_any",
+          "nodes": [
+            "ShaderNodeMixShader",
+            "ShaderNodeMix",
+            "ShaderNodeMixRGB"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S08",
+      "tier": 3,
+      "tier_name": "Texturing & shader-node materials",
+      "title": "Brick wall",
+      "prompt": "Create a wall (a plane or thin box) with a procedural brick material using the Brick Texture node for colour, and the mortar pattern driving a Bump or Displacement node.",
+      "caption": "a 3D render of a red brick wall",
+      "checks": [
+        {
+          "type": "min_materials",
+          "n": 1
+        },
+        {
+          "type": "nodes_connected_all",
+          "nodes": [
+            "ShaderNodeTexBrick"
+          ]
+        },
+        {
+          "type": "nodes_connected_any",
+          "nodes": [
+            "ShaderNodeBump",
+            "ShaderNodeDisplacement"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S09",
+      "tier": 3,
+      "tier_name": "Texturing & shader-node materials",
+      "title": "Car paint",
+      "prompt": "Create a sphere with a deep red car-paint material: Principled BSDF with metallic around 0.5 and a strong clear coat (coat weight at least 0.8).",
+      "caption": "a 3D render of a glossy red car paint sphere",
+      "checks": [
+        {
+          "type": "min_materials",
+          "n": 1
+        },
+        {
+          "type": "principled_min",
+          "input": "Coat",
+          "value": 0.8
+        },
+        {
+          "type": "principled_min",
+          "input": "Metallic",
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "S10",
+      "tier": 3,
+      "tier_name": "Texturing & shader-node materials",
+      "title": "Multi-material cube",
+      "prompt": "Create a cube with three different coloured materials (red, green and blue) assigned to different faces of the same mesh using material slots and face material indices.",
+      "caption": "a 3D render of a cube with red, green and blue faces",
+      "checks": [
+        {
+          "type": "multi_material_object",
+          "n": 3
+        }
+      ]
+    }
+  ]
+}

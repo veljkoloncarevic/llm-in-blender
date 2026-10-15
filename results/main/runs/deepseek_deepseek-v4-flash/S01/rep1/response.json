@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create polished gold material\ngold_mat = bpy.data.materials.new(\"Polished_Gold\")\ngold_mat.use_nodes = True\ngold_bsdf = gold_mat.node_tree.nodes[\"Principled BSDF\"]\ngold_bsdf.inputs[\"Base Color\"].default_value = (1.0, 0.766, 0.336, 1.0)\ngold_bsdf.inputs[\"Metallic\"].default_value = 1.0\ngold_bsdf.inputs[\"Roughness\"].default_value = 0.1\n\n# Create neutral grey material for the ground\nground_mat = bpy.data.materials.new(\"Neutral_Grey\")\nground_mat.use_nodes = True\nground_bsdf = ground_mat.node_tree.nodes[\"Principled BSDF\"]\nground_bsdf.inputs[\"Base Color\"].default_value = (0.5, 0.5, 0.5, 1.0)\nground_bsdf.inputs[\"Metallic\"].default_value = 0.0\nground_bsdf.inputs[\"Roughness\"].default_value = 0.8\n\n# Create smooth UV sphere\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=32,\n    ring_count=16,\n    radius=1.0,\n    location=(0.0, 0.0, 1.0)\n)\nsphere = bpy.context.object\nsphere.name = \"Sphere\"\nsphere.data.materials.append(gold_mat)\nbpy.ops.object.shade_smooth()\n\n# Create ground plane\nbpy.ops.mesh.primitive_plane_add(\n    size=10.0,\n    location=(0.0, 0.0, 0.0)\n)\nplane = bpy.context.object\nplane.name = \"Ground\"\nplane.data.materials.append(ground_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 235,
+  "completion_tokens": 1251,
+  "reasoning_tokens": 826,
+  "cost_usd_est": 0.0017547200000000002,
+  "latency_s": 12.47,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

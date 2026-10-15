@@ -1,0 +1,201 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.014,
+  "scene": {
+    "faces": 228,
+    "triangles": 456,
+    "vertices": 304,
+    "n_geometry_objects": 11,
+    "objects": [
+      {
+        "name": "Left Side",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Wood"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Right Side",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Wood"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Top Frame",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Wood"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Bottom Frame",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Wood"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Back Panel",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Wood"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Shelf 1",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Shelf Wood"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Shelf 2",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Shelf Wood"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Shelf 3",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Shelf Wood"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Lower Book Source",
+        "type": "MESH",
+        "modifiers": [
+          "ARRAY"
+        ],
+        "materials": [
+          "Books Red"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Middle Book Source",
+        "type": "MESH",
+        "modifiers": [
+          "ARRAY"
+        ],
+        "materials": [
+          "Books Blue"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Upper Book Source",
+        "type": "MESH",
+        "modifiers": [
+          "ARRAY"
+        ],
+        "materials": [
+          "Books Green"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "ARRAY"
+    ],
+    "materials": [
+      {
+        "name": "Books Blue",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Books Green",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Books Red",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Dark Wood",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Shelf Wood",
+        "assigned": true,
+        "use_nodes": false
+      }
+    ],
+    "n_materials_assigned": 5,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -4.0,
+      -1.0,
+      -4.0
+    ],
+    "bbox_max": [
+      4.0,
+      1.0,
+      4.0
+    ]
+  },
+  "render_time_s": 28.619,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\n\n# Remove all existing objects from the scene\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# --- Create the mug body ---\n# Use bmesh to create a closed cylinder, then delete the top face.\ndepth = 1.5\nsegments = 32\n\nmesh = bpy.data.meshes.new(\"MugBody\")\nbm = bmesh.new()\n\n# Cylinder centered at origin, axis Z\nbmesh.ops.create_cone(\n    bm,\n    segments=segments,\n    diameter1=1.0,\n    diameter2=1.0,\n    depth=depth,\n    cap_ends=True,\n    cap_tris=False,\n)\n\n# Recenter cylinder so it spans z = -depth/2 .. depth/2\nfor v in bm.verts:\n    v.co.z -= depth / 2.0\n\n# Delete the top face (the n-gon with normal pointing +Z)\nfor f in list(bm.faces):\n    if f.normal.z > 0.99:\n        bm.faces.remove(f)\n\nbm.to_mesh(mesh)\nbm.free()\n\nbody_obj = bpy.data.objects.new(\"MugBody\", mesh)\nbpy.context.collection.objects.link(body_obj)\n\n# Add Solidify modifier to make the wall hollow\nsolidify_mod = body_obj.modifiers.new(\"Solidify\", 'SOLIDIFY')\nsolidify_mod.thickness = 0.1\nsolidify_mod.offset = 1.0  # extend outward from the original surface\n\n# --- Create the handle ---\n# A torus lying in the XZ plane, attached to the side of the cylinder.\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=0.5,\n    minor_radius=0.1,\n    major_segments=16,\n    minor_segments=8,\n    location=(1.0, 0.0, 0.0),\n    rotation=(math.pi / 2, 0.0, 0.0)\n)\nhandle_obj = bpy.context.active_object\nhandle_obj.name = \"MugHandle\"\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 240,
+  "completion_tokens": 5982,
+  "reasoning_tokens": 5511,
+  "cost_usd_est": 0.008001840000000001,
+  "latency_s": 65.6,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

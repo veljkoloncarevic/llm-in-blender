@@ -1,0 +1,251 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.009,
+  "scene": {
+    "faces": 3816,
+    "triangles": 7544,
+    "vertices": 3824,
+    "n_geometry_objects": 26,
+    "objects": [
+      {
+        "name": "Step_00",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_01",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_02",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_03",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_04",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_05",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_06",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_07",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_08",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_09",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_10",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_11",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_12",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_13",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_14",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_15",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_16",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_17",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_18",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_19",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_20",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_21",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_22",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Step_23",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Column",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      },
+      {
+        "name": "Handrail",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [],
+        "distinct_materials_on_faces": 0
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [],
+    "materials": [
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 0,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.5259807109832764,
+      -1.5259807109832764,
+      -0.05000000074505806
+    ],
+    "bbox_max": [
+      1.5259807109832764,
+      1.5259807109832764,
+      6.0
+    ]
+  },
+  "render_time_s": 5.791,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

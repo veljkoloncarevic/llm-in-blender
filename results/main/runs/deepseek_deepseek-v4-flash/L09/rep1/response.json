@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\ndef remove_all_objects():\n    bpy.ops.object.mode_set(mode='OBJECT')\n    bpy.ops.object.select_all(action='SELECT')\n    bpy.ops.object.delete(use_global=False)\n\ndef add_cube(name, location, dimensions, material=None):\n    bpy.ops.mesh.primitive_cube_add(size=1, location=location)\n    obj = bpy.context.object\n    obj.name = name\n    obj.dimensions = dimensions\n\n    bpy.ops.object.select_all(action='DESELECT')\n    obj.select_set(True)\n    bpy.context.view_layer.objects.active = obj\n    bpy.ops.object.transform_apply(scale=True, location=False, rotation=False)\n\n    if material is not None:\n        obj.data.materials.append(material)\n    return obj\n\nremove_all_objects()\n\n# Simple brown wood material\nwood_mat = bpy.data.materials.new(\"Wood\")\nwood_mat.use_nodes = True\nbsdf = wood_mat.node_tree.nodes.get(\"Principled BSDF\")\nif bsdf is not None:\n    bsdf.inputs[\"Base Color\"].default_value = (0.4, 0.25, 0.1, 1.0)\nelse:\n    wood_mat.diffuse_color = (0.4, 0.25, 0.1, 1.0)\n\n# One post, duplicated by Array modifier\npost = add_cube(\"Post\", (0.0, 0.0, 0.75), (0.1, 0.1, 1.5), wood_mat)\n\narr = post.modifiers.new(name=\"Array\", type='ARRAY')\narr.count = 8\narr.use_relative_offset = False\narr.use_constant_offset = True\narr.relative_offset_displace = (0.0, 0.0, 0.0)\narr.constant_offset_displace = (1.0, 0.0, 0.0)\n\n# Two horizontal rails connecting the 8 posts\nrail_length = 7.1\nrail_depth = 0.15\nrail_height = 0.1\ncenter_x = 3.5\n\nadd_cube(\"Rail_Top\", (center_x, 0.0, 1.2), (rail_length, rail_depth, rail_height), wood_mat)\nadd_cube(\"Rail_Bottom\", (center_x, 0.0, 0.5), (rail_length, rail_depth, rail_height), wood_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 231,
+  "completion_tokens": 12609,
+  "reasoning_tokens": 12071,
+  "cost_usd_est": 0.01674552,
+  "latency_s": 120.91,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

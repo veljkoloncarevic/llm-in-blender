@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False, confirm=False)\n\n# Create a cube\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 0))\ncube = bpy.context.active_object\nmesh = cube.data\n\n# Create three materials: red, green, and blue\nmaterials = {}\ncolors = {\n    'Red': (1.0, 0.0, 0.0, 1.0),\n    'Green': (0.0, 1.0, 0.0, 1.0),\n    'Blue': (0.0, 0.0, 1.0, 1.0)\n}\n\nfor name, color in colors.items():\n    mat = bpy.data.materials.new(name=name)\n    mat.use_nodes = True\n    mat.node_tree.nodes[\"Principled BSDF\"].inputs[0].default_value = color\n    materials[name] = mat\n    mesh.materials.append(mat)\n\n# Assign materials to faces using bmesh\nbm = bmesh.new()\nbm.from_mesh(mesh)\nbm.faces.ensure_lookup_table()\n\n# Assign red material to first two faces\nfor i in range(2):\n    bm.faces[i].material_index = 0\n\n# Assign green material to next two faces\nfor i in range(2, 4):\n    bm.faces[i].material_index = 1\n\n# Assign blue material to last two faces\nfor i in range(4, 6):\n    bm.faces[i].material_index = 2\n\nbm.to_mesh(mesh)\nbm.free()\n\n# Update the mesh\nmesh.update()\n\n# Set the object to solid shading mode to see materials\nfor area in bpy.context.screen.areas:\n    if area.type == 'VIEW_3D':\n        for space in area.spaces:\n            if space.type == 'VIEW_3D':\n                space.shading.type = 'SOLID'\n                space.shading.use_scene_lights = True\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 160,
+  "completion_tokens": 554,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.00293,
+  "latency_s": 3.88,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Chain parameters\nlink_count = 12\nmajor_radius = 1.35\nminor_radius = 0.62\ntube_radius = 0.16\nlink_spacing = 1.75\n\nmajor_segments = 64\ntube_segments = 16\n\ndef create_oval_link(name, center_x, orientation):\n    \"\"\"\n    Creates an oval tubular link.\n    orientation 0: oval lies in the XY plane, normal along Z\n    orientation 1: oval lies in the XZ plane, normal along Y\n    \"\"\"\n    vertices = []\n    faces = []\n\n    if orientation == 0:\n        transverse = Vector((0.0, 1.0, 0.0))\n        normal = Vector((0.0, 0.0, 1.0))\n    else:\n        transverse = Vector((0.0, 0.0, 1.0))\n        normal = Vector((0.0, 1.0, 0.0))\n\n    axis = Vector((1.0, 0.0, 0.0))\n    center = Vector((center_x, 0.0, 0.0))\n\n    for i in range(major_segments):\n        u = 2.0 * math.pi * i / major_segments\n        cu = math.cos(u)\n        su = math.sin(u)\n\n        # Centerline of the oval\n        centerline = center + axis * (major_radius * cu) + transverse * (minor_radius * su)\n\n        # Approximate outward-facing radial direction in the oval's plane\n        radial = (axis * su + transverse * cu).normalized()\n\n        for j in range(tube_segments):\n            v = 2.0 * math.pi * j / tube_segments\n            cv = math.cos(v)\n            sv = math.sin(v)\n\n            vertex = (\n                centerline\n                + radial * (tube_radius * cv)\n                + normal * (tube_radius * sv)\n            )\n            vertices.append(tuple(vertex))\n\n    for i in range(major_segments):\n        ni = (i + 1) % major_segments\n        for j in range(tube_segments):\n            nj = (j + 1) % tube_segments\n\n            a = i * tube_segments + j\n            b = ni * tube_segments + j\n            c = ni * tube_segments + nj\n            d = i * tube_segments + nj\n            faces.append((a, b, c, d))\n\n    mesh = bpy.data.meshes.new(name + \"_Mesh\")\n    mesh.from_pydata(vertices, [], faces)\n    mesh.update()\n\n    obj = bpy.data.objects.new(name, mesh)\n    bpy.context.collection.objects.link(obj)\n\n    for polygon in mesh.polygons:\n        polygon.use_smooth = True\n\n    return obj\n\n# Build alternating links, each rotated 90 degrees about the chain axis\nfor i in range(link_count):\n    orientation = i % 2\n    create_oval_link(\n        name=f\"Oval_Link_{i + 1:02d}\",\n        center_x=(i - (link_count - 1) / 2.0) * link_spacing,\n        orientation=orientation\n    )\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 164,
+  "completion_tokens": 1220,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0014968,
+  "latency_s": 11.32,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# 1. Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# 2. Create an icosphere with 4 subdivisions\n# An icosphere with radius 1.0 and 4 subdivisions yields 5120 faces,\n# which sits comfortably inside the 2,000 - 60,000 face count range.\nbpy.ops.mesh.primitive_ico_sphere_add(\n    subdivisions=4,\n    radius=1.0,\n    location=(0, 0, 0)\n)\nrock = bpy.context.active_object\nrock.name = \"NaturalRock\"\n\n# 3. Apply irregular non-uniform scale to the object base\nrock.scale = (1.2, 0.8, 1.6)\n\n# Apply the scale so modifiers operate in local coordinates predictably\nbpy.ops.object.transform_apply(location=False, rotation=False, scale=True)\n\n# 4. Create and assign a procedural Noise texture for displacement\nnoise_texture = bpy.data.textures.new(name=\"RockNoise\", type='NOISE')\nnoise_texture.noise_scale = 0.8\nnoise_texture.noise_depth = 4\nnoise_texture.turbulence = 5.0\n\n# 5. Add a Displace modifier driven by the noise texture\ndisplace_mod = rock.modifiers.new(name=\"RockDisplace\", type='DISPLACE')\ndisplace_mod.texture = noise_texture\ndisplace_mod.strength = 0.35\ndisplace_mod.mid_level = 0.5\n\n# 6. Smooth the geometry out to enhance the organic rock feel\nsubsurf_mod = rock.modifiers.new(name=\"RockSubsurf\", type='SUBSURF')\nsubsurf_mod.levels = 1\nsubsurf_mod.render_levels = 1\n\n# Optional: Add a smooth modifier with a low factor to soften harsh noise peaks\nsmooth_mod = rock.modifiers.new(name=\"RockSmooth\", type='SMOOTH')\nsmooth_mod.factor = 0.5\nsmooth_mod.iterations = 2\n\n# Set shading to smooth for the rock object\nfor polygon in rock.data.polygons:\n    polygon.use_smooth = True\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 172,
+  "completion_tokens": 536,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0013916,
+  "latency_s": 2.31,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

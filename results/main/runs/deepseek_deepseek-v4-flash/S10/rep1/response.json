@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Create a new cube mesh and object\nmesh = bpy.data.meshes.new(\"Cube\")\nobj = bpy.data.objects.new(\"Cube\", mesh)\nbpy.context.collection.objects.link(obj)\n\n# Build cube geometry with bmesh\nbm = bmesh.new()\nbmesh.ops.create_cube(bm, size=2)\nbm.to_mesh(mesh)\nbm.free()\n\n# Create three coloured materials\nmat_red = bpy.data.materials.new(\"Red\")\nmat_green = bpy.data.materials.new(\"Green\")\nmat_blue = bpy.data.materials.new(\"Blue\")\n\ndef set_material_color(mat, color):\n    \"\"\"Set both viewport and renderable base colour.\"\"\"\n    if mat.node_tree is None:\n        mat.use_nodes = True\n    bsdf = mat.node_tree.nodes.get(\"Principled BSDF\")\n    if bsdf:\n        bsdf.inputs[\"Base Color\"].default_value = color\n    mat.diffuse_color = color\n\nset_material_color(mat_red, (1.0, 0.0, 0.0, 1.0))\nset_material_color(mat_green, (0.0, 1.0, 0.0, 1.0))\nset_material_color(mat_blue, (0.0, 0.0, 1.0, 1.0))\n\n# Assign the three materials as slots on the mesh\nmesh.materials.append(mat_red)\nmesh.materials.append(mat_green)\nmesh.materials.append(mat_blue)\n\n# Assign material indices to the six cube faces:\n# faces 0&1 -> red, 2&3 -> green, 4&5 -> blue\nfor i, poly in enumerate(mesh.polygons):\n    poly.material_index = i // 2\n\n# Make the new cube the active object\nbpy.context.view_layer.objects.active = obj\nobj.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 224,
+  "completion_tokens": 5241,
+  "reasoning_tokens": 4794,
+  "cost_usd_est": 0.00701668,
+  "latency_s": 52.84,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

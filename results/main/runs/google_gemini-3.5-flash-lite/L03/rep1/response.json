@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# 1. Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# 2. Create the Trunk (Cylinder with 8 sides)\n# Radius 0.4, Depth 3.0, 8 vertices on cap\nbpy.ops.mesh.primitive_cylinder_add(\n    radius=0.4,\n    depth=3.0,\n    vertices=8,\n    location=(0, 0, 1.5)\n)\ntrunk_obj = bpy.context.active_object\ntrunk_obj.name = \"LowPolyTrunk\"\n\n# 3. Create the Canopy (Icosphere with 1 subdivision)\n# Icosphere with 1 subdivision has 80 faces, keeps well under the 400 face limit.\nbpy.ops.mesh.primitive_ico_sphere_add(\n    radius=1.8,\n    subdivisions=1,\n    location=(0, 0, 3.8)\n)\ncanopy_obj = bpy.context.active_object\ncanopy_obj.name = \"LowPolyCanopy\"\n\n# 4. Stylize: Join them into a single low-poly tree object\nbpy.ops.object.select_all(action='DESELECT')\ntrunk_obj.select_set(True)\ncanopy_obj.select_set(True)\nbpy.context.view_layer.objects.active = trunk_obj\nbpy.ops.object.join()\n\ntree_obj = trunk_obj\ntree_obj.name = \"StylisedTree\"\n\n# 5. Apply low-poly flat shading\nmesh = tree_obj.data\nbm = bmesh.new()\nbm.from_mesh(mesh)\n\nfor f in bm.faces:\n    f.smooth = False\n\nbm.to_mesh(mesh)\nbm.free()\nmesh.update()\n\n# 6. Add simple materials for a stylized look\nmat_trunk = bpy.data.materials.new(name=\"TrunkMaterial\")\nmat_trunk.use_nodes = True\nmat_trunk.node_tree.nodes[\"Principled BSDF\"].inputs[0].default_value = (0.28, 0.18, 0.10, 1.0) # Brown\n\nmat_canopy = bpy.data.materials.new(name=\"CanopyMaterial\")\nmat_canopy.use_nodes = True\nmat_canopy.node_tree.nodes[\"Principled BSDF\"].inputs[0].default_value = (0.15, 0.45, 0.20, 1.0) # Green\n\n# Assign materials to slots (Trunk faces vs Canopy faces)\n# Since we joined them, we can assign materials by material index or per-face based on position.\n# Let's assign materials cleanly:\ntree_obj.data.materials.append(mat_trunk)\ntree_obj.data.materials.append(mat_canopy)\n\n# Assign canopy faces (Z > 2.5) to material slot 1, trunk to slot 0\nfor poly in tree_obj.data.polygons:\n    # Check average position of polygon vertices to determine if it's trunk or canopy\n    center = sum((tree_obj.matrix_world @ v.co for v in [tree_obj.data.vertices[vi] for vi in poly.vertices]), Vector()) / len(poly.vertices)\n    if center.z > 2.5:\n        poly.material_index = 1\n    else:\n        poly.material_index = 0\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 151,
+  "completion_tokens": 837,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0021378,
+  "latency_s": 3.17,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

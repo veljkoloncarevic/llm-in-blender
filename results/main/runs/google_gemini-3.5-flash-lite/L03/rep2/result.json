@@ -1,0 +1,10 @@
+{
+  "status": "exec_error",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": false,
+  "error_type": "ValueError",
+  "error_message": "The mesh must be in editmode",
+  "error_line": 30,
+  "traceback": "Traceback (most recent call last):\n  File \"/app/src/blender_harness.py\", line 60, in <module>\n    exec(compiled, {\"__name__\": \"__main__\", \"__file__\": \"llm_script.py\"})\n  File \"llm_script.py\", line 30, in <module>\nValueError: The mesh must be in editmode\n",
+  "exec_time_s": 0.003
+}

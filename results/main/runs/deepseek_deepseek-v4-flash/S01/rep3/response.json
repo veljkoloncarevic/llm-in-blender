@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create smooth UV sphere\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1.0, location=(0.0, 0.0, 1.0))\nsphere = bpy.context.active_object\nbpy.ops.object.shade_smooth()\n\n# Gold material\ngold_mat = bpy.data.materials.new(name=\"Polished_Gold\")\ngold_mat.use_nodes = True\nbsdf = gold_mat.node_tree.nodes.get(\"Principled BSDF\")\nif bsdf:\n    bsdf.inputs[\"Base Color\"].default_value = (1.0, 0.766, 0.336, 1.0)\n    bsdf.inputs[\"Metallic\"].default_value = 1.0\n    bsdf.inputs[\"Roughness\"].default_value = 0.1  # low roughness for polish\n\nif sphere.data.materials:\n    sphere.data.materials[0] = gold_mat\nelse:\n    sphere.data.materials.append(gold_mat)\n\n# Create ground plane\nbpy.ops.mesh.primitive_plane_add(size=10.0, location=(0.0, 0.0, 0.0))\nplane = bpy.context.active_object\n\n# Neutral grey ground material\nground_mat = bpy.data.materials.new(name=\"Neutral_Ground\")\nground_mat.use_nodes = True\nbsdf_ground = ground_mat.node_tree.nodes.get(\"Principled BSDF\")\nif bsdf_ground:\n    bsdf_ground.inputs[\"Base Color\"].default_value = (0.5, 0.5, 0.5, 1.0)\n    bsdf_ground.inputs[\"Roughness\"].default_value = 0.8\n\nif plane.data.materials:\n    plane.data.materials[0] = ground_mat\nelse:\n    plane.data.materials.append(ground_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 235,
+  "completion_tokens": 1409,
+  "reasoning_tokens": 981,
+  "cost_usd_est": 0.0019632800000000004,
+  "latency_s": 14.79,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

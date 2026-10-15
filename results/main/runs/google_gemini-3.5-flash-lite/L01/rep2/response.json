@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# 1. Clear existing scene\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# 2. Create Tabletop Mesh\nmesh_top = bpy.data.meshes.new(\"Tabletop_Mesh\")\nobj_top = bpy.data.objects.new(\"Tabletop\", mesh_top)\nbpy.context.collection.objects.link(obj_top)\n\nbm_top = bmesh.new()\n# Dimensions: X=1.6, Y=1.0, Z=0.1\nbmesh.ops.create_cube(bm_top, size=1.0)\n# Scale it to be a rectangular tabletop\nbmesh.ops.scale(bm_top, vec=Vector((1.6, 1.0, 0.1)), verts=bm_top.verts)\n# Position it above the origin\nbmesh.ops.translate(bm_top, vec=Vector((0, 0, 0.95)), verts=bm_top.verts)\nbm_top.to_mesh(mesh_top)\nbm_top.free()\n\n# Add a Bevel modifier to the tabletop for a clean low-poly look\nbevel_mod = obj_top.modifiers.new(name=\"Bevel\", type='BEVEL')\nbevel_mod.width = 0.02\nbevel_mod.segments = 2\nbevel_mod.limit_method = 'ANGLE'\n\n# 3. Create Table Legs (Single Mesh for efficiency)\nmesh_legs = bpy.data.meshes.new(\"TableLegs_Mesh\")\nobj_legs = bpy.data.objects.new(\"TableLegs\", mesh_legs)\nbpy.context.collection.objects.link(obj_legs)\n\nbm_legs = bmesh.new()\n\n# Define leg dimensions and offset from center\nleg_size_x = 0.1\nleg_size_y = 0.1\nleg_height = 0.9\nleg_z_pos = leg_height / 2.0\n\n# Offsets in X and Y to place legs near the corners of the 1.6x1.0 tabletop\nx_offset = (1.6 / 2.0) - 0.12\ny_offset = (1.0 / 2.0) - 0.12\n\noffsets = [\n    Vector(( x_offset,  y_offset, leg_z_pos)),\n    Vector((-x_offset,  y_offset, leg_z_pos)),\n    Vector(( x_offset, -y_offset, leg_z_pos)),\n    Vector((-x_offset, -y_offset, leg_z_pos))\n]\n\nfor pos in offsets:\n    # Create a primitive cube for each leg\n    leg_bm = bmesh.new()\n    bmesh.ops.create_cube(leg_bm, size=1.0)\n    # Scale to leg proportions (thin and tall)\n    bmesh.ops.scale(leg_bm, vec=Vector((leg_size_x, leg_size_y, leg_height)), verts=leg_bm.verts)\n    # Translate to position\n    bmesh.ops.translate(leg_bm, vec=pos, verts=leg_bm.verts)\n    \n    # Merge into the main leg bmesh\n    for v in leg_bm.verts:\n        bm_legs.verts.new(v.co)\n    bm_legs.verts.ensure_lookup_table()\n    \n    for f in leg_bm.faces:\n        try:\n            bm_legs.faces.new([bm_legs.verts[i.index] for i in f.verts])\n        except ValueError:\n            pass # Skip if face already exists (shouldn't happen here)\n            \n    leg_bm.free()\n\nbm_legs.to_mesh(mesh_legs)\nbm_legs.free()\n\n# 4. Apply smooth shading / finalize\nfor obj in [obj_top, obj_legs]:\n    bpy.context.view_layer.objects.active = obj\n    bpy.ops.object.shade_smooth()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 148,
+  "completion_tokens": 962,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0024494,
+  "latency_s": 3.03,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

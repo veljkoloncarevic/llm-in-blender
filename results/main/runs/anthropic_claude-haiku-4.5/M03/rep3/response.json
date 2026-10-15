@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\nimport math\n\n# Clear all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a new mesh and object\nmesh = bpy.data.meshes.new(\"VaseMesh\")\nvase_obj = bpy.data.objects.new(\"Vase\", mesh)\nbpy.context.collection.objects.link(vase_obj)\nbpy.context.view_layer.objects.active = vase_obj\nvase_obj.select_set(True)\n\n# Create bmesh\nbm = bmesh.new()\n\n# Define the 2D profile for the vase (X, Z coordinates)\n# This profile will be revolved around the Z axis\nprofile_points = [\n    (0.3, 0.0),    # Base center\n    (0.35, 0.1),   # Base edge\n    (0.4, 0.3),    # Lower body\n    (0.5, 0.8),    # Wide body\n    (0.48, 1.2),   # Upper body\n    (0.3, 1.5),    # Shoulder\n    (0.2, 1.8),    # Neck\n    (0.15, 2.0),   # Neck top\n]\n\n# Number of segments for revolution (determines face count)\nnum_segments = 128\n\n# Create vertices by revolving the profile\nvertices = []\nfor i, (x, z) in enumerate(profile_points):\n    for seg in range(num_segments):\n        angle = (seg / num_segments) * 2 * math.pi\n        vx = x * math.cos(angle)\n        vy = x * math.sin(angle)\n        vz = z\n        vert = bm.verts.new((vx, vy, vz))\n        vertices.append(vert)\n\n# Create faces by connecting adjacent rings\nnum_profile_points = len(profile_points)\nfor ring_idx in range(num_profile_points - 1):\n    for seg in range(num_segments):\n        # Current segment\n        v0_idx = ring_idx * num_segments + seg\n        v1_idx = ring_idx * num_segments + ((seg + 1) % num_segments)\n        \n        # Next ring segment\n        v2_idx = (ring_idx + 1) * num_segments + ((seg + 1) % num_segments)\n        v3_idx = (ring_idx + 1) * num_segments + seg\n        \n        # Create quad face\n        v0 = vertices[v0_idx]\n        v1 = vertices[v1_idx]\n        v2 = vertices[v2_idx]\n        v3 = vertices[v3_idx]\n        \n        bm.faces.new([v0, v1, v2, v3])\n\n# Ensure lookup table is updated\nbm.to_mesh(mesh)\nbm.free()\n\n# Smooth shade the object\nfor face in mesh.polygons:\n    face.use_smooth = True\n\n# Add Subdivision Surface modifier\nsubdiv_mod = vase_obj.modifiers.new(name=\"Subdivision\", type='SUBSURF')\nsubdiv_mod.levels = 2\nsubdiv_mod.render_levels = 3\n\n# Update mesh\nmesh.update()\n\n# Set smooth shading on the object\nbpy.context.view_layer.objects.active = vase_obj\nbpy.ops.object.shade_smooth()\n\nprint(f\"Vase created with {len(mesh.vertices)} vertices and {len(mesh.polygons)} faces\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 202,
+  "completion_tokens": 900,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004702,
+  "latency_s": 6.25,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

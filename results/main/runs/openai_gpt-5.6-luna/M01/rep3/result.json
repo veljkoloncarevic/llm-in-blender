@@ -1,0 +1,534 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.138,
+  "scene": {
+    "faces": 9994,
+    "triangles": 20644,
+    "vertices": 10472,
+    "n_geometry_objects": 50,
+    "objects": [
+      {
+        "name": "Central Cylindrical Column",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Column Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_01",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_02",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_03",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_04",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_05",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_06",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_07",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_08",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_09",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_10",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_11",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_12",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_13",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_14",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_15",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_16",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_17",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_18",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_19",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_20",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_21",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_22",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_23",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Step_24",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Step Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Continuous Helical Handrail",
+        "type": "CURVE",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_01",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_02",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_03",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_04",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_05",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_06",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_07",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_08",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_09",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_10",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_11",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_12",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_13",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_14",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_15",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_16",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_17",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_18",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_19",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_20",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_21",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_22",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_23",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Handrail_Support_24",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Handrail Material"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [],
+    "materials": [
+      {
+        "name": "Column Material",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Handrail Material",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Step Material",
+        "assigned": true,
+        "use_nodes": false
+      }
+    ],
+    "n_materials_assigned": 3,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -3.189199209213257,
+      -3.1803689002990723,
+      -0.25
+    ],
+    "bbox_max": [
+      3.1775059700012207,
+      3.1882119178771973,
+      10.90999984741211
+    ]
+  },
+  "render_time_s": 5.856,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

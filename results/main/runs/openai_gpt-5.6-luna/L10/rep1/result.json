@@ -1,0 +1,140 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.005,
+  "scene": {
+    "faces": 41,
+    "triangles": 78,
+    "vertices": 53,
+    "n_geometry_objects": 5,
+    "objects": [
+      {
+        "name": "House_Walls",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Wall"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Four_Sided_Roof",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Roof"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Front_Door",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Door"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Window_Symmetric",
+        "type": "MESH",
+        "modifiers": [
+          "MIRROR"
+        ],
+        "materials": [
+          "Glass"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Rear_Window_Symmetric",
+        "type": "MESH",
+        "modifiers": [
+          "MIRROR"
+        ],
+        "materials": [
+          "Glass"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "MIRROR"
+    ],
+    "materials": [
+      {
+        "name": "Door",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Glass",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Roof",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Wall",
+        "assigned": true,
+        "use_nodes": false
+      }
+    ],
+    "n_materials_assigned": 4,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -2.1213207244873047,
+      -2.1213207244873047,
+      0.0
+    ],
+    "bbox_max": [
+      2.1213207244873047,
+      2.1213207244873047,
+      4.800000190734863
+    ]
+  },
+  "render_time_s": 6.217,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Create checkerboard floor\nbpy.ops.mesh.primitive_plane_add(size=12, location=(0, 0, 0))\nfloor = bpy.context.object\nfloor.name = \"Checkerboard Floor\"\n\nfloor_material = bpy.data.materials.new(\"Black and White Checker Material\")\nfloor_material.use_nodes = True\n\nnodes = floor_material.node_tree.nodes\nlinks = floor_material.node_tree.links\nnodes.clear()\n\noutput = nodes.new(\"ShaderNodeOutputMaterial\")\noutput.location = (400, 0)\n\nprincipled = nodes.new(\"ShaderNodeBsdfPrincipled\")\nprincipled.location = (150, 0)\nprincipled.inputs[\"Roughness\"].default_value = 0.38\n\nchecker = nodes.new(\"ShaderNodeTexChecker\")\nchecker.location = (-180, 0)\nchecker.inputs[\"Color1\"].default_value = (0.0, 0.0, 0.0, 1.0)\nchecker.inputs[\"Color2\"].default_value = (1.0, 1.0, 1.0, 1.0)\nchecker.inputs[\"Scale\"].default_value = 8.0\n\nlinks.new(checker.outputs[\"Color\"], principled.inputs[\"Base Color\"])\nlinks.new(principled.outputs[\"BSDF\"], output.inputs[\"Surface\"])\n\nfloor.data.materials.append(floor_material)\n\n# Create glossy red cube sitting on the floor\nbpy.ops.mesh.primitive_cube_add(size=2.0, location=(0, 0, 1.0))\ncube = bpy.context.object\ncube.name = \"Glossy Red Cube\"\n\ncube_material = bpy.data.materials.new(\"Glossy Red Material\")\ncube_material.use_nodes = True\n\ncube_principled = cube_material.node_tree.nodes.get(\"Principled BSDF\")\ncube_principled.inputs[\"Base Color\"].default_value = (0.8, 0.015, 0.02, 1.0)\ncube_principled.inputs[\"Roughness\"].default_value = 0.08\ncube_principled.inputs[\"Metallic\"].default_value = 0.0\n\ncube.data.materials.append(cube_material)\n\n# Slight bevel for attractive glossy highlights\nbevel = cube.modifiers.new(\"Small Edge Bevel\", \"BEVEL\")\nbevel.width = 0.06\nbevel.segments = 3\n\nfor polygon in cube.data.polygons:\n    polygon.use_smooth = True\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 142,
+  "completion_tokens": 904,
+  "reasoning_tokens": 371,
+  "cost_usd_est": 0.0011132,
+  "latency_s": 8.93,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

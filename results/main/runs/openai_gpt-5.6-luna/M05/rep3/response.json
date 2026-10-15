@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Parameters\nrows = 10\ncols = 10\nradius = 1.0\nheight = 0.4\ngap = 0.12\n\n# Flat-top hexagon spacing with staggered alternating rows\nhex_width = math.sqrt(3.0) * radius\ncolumn_spacing = hex_width + gap\nrow_spacing = 1.5 * radius + gap\n\nvertices = []\nfaces = []\n\n# Hexagon angles for flat-top orientation\nangles = [math.radians(30.0 + i * 60.0) for i in range(6)]\n\n# Center the overall panel approximately around the origin\npanel_width = (cols - 1) * column_spacing + hex_width + column_spacing * 0.5\npanel_height = (rows - 1) * row_spacing + 2.0 * radius\nx_origin = -panel_width * 0.5\ny_origin = -panel_height * 0.5\n\nfor row in range(rows):\n    row_offset = 0.5 * column_spacing if row % 2 else 0.0\n\n    for col in range(cols):\n        cx = x_origin + radius * math.sqrt(3.0) * 0.5 + col * column_spacing + row_offset\n        cy = y_origin + radius + row * row_spacing\n\n        base_index = len(vertices)\n\n        # Bottom and top rings\n        for z in (0.0, height):\n            for angle in angles:\n                vertices.append((\n                    cx + radius * math.cos(angle),\n                    cy + radius * math.sin(angle),\n                    z\n                ))\n\n        # Bottom face, top face, and six side faces\n        faces.append(tuple(base_index + i for i in reversed(range(6))))\n        faces.append(tuple(base_index + 6 + i for i in range(6)))\n\n        for i in range(6):\n            ni = (i + 1) % 6\n            faces.append((\n                base_index + i,\n                base_index + ni,\n                base_index + 6 + ni,\n                base_index + 6 + i\n            ))\n\n# Create one mesh containing all 100 disconnected hexagonal prisms\nmesh = bpy.data.meshes.new(\"HoneycombPanelMesh\")\nmesh.from_pydata(vertices, [], faces)\nmesh.update()\n\npanel = bpy.data.objects.new(\"HoneycombPanel\", mesh)\nbpy.context.collection.objects.link(panel)\n\n# Assign a warm honey-colored material\nmaterial = bpy.data.materials.new(\"HoneycombMaterial\")\nmaterial.diffuse_color = (0.8, 0.32, 0.04, 1.0)\nmaterial.metallic = 0.0\nmaterial.roughness = 0.42\npanel.data.materials.append(material)\n\n# Select the generated panel\nbpy.context.view_layer.objects.active = panel\npanel.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 161,
+  "completion_tokens": 1148,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0014098,
+  "latency_s": 13.93,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

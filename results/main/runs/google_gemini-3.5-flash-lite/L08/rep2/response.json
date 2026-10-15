@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport mathutils\nimport math\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# 1. Create the Mug Body (Cylinder with Solidify)\nbpy.ops.mesh.primitive_cylinder_add(\n    radius=1.0,\n    depth=2.2,\n    vertices=32,\n    location=(0, 0, 1.1)\n)\nmug_obj = bpy.context.active_object\nmug_obj.name = \"CoffeeMug\"\n\n# Shade smooth\nfor poly in mug_obj.data.polygons:\n    poly.use_smooth = True\n\n# Add Solidify modifier to make it hollow\nsolidify_mod = mug_obj.modifiers.new(name=\"Solidify\", type='SOLIDIFY')\nsolidify_mod.thickness = 0.12\nsolidify_mod.offset = -1.0 # Thicken inward\nsolidify_mod.use_rim = True\n\n# 2. Create the Handle (Modified Torus)\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=0.5,\n    minor_radius=0.12,\n    major_segments=32,\n    minor_segments=16,\n    major_arc=math.pi,  # Half torus (180 degrees)\n    location=(1.0, 0, 1.1),\n    rotation=(0, math.pi/2, 0)\n)\nhandle_obj = bpy.context.active_object\nhandle_obj.name = \"MugHandle\"\n\n# Shade smooth for handle\nfor poly in handle_obj.data.polygons:\n    poly.use_smooth = True\n\n# 3. Join Mug and Handle into a single object\nbpy.ops.object.select_all(action='DESELECT')\nmug_obj.select_set(True)\nhandle_obj.select_set(True)\nbpy.context.view_layer.objects.active = mug_obj\nbpy.ops.object.join()\n\n# Final clean-up and positioning at world origin\nmug_obj.location = (0, 0, 0)\nbpy.ops.object.transform_apply(location=True, rotation=True, scale=True)\n\n# Select the final object\nmug_obj.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 160,
+  "completion_tokens": 559,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0014455,
+  "latency_s": 2.13,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

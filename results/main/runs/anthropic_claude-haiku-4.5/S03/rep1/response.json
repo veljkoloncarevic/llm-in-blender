@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Add Suzanne mesh\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(0, 0, 0))\nbpy.ops.object.delete()\n\n# Add Suzanne using the proper operator\nbpy.ops.mesh.primitive_monkey_add(size=2, location=(0, 0, 0))\nsuzanne = bpy.context.active_object\n\n# Create a new material\nmaterial = bpy.data.materials.new(name=\"White Marble\")\nmaterial.use_nodes = True\n\n# Clear default nodes\nmaterial.node_tree.nodes.clear()\n\n# Create nodes\nnodes = material.node_tree.nodes\nlinks = material.node_tree.links\n\n# Add Principled BSDF\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\n\n# Add Material Output\nmaterial_output = nodes.new(type='ShaderNodeOutputMaterial')\n\n# Add Noise Texture\nnoise_texture = nodes.new(type='ShaderNodeTexNoise')\nnoise_texture.inputs['Detail'].default_value = 5.0\nnoise_texture.inputs['Roughness'].default_value = 0.6\n\n# Add Color Ramp\ncolor_ramp = nodes.new(type='ShaderNodeValRamp')\n# Set color ramp to white marble-like gradient\ncolor_ramp.color_ramp.elements[0].color = (0.3, 0.3, 0.3, 1.0)  # Dark gray\ncolor_ramp.color_ramp.elements[1].color = (1.0, 1.0, 1.0, 1.0)  # White\n\n# Add Coordinate node for texture mapping\ncoord = nodes.new(type='ShaderNodeTexCoord')\n\n# Add Mapping node for scale control\nmapping = nodes.new(type='ShaderNodeMapping')\nmapping.inputs['Scale'].default_value = (5.0, 5.0, 5.0)\n\n# Connect nodes\nlinks.new(coord.outputs['Generated'], mapping.inputs['Vector'])\nlinks.new(mapping.outputs['Vector'], noise_texture.inputs['Vector'])\nlinks.new(noise_texture.outputs['Fac'], color_ramp.inputs['Fac'])\nlinks.new(color_ramp.outputs['Color'], principled.inputs['Base Color'])\nlinks.new(principled.outputs['BSDF'], material_output.inputs['Surface'])\n\n# Set principled BSDF properties for marble look\nprincipled.inputs['Roughness'].default_value = 0.3\nprincipled.inputs['Specular IOR'].default_value = 1.5\n\n# Assign material to Suzanne\nsuzanne.data.materials.append(material)\n\n# Set viewport shading to Material Preview or Rendered for better visualization\nfor area in bpy.context.screen.areas:\n    if area.type == 'VIEW_3D':\n        for space in area.spaces:\n            if space.type == 'VIEW_3D':\n                space.shading.type = 'MATERIAL'\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 170,
+  "completion_tokens": 799,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004165,
+  "latency_s": 5.11,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

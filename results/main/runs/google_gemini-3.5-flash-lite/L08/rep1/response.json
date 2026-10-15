@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Matrix, Vector\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# 1. Create the Mug Body (Cylinder)\n# Keep segments moderate to stay well under 3,000 faces\nbpy.ops.mesh.primitive_cylinder_add(\n    radius=1.0,\n    depth=2.2,\n    vertices=32,\n    location=(0, 0, 1.1)\n)\nmug = bpy.context.active_object\nmug.name = \"CoffeeMug\"\n\n# Ensure smooth shading\nfor f in mug.data.polygons:\n    f.use_smooth = True\n\n# Add Solidify modifier to make it hollow with thickness\nsolidify_mod = mug.modifiers.new(name=\"Solidify\", type='SOLIDIFY')\nsolidify_mod.thickness = 0.12\nsolidify_mod.offset = -1.0 # inward thickness\n\n# Add Subdivision Surface for a clean, organic look\nsubsurf_mod = mug.modifiers.new(name=\"Subsurf\", type='SUBSURF')\nsubsurf_mod.levels = 1\nsubsurf_mod.render_levels = 2\n\n# 2. Create the Handle (Half Torus)\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=0.5,\n    minor_radius=0.12,\n    major_segments=24,\n    minor_segments=12,\n    # Rotate to align vertically\n    align='WORLD',\n    location=(1.25, 0, 1.1),\n    rotation=(0, 1.5708, 0)\n)\nhandle = bpy.context.active_object\nhandle.name = \"MugHandle\"\n\n# Edit handle: cut in half to make it a C-shape attached to the mug\nbpy.ops.object.mode_set(mode='EDIT')\nbm = bmesh.from_edit_mesh(handle.data)\n\n# Delete the outer half of the torus (where x < local origin, or based on world coords)\n# Since we rotated it, let's delete vertices based on world X coordinate being greater than 1.25\nfor v in bm.verts:\n    # Transform vertex to world space\n    co_world = handle.matrix_world @ v.co\n    if co_world.x > 1.25 + 0.05: # Keep the side closer to the mug\n        v.select = True\n    else:\n        v.select = False\n\n# Delete selected geometry\nbmesh.ops.delete(bm, geom=[v for v in bm.verts if v.select], context='VERTS')\nbmesh.update_edit_mesh(handle.data)\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Smooth shading for handle\nfor f in handle.data.polygons:\n    f.use_smooth = True\n\n# Add Subsurf to handle as well\nhandle_subsurf = handle.modifiers.new(name=\"Subsurf\", type='SUBSURF')\nhandle_subsurf.levels = 1\nhandle_subsurf.render_levels = 2\n\n# Select both and join them into a single mesh object\nmug.select_set(True)\nhandle.select_set(True)\nbpy.context.view_layer.objects.active = mug\nbpy.ops.object.join()\n\n# Final polish: auto smooth normals for crisp edges where needed\nmug.data.use_auto_smooth = True\nmug.data.auto_smooth_angle = 0.872665 # 50 degrees\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 160,
+  "completion_tokens": 846,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.002163,
+  "latency_s": 4.2,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

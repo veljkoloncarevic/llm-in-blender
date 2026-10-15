@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nif bpy.context.scene.objects:\n    bpy.ops.object.select_all(action='SELECT')\n    bpy.ops.object.delete(use_global=False)\n\n# Create a thin box wall\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 0))\nwall = bpy.context.object\nwall.name = \"Wall\"\nwall.dimensions = (4.0, 0.2, 3.0)\n\n# Create procedural brick material\nmat = bpy.data.materials.new(name=\"BrickMaterial\")\nmat.use_nodes = True\nntree = mat.node_tree\nnodes = ntree.nodes\nlinks = ntree.links\n\n# Clear default nodes\nnodes.clear()\n\n# Create node elements\nout = nodes.new(type='ShaderNodeOutputMaterial')\nprincipled = nodes.new(type='ShaderNodeBsdfPrincipled')\nbrick = nodes.new(type='ShaderNodeTexBrick')\nbump = nodes.new(type='ShaderNodeBump')\ntex_coord = nodes.new(type='ShaderNodeTexCoord')\n\n# Layout\nout.location = (300, 0)\nprincipled.location = (50, 0)\nbump.location = (-200, 100)\nbrick.location = (-450, 0)\ntex_coord.location = (-700, -100)\n\n# Brick texture settings\nbrick.brick_color = (0.58, 0.21, 0.12, 1.0)\nbrick.mortar_color = (0.82, 0.82, 0.82, 1.0)\nbrick.scale = 4.0\nbrick.mortar_size = 0.025\nbrick.mortar_smooth = 0.1\nbrick.bias = 0.0\nbrick.brick_width = 0.5\nbrick.row_height = 0.25\nbrick.offset = 0.5\nbrick.offset_frequency = 2\nbrick.squash = 1.0\nbrick.squash_frequency = 1\n\n# Bump settings\nbump.strength = 0.05\nbump.invert = False\n\n# Connections\nlinks.new(tex_coord.outputs['Generated'], brick.inputs['Vector'])\nlinks.new(brick.outputs['Color'], principled.inputs['Base Color'])\nlinks.new(brick.outputs['Fac'], bump.inputs['Height'])\nlinks.new(bump.outputs['Normal'], principled.inputs['Normal'])\nlinks.new(principled.outputs['BSDF'], out.inputs['Surface'])\n\n# Assign material to the wall\nif wall.data.materials:\n    wall.data.materials[0] = mat\nelse:\n    wall.data.materials.append(mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 229,
+  "completion_tokens": 8436,
+  "reasoning_tokens": 7834,
+  "cost_usd_est": 0.011236280000000001,
+  "latency_s": 92.98,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

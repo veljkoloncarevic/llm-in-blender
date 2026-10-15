@@ -1,0 +1,207 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.011,
+  "scene": {
+    "faces": 457,
+    "triangles": 782,
+    "vertices": 403,
+    "n_geometry_objects": 6,
+    "objects": [
+      {
+        "name": "Sphere",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Snow"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Sphere.001",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Snow"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Sphere.002",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Snow"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Cone",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Carrot"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Sphere.003",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Eyes"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Sphere.004",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Eyes"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [],
+    "materials": [
+      {
+        "name": "Carrot",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Eyes",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      },
+      {
+        "name": "Snow",
+        "assigned": true,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.5,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 3,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.0,
+      -1.0000001192092896,
+      0.0
+    ],
+    "bbox_max": [
+      0.9999999403953552,
+      0.9999998807907104,
+      4.349999904632568
+    ]
+  },
+  "render_time_s": 6.788,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\nfrom mathutils import Matrix, Vector\n\n# Remove existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create a single mesh for the honeycomb panel\nbm = bmesh.new()\n\n# Parameters\nrows = 10\ncols = 10\ncell_radius = 1.0      # layout spacing radius (gaps are created by using a smaller hex)\nhex_radius = 0.8       # actual hexagon circumradius -> small gaps\nheight = 0.5           # prism extrusion height\n\nspacing_x = math.sqrt(3) * cell_radius\nspacing_y = 1.5 * cell_radius\nrow_offset = spacing_x / 2.0\n\nfor r in range(rows):\n    y = r * spacing_y\n    x_off = row_offset if r % 2 == 1 else 0.0\n    for c in range(cols):\n        center = Vector((c * spacing_x + x_off, y, 0.0))\n        mat = Matrix.Translation(center) @ Matrix.Rotation(math.radians(30), 4, 'Z')\n\n        # Create one hexagonal cap (pointy-top orientation)\n        res = bmesh.ops.create_circle(\n            bm,\n            cap_ends=True,\n            radius=hex_radius,\n            vertices=6,\n            matrix=mat\n        )\n        face = res['faces'][0]\n\n        # Extrude the hexagon into a prism\n        extruded = bmesh.ops.extrude_face_region(bm, geom=[face])\n        bmesh.ops.translate(bm, verts=extruded['verts'], vec=Vector((0.0, 0.0, height)))\n\n# Ensure outward-facing normals\nbmesh.ops.recalc_face_normals(bm, faces=list(bm.faces))\n\n# Center the panel in XY\nverts = list(bm.verts)\nxs = [v.co.x for v in verts]\nys = [v.co.y for v in verts]\ncenter = Vector(((min(xs) + max(xs)) / 2.0, (min(ys) + max(ys)) / 2.0, 0.0))\nbmesh.ops.translate(bm, verts=verts, vec=-center)\n\n# Write the mesh into a Blender object\nmesh = bpy.data.meshes.new(\"HoneycombPanel\")\nbm.to_mesh(mesh)\nbm.free()\n\nobj = bpy.data.objects.new(\"HoneycombPanel\", mesh)\nbpy.context.collection.objects.link(obj)\nobj.location = (0.0, 0.0, 0.0)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 237,
+  "completion_tokens": 12385,
+  "reasoning_tokens": 11794,
+  "cost_usd_est": 0.01645248,
+  "latency_s": 126.85,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

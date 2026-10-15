@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a wooden fence post\nbpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, 0))\npost = bpy.context.active_object\npost.scale = (0.1, 0.1, 1.2)\npost.name = \"FencePost\"\n\n# Apply scale to make it permanent for the array modifier\nbpy.context.view_layer.objects.active = post\nbpy.ops.object.transform_apply(scale=True)\n\n# Add Array modifier to duplicate the post\narray_mod = post.modifiers.new(name=\"ArrayModifier\", type='ARRAY')\narray_mod.count = 8\narray_mod.relative_scale_x = 3.0\n\n# Create first horizontal rail (top)\nbpy.ops.mesh.primitive_cube_add(size=1, location=(10.5, 0, 0.8))\nrail_top = bpy.context.active_object\nrail_top.scale = (10.5, 0.08, 0.1)\nrail_top.name = \"RailTop\"\nbpy.ops.object.transform_apply(scale=True)\n\n# Create second horizontal rail (middle)\nbpy.ops.mesh.primitive_cube_add(size=1, location=(10.5, 0, 0.2))\nrail_bottom = bpy.context.active_object\nrail_bottom.scale = (10.5, 0.08, 0.1)\nrail_bottom.name = \"RailBottom\"\nbpy.ops.object.transform_apply(scale=True)\n\n# Create a simple wood material\nmat = bpy.data.materials.new(name=\"WoodMaterial\")\nmat.diffuse_color = (0.6, 0.4, 0.2, 1.0)\n\n# Assign material to all objects\nfor obj in [post, rail_top, rail_bottom]:\n    obj.data.materials.append(mat)\n\n# Set viewport shading to see the objects clearly\nfor area in bpy.context.screen.areas:\n    if area.type == 'VIEW_3D':\n        for space in area.spaces:\n            if space.type == 'VIEW_3D':\n                space.shading.type = 'SOLID'\n\nprint(\"Wooden fence section created successfully!\")\nprint(f\"Total posts: 8 (via Array modifier on 1 post)\")\nprint(f\"Horizontal rails: 2\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 170,
+  "completion_tokens": 649,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.003415,
+  "latency_s": 27.26,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

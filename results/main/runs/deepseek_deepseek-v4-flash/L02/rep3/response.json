@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# --- Snowman body ---\n\n# Bottom sphere\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=16, ring_count=8, radius=1.0, location=(0, 0, 0)\n)\nbpy.context.active_object.name = \"Snowman_Bottom\"\n\n# Middle sphere\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=16, ring_count=8, radius=0.7, location=(0, 0, 1.7)\n)\nbpy.context.active_object.name = \"Snowman_Middle\"\n\n# Head\nbpy.ops.mesh.primitive_uv_sphere_add(\n    segments=16, ring_count=8, radius=0.5, location=(0, 0, 2.9)\n)\nbpy.context.active_object.name = \"Snowman_Head\"\n\n# --- Eyes ---\neye_radius = 0.08\neye_offset_x = 0.15\neye_offset_z = 0.1\neye_y = 0.45  # slightly forward from head center\n\nfor side in (-1, 1):\n    bpy.ops.mesh.primitive_uv_sphere_add(\n        segments=8, ring_count=4, radius=eye_radius,\n        location=(side * eye_offset_x, eye_y, 2.9 + eye_offset_z)\n    )\n    eye = bpy.context.active_object\n    eye.name = \"Snowman_Eye_Left\" if side < 0 else \"Snowman_Eye_Right\"\n\n# --- Nose (carrot) ---\nbpy.ops.mesh.primitive_cone_add(\n    vertices=8,\n    radius1=0.1,\n    radius2=0.0,\n    depth=0.5,\n    end_fill_type='NGON',\n    location=(0, 0.5, 2.9)  # base at head surface\n)\nnose = bpy.context.active_object\nnose.name = \"Snowman_Nose\"\nnose.rotation_euler = (-math.pi / 2, 0, 0)  # rotate cone to point +Y\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 234,
+  "completion_tokens": 4533,
+  "reasoning_tokens": 4031,
+  "cost_usd_est": 0.006086520000000001,
+  "latency_s": 47.89,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

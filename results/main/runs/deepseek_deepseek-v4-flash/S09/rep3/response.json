@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a UV sphere\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(0, 0, 0))\nobj = bpy.context.active_object\nobj.name = \"CarPaintSphere\"\n\n# Create deep red car-paint material\nmat = bpy.data.materials.new(name=\"DeepRedCarPaint\")\nmat.use_nodes = True\nbsdf = mat.node_tree.nodes.get(\"Principled BSDF\")\nif bsdf is None:\n    bsdf = mat.node_tree.nodes.new(\"ShaderNodeBsdfPrincipled\")\n\n# Configure the Principled BSDF\nbsdf.inputs[\"Base Color\"].default_value = (0.8, 0.02, 0.02, 1.0)  # Deep red\nbsdf.inputs[\"Metallic\"].default_value = 0.5\nbsdf.inputs[\"Coat Weight\"].default_value = 1.0  # Strong clear coat\n\n# Assign material to sphere\nif obj.data.materials:\n    obj.data.materials[0] = mat\nelse:\n    obj.data.materials.append(mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 232,
+  "completion_tokens": 953,
+  "reasoning_tokens": 679,
+  "cost_usd_est": 0.0013600399999999999,
+  "latency_s": 11.08,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

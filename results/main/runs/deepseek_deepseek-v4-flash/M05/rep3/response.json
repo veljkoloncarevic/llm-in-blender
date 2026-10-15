@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport math\nfrom mathutils import Vector\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Honeycomb parameters\nrows, cols = 10, 10\nhex_radius = 1.0          # outer radius of each hexagon\nshrink = 0.9              # leaves a small gap between cells\nheight = 0.5              # prism height\n\n# Pointy-top hexagon geometry\ndx = math.sqrt(3.0) * hex_radius\ndy = 1.5 * hex_radius\nrow_offset = dx * 0.5\n\n# Angles for a pointy-top hexagon (degrees)\nangles = [math.radians(a) for a in (30, 90, 150, 210, 270, 330)]\n\n# Create mesh and object\nmesh = bpy.data.meshes.new(\"HoneycombPanel\")\nobj = bpy.data.objects.new(\"HoneycombPanel\", mesh)\nbpy.context.scene.collection.objects.link(obj)\n\nbm = bmesh.new()\n\nfor row in range(rows):\n    y_pos = row * dy\n    x_off = row_offset if (row % 2) else 0.0\n\n    for col in range(cols):\n        cx = col * dx + x_off\n        center = Vector((cx, y_pos, 0.0))\n\n        bottom_verts = []\n        top_verts = []\n\n        for ang in angles:\n            vx = math.cos(ang) * hex_radius * shrink\n            vy = math.sin(ang) * hex_radius * shrink\n            v = Vector((vx, vy, 0.0))\n\n            bottom_verts.append(bm.verts.new(center + v))\n            top_verts.append(bm.verts.new(center + v + Vector((0.0, 0.0, height))))\n\n        # Bottom face (reverse order \u2192 normal points down)\n        bm.faces.new(list(reversed(bottom_verts)))\n\n        # Top face (normal points up)\n        bm.faces.new(top_verts)\n\n        # Side faces\n        for i in range(6):\n            bv0 = bottom_verts[i]\n            bv1 = bottom_verts[(i + 1) % 6]\n            tv1 = top_verts[(i + 1) % 6]\n            tv0 = top_verts[i]\n            bm.faces.new((bv0, bv1, tv1, tv0))\n\nbm.to_mesh(mesh)\nbm.free()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 237,
+  "completion_tokens": 9653,
+  "reasoning_tokens": 9086,
+  "cost_usd_est": 0.012846240000000002,
+  "latency_s": 106.93,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

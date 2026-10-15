@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector, Matrix\n\n\ndef clear_scene():\n    if len(bpy.data.objects) == 0:\n        return\n    bpy.ops.object.select_all(action='SELECT')\n    bpy.ops.object.delete(use_global=False)\n\n\ndef create_cube():\n    bpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 0))\n    obj = bpy.context.active_object\n    obj.name = \"Die\"\n\n    bevel = obj.modifiers.new(name=\"Bevel\", type='BEVEL')\n    bevel.segments = 3\n    bevel.width = 0.15\n\n    bpy.context.view_layer.objects.active = obj\n    bpy.ops.object.modifier_apply(modifier=bevel.name)\n    return obj\n\n\ndef get_basis(normal):\n    normal = Vector(normal).normalized()\n    if abs(normal.z) < 0.9:\n        v = Vector((0, 0, 1))\n    else:\n        v = Vector((0, 1, 0))\n    v = v - normal * v.dot(normal)\n    v.normalize()\n    u = v.cross(normal)\n    return u, v\n\n\ndef add_pips(obj):\n    mesh = obj.data\n    bm = bmesh.new()\n    bm.from_mesh(mesh)\n\n    patterns = {\n        1: [(0, 0)],\n        2: [(-0.4, -0.4), (0.4, 0.4)],\n        3: [(-0.4, -0.4), (0, 0), (0.4, 0.4)],\n        4: [(-0.4, -0.4), (0.4, -0.4), (-0.4, 0.4), (0.4, 0.4)],\n        5: [(-0.4, -0.4), (0.4, -0.4), (-0.4, 0.4), (0.4, 0.4), (0, 0)],\n        6: [(-0.4, -0.4), (0.4, -0.4), (-0.4, 0), (0.4, 0), (-0.4, 0.4), (0.4, 0.4)],\n    }\n\n    face_numbers = [\n        ((1, 0, 0), 1),\n        ((-1, 0, 0), 6),\n        ((0, 1, 0), 2),\n        ((0, -1, 0), 5),\n        ((0, 0, 1), 3),\n        ((0, 0, -1), 4),\n    ]\n\n    radius = 0.15\n    depth = 0.1\n    segments = 12\n\n    for n_vec, number in face_numbers:\n        normal = Vector(n_vec)\n        face_center = normal  # cube half-size = 1\n        u_axis, v_axis = get_basis(normal)\n\n        for u, v in patterns[number]:\n            pip_pos = face_center + u_axis * u + v_axis * v\n\n            z_axis = Vector((0, 0, 1))\n            q = z_axis.rotation_difference(normal)\n            rot = q.to_matrix().to_4x4()\n            trans = Matrix.Translation(pip_pos - normal * (depth / 2.0))\n            matrix = trans @ rot\n\n            bmesh.ops.create_cone(\n                bm,\n                cap_ends=True,\n                cap_tris=False,\n                segments=segments,\n                diameter1=radius,\n                diameter2=radius,\n                depth=depth,\n                matrix=matrix,\n            )\n\n    bm.to_mesh(mesh)\n    mesh.update()\n    bm.free()\n\n\ndef main():\n    clear_scene()\n    obj = create_cube()\n    add_pips(obj)\n\n\nif __name__ == \"__main__\":\n    main()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 244,
+  "completion_tokens": 21412,
+  "reasoning_tokens": 20521,
+  "cost_usd_est": 0.0283712,
+  "latency_s": 248.8,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

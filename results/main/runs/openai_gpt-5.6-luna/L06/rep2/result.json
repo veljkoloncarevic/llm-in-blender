@@ -1,0 +1,281 @@
+{
+  "status": "ok",
+  "blender_version": "4.2.3 LTS",
+  "exec_ok": true,
+  "exec_time_s": 0.043,
+  "scene": {
+    "faces": 1610,
+    "triangles": 2708,
+    "vertices": 1398,
+    "n_geometry_objects": 22,
+    "objects": [
+      {
+        "name": "Rounded Die",
+        "type": "MESH",
+        "modifiers": [
+          "BEVEL"
+        ],
+        "materials": [
+          "Ivory Die"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.001",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.002",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.003",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.004",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.005",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.006",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.007",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.008",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.009",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.010",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.011",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.012",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.013",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.014",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.015",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.016",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.017",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.018",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.019",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      },
+      {
+        "name": "Pip.020",
+        "type": "MESH",
+        "modifiers": [],
+        "materials": [
+          "Dark Pips"
+        ],
+        "distinct_materials_on_faces": 1
+      }
+    ],
+    "objects_truncated": false,
+    "modifier_types": [
+      "BEVEL"
+    ],
+    "materials": [
+      {
+        "name": "Dark Pips",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Dots Stroke",
+        "assigned": false,
+        "use_nodes": false
+      },
+      {
+        "name": "Ivory Die",
+        "assigned": true,
+        "use_nodes": false
+      },
+      {
+        "name": "Material",
+        "assigned": false,
+        "use_nodes": true,
+        "n_nodes": 2,
+        "n_links": 1,
+        "node_types_all": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "node_types_connected": [
+          "ShaderNodeBsdfPrincipled",
+          "ShaderNodeOutputMaterial"
+        ],
+        "n_unconnected_nodes": 0,
+        "output_has_surface": true,
+        "principled": [
+          {
+            "Transmission": 0.0,
+            "Coat": 0.0,
+            "Metallic": 0.0,
+            "Roughness": 0.5,
+            "IOR": 1.4500000476837158,
+            "Emission Strength": 0.0
+          }
+        ],
+        "emission_nodes": []
+      }
+    ],
+    "n_materials_assigned": 2,
+    "startup_objects_left": [],
+    "bbox_min": [
+      -1.0,
+      -1.0,
+      -1.0
+    ],
+    "bbox_max": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "render_time_s": 6.432,
+  "views": [
+    "view_0.png",
+    "view_1.png",
+    "view_2.png"
+  ]
+}

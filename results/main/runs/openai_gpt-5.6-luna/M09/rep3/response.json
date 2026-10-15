@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\n\n# Remove all existing scene objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Remove orphaned mesh and texture datablocks from the previous scene\nfor datablock in list(bpy.data.meshes):\n    if datablock.users == 0:\n        bpy.data.meshes.remove(datablock)\nfor datablock in list(bpy.data.textures):\n    if datablock.users == 0:\n        bpy.data.textures.remove(datablock)\n\n# Create a dense icosphere: subdivision 5 gives 10,240 triangular faces\nbpy.ops.mesh.primitive_ico_sphere_add(\n    subdivisions=5,\n    radius=1.0,\n    location=(0.0, 0.0, 0.0)\n)\nrock = bpy.context.object\nrock.name = \"Natural_Rock\"\n\n# Irregular non-uniform scale and slight tilt\nrock.scale = (1.45, 1.08, 1.22)\nrock.rotation_euler = (\n    math.radians(-8.0),\n    math.radians(13.0),\n    math.radians(21.0),\n)\n\n# Noise texture for procedural displacement\nnoise = bpy.data.textures.new(\"Rock_Surface_Noise\", type='CLOUDS')\nnoise.noise_scale = 0.48\nnoise.noise_depth = 3\nnoise.contrast = 1.35\nnoise.noise_type = 'SOFT_NOISE'\nnoise.noise_basis = 'IMPROVED_PERLIN'\n\n# Displace the icosphere along its normals\ndisplace = rock.modifiers.new(\"Natural_Irregular_Displacement\", type='DISPLACE')\ndisplace.texture = noise\ndisplace.texture_coords = 'GLOBAL'\ndisplace.direction = 'NORMAL'\ndisplace.strength = 0.34\ndisplace.mid_level = 0.48\ndisplace.vertex_group = \"\"\n\n# Add a subtle smoothing pass while preserving the displaced silhouette\nsmooth = rock.modifiers.new(\"Subtle_Surface_Smoothing\", type='SMOOTH')\nsmooth.factor = 0.18\nsmooth.iterations = 2\n\n# Smooth shading for a natural rock surface\nfor polygon in rock.data.polygons:\n    polygon.use_smooth = True\n\n# Rock-colored material\nmaterial = bpy.data.materials.new(\"Weathered_Rock_Material\")\nmaterial.diffuse_color = (0.24, 0.20, 0.15, 1.0)\nmaterial.roughness = 0.9\nrock.data.materials.append(material)\n\n# Ensure the rock is the active selected object\nbpy.context.view_layer.objects.active = rock\nrock.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 170,
+  "completion_tokens": 1082,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0013323999999999999,
+  "latency_s": 11.19,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

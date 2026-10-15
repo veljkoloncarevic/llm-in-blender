@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a fence post (simple box)\nbpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, 0))\npost = bpy.context.active_object\npost.scale = (0.1, 0.1, 1.2)  # Thin tall post\nbpy.ops.object.transform_apply(scale=True)\n\n# Add Array modifier to duplicate posts\narray_mod = post.modifiers.new(name=\"ArrayPosts\", type='ARRAY')\narray_mod.count = 8\narray_mod.relative = True\narray_mod.use_relative_offset = True\narray_mod.relative_offset_displace = (1.2, 0, 0)  # Space posts 1.2 units apart\n\n# Create first horizontal rail (lower)\nbpy.ops.mesh.primitive_cube_add(size=1, location=(3.5, 0, 0.2))\nrail_lower = bpy.context.active_object\nrail_lower.scale = (4.5, 0.08, 0.1)  # Long thin rail\nbpy.ops.object.transform_apply(scale=True)\n\n# Create second horizontal rail (upper)\nbpy.ops.mesh.primitive_cube_add(size=1, location=(3.5, 0, 0.9))\nrail_upper = bpy.context.active_object\nrail_upper.scale = (4.5, 0.08, 0.1)  # Long thin rail\nbpy.ops.object.transform_apply(scale=True)\n\n# Create a material for wooden appearance\nmat = bpy.data.materials.new(name=\"WoodMaterial\")\nmat.use_nodes = True\nbsdf = mat.node_tree.nodes[\"Principled BSDF\"]\nbsdf.inputs[\"Base Color\"].default_value = (0.55, 0.35, 0.2, 1.0)  # Brown wood color\nbsdf.inputs[\"Roughness\"].default_value = 0.7\n\n# Assign material to all objects\nfor obj in [post, rail_lower, rail_upper]:\n    if obj.data.materials:\n        obj.data.materials[0] = mat\n    else:\n        obj.data.materials.append(mat)\n\n# Select all objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.context.view_layer.objects.active = post\n\nprint(\"Fence scene created successfully with Array modifier on posts\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 170,
+  "completion_tokens": 662,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.00348,
+  "latency_s": 5.11,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

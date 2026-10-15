@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nimport mathutils\nfrom mathutils import noise\n\n# Remove all existing objects\nfor obj in list(bpy.data.objects):\n    bpy.data.objects.remove(obj, do_unlink=True)\n\n# Terrain parameters\nsegments_x = 100\nsegments_y = 100\nsize = 10.0\nheight_scale = 2.0\n\n# Create base grid\nbm = bmesh.new()\nbmesh.ops.create_grid(bm, x_segments=segments_x, y_segments=segments_y, size=size)\n\n# Fractal noise helper\ndef fbm(x, y):\n    vec = mathutils.Vector((x, y, 0.0))\n    value = 0.0\n    amplitude = 1.0\n    frequency = 0.1\n    normalization = 0.0\n\n    for _ in range(4):\n        value += amplitude * noise.noise(vec * frequency)\n        normalization += amplitude\n        amplitude *= 0.5\n        frequency *= 2.0\n\n    return value / normalization\n\n# Displace vertices according to noise\nfor v in bm.verts:\n    v.co.z = fbm(v.co.x, v.co.y) * height_scale\n\n# Create mesh and object\nmesh = bpy.data.meshes.new(\"HillyTerrain\")\nbm.to_mesh(mesh)\nbm.free()\n\nobj = bpy.data.objects.new(\"HillyTerrain\", mesh)\nbpy.context.collection.objects.link(obj)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 252,
+  "completion_tokens": 3215,
+  "reasoning_tokens": 2888,
+  "cost_usd_est": 0.0043546800000000005,
+  "latency_s": 36.66,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

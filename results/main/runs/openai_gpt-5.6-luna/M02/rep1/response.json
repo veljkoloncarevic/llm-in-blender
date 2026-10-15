@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nfrom mathutils import Vector, noise\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Terrain resolution: 120 x 120 faces, exceeding the required 100 x 100 subdivisions\nsubdivisions = 120\nsize = 24.0\nhalf_size = size * 0.5\n\nvertices = []\nfaces = []\n\ndef terrain_height(x, y):\n    # Layered noise creates broad hills with smaller-scale surface variation\n    p1 = Vector((x * 0.075, y * 0.075, 0.0))\n    p2 = Vector((x * 0.18, y * 0.18, 13.7))\n    p3 = Vector((x * 0.42, y * 0.42, 31.4))\n\n    n1 = noise.noise_vector(p1)[2]\n    n2 = noise.noise_vector(p2)[2]\n    n3 = noise.noise_vector(p3)[2]\n\n    height = (\n        n1 * 3.8 +\n        n2 * 1.35 +\n        n3 * 0.35\n    )\n\n    # Gentle basin-like shaping toward the edges\n    radial = ((x / half_size) ** 2 + (y / half_size) ** 2) * 0.45\n    return height - radial\n\n# Generate the grid vertices\nfor row in range(subdivisions + 1):\n    y = -half_size + size * row / subdivisions\n    for column in range(subdivisions + 1):\n        x = -half_size + size * column / subdivisions\n        z = terrain_height(x, y)\n        vertices.append((x, y, z))\n\n# Generate quad faces\nrow_width = subdivisions + 1\nfor row in range(subdivisions):\n    for column in range(subdivisions):\n        a = row * row_width + column\n        b = a + 1\n        d = (row + 1) * row_width + column\n        c = d + 1\n        faces.append((a, b, c, d))\n\n# Create the terrain mesh\nmesh = bpy.data.meshes.new(\"Hilly_Terrain_Mesh\")\nmesh.from_pydata(vertices, [], faces)\nmesh.update()\n\nterrain = bpy.data.objects.new(\"Hilly_Terrain\", mesh)\nbpy.context.collection.objects.link(terrain)\n\n# Smooth shading for continuous hills\nfor polygon in mesh.polygons:\n    polygon.use_smooth = True\n\n# Simple natural terrain material\nmaterial = bpy.data.materials.new(\"Terrain_Material\")\nmaterial.diffuse_color = (0.16, 0.32, 0.10, 1.0)\nmaterial.roughness = 1.0\nterrain.data.materials.append(material)\n\n# Slightly improve the silhouette without changing the required base topology\nsubsurf = terrain.modifiers.new(\"Terrain_Smoothing\", 'SUBSURF')\nsubsurf.subdivision_type = 'CATMULL_CLARK'\nsubsurf.levels = 1\nsubsurf.render_levels = 1\n\n# Select the generated terrain\nbpy.context.view_layer.objects.active = terrain\nterrain.select_set(True)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 175,
+  "completion_tokens": 1201,
+  "reasoning_tokens": 516,
+  "cost_usd_est": 0.0014762,
+  "latency_s": 11.13,
+  "served_model": "openai/gpt-5.6-luna",
+  "params_sent": {
+    "reasoning_effort": "low",
+    "max_tokens": 32000
+  }
+}

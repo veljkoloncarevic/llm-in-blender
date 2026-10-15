@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\nimport math\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create a 2D profile for the vase (side view)\n# Points: (radius, height) - will be revolved around Z axis\nprofile_points = [\n    (0.3, 0.0),      # base center\n    (0.8, 0.0),      # base outer\n    (0.9, 0.3),      # lower body\n    (1.2, 1.5),      # wide body\n    (1.1, 2.5),      # upper body\n    (0.5, 3.0),      # narrow neck\n    (0.55, 3.3),     # neck rim\n]\n\n# Number of segments for revolution (affects face count)\nnum_segments = 64\n\n# Create mesh and object\nmesh = bpy.data.meshes.new(\"VaseMesh\")\nobj = bpy.data.objects.new(\"Vase\", mesh)\nbpy.context.collection.objects.link(obj)\nbpy.context.view_layer.objects.active = obj\nobj.select_set(True)\n\n# Use bmesh to build the lathe geometry\nbm = bmesh.new()\n\n# Create vertices by revolving the profile around the Z axis\nvertices = []\nfor segment in range(num_segments):\n    angle = (segment / num_segments) * 2 * math.pi\n    cos_a = math.cos(angle)\n    sin_a = math.sin(angle)\n    \n    segment_verts = []\n    for radius, height in profile_points:\n        x = radius * cos_a\n        y = radius * sin_a\n        z = height\n        vert = bm.verts.new((x, y, z))\n        segment_verts.append(vert)\n    vertices.append(segment_verts)\n\n# Create faces by connecting adjacent segments\nnum_profile_points = len(profile_points)\nfor segment in range(num_segments):\n    next_segment = (segment + 1) % num_segments\n    \n    for profile_idx in range(num_profile_points - 1):\n        # Get the four corners of the quad\n        v0 = vertices[segment][profile_idx]\n        v1 = vertices[segment][profile_idx + 1]\n        v2 = vertices[next_segment][profile_idx + 1]\n        v3 = vertices[next_segment][profile_idx]\n        \n        # Create face (quad)\n        bm.faces.new([v0, v1, v2, v3])\n\n# Ensure lookup table is up to date\nbm.to_mesh(mesh)\nbm.free()\n\n# Update mesh\nmesh.update()\n\n# Apply smooth shading\nbpy.context.view_layer.objects.active = obj\nbpy.ops.object.shade_smooth()\n\n# Add Subdivision Surface modifier\nsubdiv = obj.modifiers.new(name=\"Subdivision\", type='SUBSURF')\nsubdiv.levels = 2\nsubdiv.render_levels = 3\n\n# Recalculate normals\nmesh.update()\n\n# Apply smooth shading to the object\nbpy.ops.object.shade_smooth()\n\n# Center the object\nbpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')\n\n# Print face count for verification\nface_count = len(mesh.polygons)\nprint(f\"Vase created with {face_count} faces\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 202,
+  "completion_tokens": 876,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004582,
+  "latency_s": 9.83,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

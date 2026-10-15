@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport math\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create walls (cube)\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 1))\nwalls = bpy.context.active_object\nwalls.name = \"Walls\"\n\n# Create roof (pyramid) - cone with 4 vertices, delete bottom face\nbpy.ops.mesh.primitive_cone_add(vertices=4, radius=1.5, depth=1.5, location=(0, 0, 2.75))\nroof = bpy.context.active_object\nroof.name = \"Roof\"\n# Enter edit mode to delete bottom face\nbpy.ops.object.mode_set(mode='EDIT')\nbpy.ops.mesh.select_all(action='DESELECT')\n# Select bottom face (the one with normal pointing down)\nfor face in roof.data.polygons:\n    if face.normal.z < 0:\n        face.select = True\n        break\nbpy.ops.mesh.delete(type='FACE')\nbpy.ops.object.mode_set(mode='OBJECT')\n\n# Create door (thin box) on front face (Y+)\nbpy.ops.mesh.primitive_cube_add(size=(0.8, 0.2, 1.8), location=(0, 1, 0.9))\ndoor = bpy.context.active_object\ndoor.name = \"Door\"\n\n# Create window (plane) on left side (X-), then mirror to right side\nbpy.ops.mesh.primitive_plane_add(size=0.6, location=(0, 0, 0))\nwindow = bpy.context.active_object\nwindow.name = \"Window\"\n# Rotate plane to face -X (outward on left wall)\nwindow.rotation_euler = (0, -math.pi/2, 0)\nbpy.ops.object.transform_apply(rotation=True)\n# Move to left wall\nwindow.location = (-1, 0, 1.2)\n# Set origin to world origin (for mirror)\nbpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='BOUNDS')  # place cursor at world origin first\n# Actually, set cursor to (0,0,0) and then set origin\nbpy.context.scene.cursor.location = (0, 0, 0)\nbpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='BOUNDS')\n# Add Mirror modifier across X\nmirror = window.modifiers.new(name=\"Mirror\", type='MIRROR')\nmirror.use_axis[0] = True  # X axis\nmirror.use_axis[1] = False\nmirror.use_axis[2] = False\n\n# Optionally add a ground plane (not required, but keeps scene tidy)\n# bpy.ops.mesh.primitive_plane_add(size=10, location=(0,0,0))\n\nprint(\"Scene created successfully.\")\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 163,
+  "completion_tokens": 4765,
+  "reasoning_tokens": 4098,
+  "cost_usd_est": 0.006361520000000001,
+  "latency_s": 28.45,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

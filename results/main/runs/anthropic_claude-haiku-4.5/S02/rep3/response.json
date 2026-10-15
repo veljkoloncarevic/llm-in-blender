@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Clear all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create floor plane\nbpy.ops.mesh.primitive_plane_add(size=10, location=(0, 0, 0))\nfloor = bpy.context.active_object\nfloor.name = \"Floor\"\n\n# Create material for floor with checker texture\nfloor_material = bpy.data.materials.new(name=\"FloorMaterial\")\nfloor_material.use_nodes = True\nfloor_material.node_tree.nodes.clear()\n\n# Create nodes for floor material\nnodes = floor_material.node_tree.nodes\nlinks = floor_material.node_tree.links\n\n# Add shader nodes\nbsdf = nodes.new(type='ShaderNodeBsdfPrincipled')\noutput = nodes.new(type='ShaderNodeOutputMaterial')\nchecker = nodes.new(type='ShaderNodeTexChecker')\ncolor_ramp = nodes.new(type='ShaderNodeValRamp')\n\n# Configure checker texture\nchecker.inputs['Scale'].default_value = 10.0\n\n# Configure color ramp to output black and white\ncolor_ramp.color_ramp.elements[0].color = (0, 0, 0, 1)  # Black\ncolor_ramp.color_ramp.elements[1].color = (1, 1, 1, 1)  # White\n\n# Connect nodes\nlinks.new(checker.outputs['Fac'], color_ramp.inputs['Fac'])\nlinks.new(color_ramp.outputs['Color'], bsdf.inputs['Base Color'])\nlinks.new(bsdf.outputs['BSDF'], output.inputs['Surface'])\n\n# Assign material to floor\nfloor.data.materials.append(floor_material)\n\n# Create red glossy cube\nbpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 1))\ncube = bpy.context.active_object\ncube.name = \"RedCube\"\n\n# Create material for cube\ncube_material = bpy.data.materials.new(name=\"RedGlossy\")\ncube_material.use_nodes = True\ncube_material.node_tree.nodes.clear()\n\n# Create nodes for cube material\ncube_nodes = cube_material.node_tree.nodes\ncube_links = cube_material.node_tree.links\n\n# Add shader nodes for glossy red cube\ncube_bsdf = cube_nodes.new(type='ShaderNodeBsdfPrincipled')\ncube_output = cube_nodes.new(type='ShaderNodeOutputMaterial')\n\n# Configure for glossy red appearance\ncube_bsdf.inputs['Base Color'].default_value = (1.0, 0.0, 0.0, 1.0)  # Red\ncube_bsdf.inputs['Roughness'].default_value = 0.2  # Glossy\n\n# Connect nodes\ncube_links.new(cube_bsdf.outputs['BSDF'], cube_output.inputs['Surface'])\n\n# Assign material to cube\ncube.data.materials.append(cube_material)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 159,
+  "completion_tokens": 783,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.004074,
+  "latency_s": 5.28,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Clear existing objects in the scene\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create collection for the pawn parts\n# We will use primitive operators which add objects to the active scene in Blender 4.2\n\n# 1. Wide Cylinder Base\nbpy.ops.mesh.primitive_cylinder_add(\n    radius=1.2,\n    depth=0.3,\n    vertices=32,\n    location=(0, 0, 0.15)\n)\nbase = bpy.context.active_object\nbase.name = \"Pawn_Base\"\n\n# 2. Torus Collar (sitting right on top of the base)\nbpy.ops.mesh.primitive_torus_add(\n    major_radius=0.9,\n    minor_radius=0.15,\n    major_segments=32,\n    minor_segments=16,\n    location=(0, 0, 0.35)\n)\ncollar = bpy.context.active_object\ncollar.name = \"Pawn_Collar\"\n\n# 3. Tapered Cylinder Body (Cone-like with a flat top)\nbpy.ops.mesh.primitive_cone_add(\n    radius1=0.75,\n    radius2=0.4,\n    depth=1.5,\n    vertices=32,\n    location=(0, 0, 1.15)\n)\nbody = bpy.context.active_object\nbody.name = \"Pawn_Body\"\n\n# 4. Sphere Head\nbpy.ops.mesh.primitive_uv_sphere_add(\n    radius=0.5,\n    segments=32,\n    ring_count=16,\n    location=(0, 0, 2.15)\n)\nhead = bpy.context.active_object\nhead.name = \"Pawn_Head\"\n\n# Optional: Join them into a single mesh object for cleanliness and correct polycount checking\n# Select all created mesh objects\nbpy.ops.object.select_all(action='DESELECT')\nfor obj in [base, collar, body, head]:\n    obj.select_set(True)\n\nbpy.context.view_layer.objects.active = base\nbpy.ops.object.join()\n\n# Final unified object name and smooth shading\nbase.name = \"Chess_Pawn\"\nbpy.ops.object.shade_smooth()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 160,
+  "completion_tokens": 564,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.001458,
+  "latency_s": 2.21,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

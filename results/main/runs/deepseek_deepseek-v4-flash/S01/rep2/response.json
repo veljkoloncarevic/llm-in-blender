@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create UV sphere\nbpy.ops.mesh.primitive_uv_sphere_add(segments=64, ring_count=32, radius=1, location=(0, 0, 1))\nsphere = bpy.context.active_object\nsphere.name = \"Sphere\"\nbpy.ops.object.shade_smooth()\n\n# Create ground plane\nbpy.ops.mesh.primitive_plane_add(size=10, location=(0, 0, 0))\nplane = bpy.context.active_object\nplane.name = \"Ground\"\n\n# Gold material for the sphere\ngold_mat = bpy.data.materials.new(name=\"Gold\")\ngold_mat.use_nodes = True\nnodes = gold_mat.node_tree.nodes\nlinks = gold_mat.node_tree.links\nnodes.clear()\n\ngold_bsdf = nodes.new(type='ShaderNodeBsdfPrincipled')\ngold_bsdf.inputs['Base Color'].default_value = (1.0, 0.766, 0.336, 1.0)\ngold_bsdf.inputs['Metallic'].default_value = 1.0\ngold_bsdf.inputs['Roughness'].default_value = 0.1\n\nout_node = nodes.new(type='ShaderNodeOutputMaterial')\nlinks.new(gold_bsdf.outputs['BSDF'], out_node.inputs['Surface'])\n\n# Neutral grey material for the ground\ngrey_mat = bpy.data.materials.new(name=\"Grey\")\ngrey_mat.use_nodes = True\nnodes = grey_mat.node_tree.nodes\nlinks = grey_mat.node_tree.links\nnodes.clear()\n\ngrey_bsdf = nodes.new(type='ShaderNodeBsdfPrincipled')\ngrey_bsdf.inputs['Base Color'].default_value = (0.5, 0.5, 0.5, 1.0)\ngrey_bsdf.inputs['Metallic'].default_value = 0.0\ngrey_bsdf.inputs['Roughness'].default_value = 0.5\n\nout_node = nodes.new(type='ShaderNodeOutputMaterial')\nlinks.new(grey_bsdf.outputs['BSDF'], out_node.inputs['Surface'])\n\n# Assign materials to objects\nif not sphere.data.materials:\n    sphere.data.materials.append(gold_mat)\nelse:\n    sphere.data.materials[0] = gold_mat\n\nif not plane.data.materials:\n    plane.data.materials.append(grey_mat)\nelse:\n    plane.data.materials[0] = grey_mat\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 235,
+  "completion_tokens": 2114,
+  "reasoning_tokens": 1559,
+  "cost_usd_est": 0.00289388,
+  "latency_s": 22.2,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

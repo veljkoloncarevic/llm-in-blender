@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create clear glass sphere resting on the ground plane\nbpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(0, 0, 1))\nsphere = bpy.context.object\nsphere.name = \"GlassSphere\"\nbpy.ops.object.shade_smooth()\n\nglass_mat = bpy.data.materials.new(\"GlassMaterial\")\nglass_mat.use_nodes = True\nbsdf = glass_mat.node_tree.nodes[\"Principled BSDF\"]\nbsdf.inputs[\"Transmission\"].default_value = 1.0\nbsdf.inputs[\"Roughness\"].default_value = 0.02\nbsdf.inputs[\"IOR\"].default_value = 1.45\n\nif sphere.data.materials:\n    sphere.data.materials[0] = glass_mat\nelse:\n    sphere.data.materials.append(glass_mat)\n\n# Create blue ground plane\nbpy.ops.mesh.primitive_plane_add(size=10, location=(0, 0, 0))\nplane = bpy.context.object\nplane.name = \"GroundPlane\"\n\nground_mat = bpy.data.materials.new(\"BlueGround\")\nground_mat.use_nodes = True\nground_bsdf = ground_mat.node_tree.nodes[\"Principled BSDF\"]\nground_bsdf.inputs[\"Base Color\"].default_value = (0.1, 0.2, 0.8, 1.0)\nground_bsdf.inputs[\"Roughness\"].default_value = 0.4\n\nif plane.data.materials:\n    plane.data.materials[0] = ground_mat\nelse:\n    plane.data.materials.append(ground_mat)\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 227,
+  "completion_tokens": 2161,
+  "reasoning_tokens": 1780,
+  "cost_usd_est": 0.0029524,
+  "latency_s": 21.73,
+  "served_model": "deepseek/deepseek-v4-flash",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

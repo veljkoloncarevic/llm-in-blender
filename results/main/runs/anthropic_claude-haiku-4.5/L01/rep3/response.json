@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Vector\n\n# Remove all existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete(use_global=False)\n\n# Create tabletop\nbpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, 1))\ntabletop = bpy.context.active_object\ntabletop.scale = (2, 1.5, 0.1)\nbpy.ops.object.transform_apply(scale=True)\n\n# Add Bevel modifier to tabletop\nbevel_mod = tabletop.modifiers.new(name=\"Bevel\", type='BEVEL')\nbevel_mod.width = 0.05\nbevel_mod.segments = 2\n\n# Create legs\nleg_positions = [\n    (-1.8, -1.3, -0.4),\n    (1.8, -1.3, -0.4),\n    (-1.8, 1.3, -0.4),\n    (1.8, 1.3, -0.4)\n]\n\nfor i, pos in enumerate(leg_positions):\n    bpy.ops.mesh.primitive_cube_add(size=1, location=pos)\n    leg = bpy.context.active_object\n    leg.scale = (0.1, 0.1, 0.4)\n    bpy.ops.object.transform_apply(scale=True)\n    leg.name = f\"Leg_{i+1}\"\n\n# Join all objects into one\nbpy.ops.object.select_all(action='SELECT')\nbpy.context.view_layer.objects.active = tabletop\nbpy.ops.object.join()\n\n# Final object\nfinal_obj = bpy.context.active_object\nfinal_obj.name = \"Table\"\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 168,
+  "completion_tokens": 459,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.002463,
+  "latency_s": 3.41,
+  "served_model": "anthropic/claude-haiku-4.5",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}

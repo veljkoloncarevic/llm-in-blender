@@ -1,0 +1,14 @@
+{
+  "text": "```python\nimport bpy\nimport bmesh\nfrom mathutils import Matrix\n\n# Clear existing objects\nbpy.ops.object.select_all(action='SELECT')\nbpy.ops.object.delete()\n\n# Create trunk (cylinder with 8 vertices)\nbpy.ops.mesh.primitive_cylinder_add(\n    vertices=8,\n    radius=0.4,\n    depth=2.5,\n    location=(0, 0, 1.25)\n)\ntrunk = bpy.context.active_object\ntrunk.name = \"LowPolyTrunk\"\n\n# Create canopy (icosphere with 2 subdivisions)\nbpy.ops.mesh.primitive_ico_sphere_add(\n    subdivisions=2,\n    radius=1.8,\n    location=(0, 0, 3.2)\n)\ncanopy = bpy.context.active_object\ncanopy.name = \"LowPolyCanopy\"\n\n# Stylize the canopy: slightly deform it using bmesh for a faceted, organic look\nmesh = canopy.data\nbm = bmesh.from_edit_mesh(mesh)\n\n# Rotate canopy slightly for natural variation\nbmesh.ops.rotate(\n    bm,\n    cent=(0, 0, 3.2),\n    matrix=Matrix.Rotation(0.5, 3, 'Z'),\n    verts=bm.verts\n)\n\nbmesh.update_edit_mesh(mesh)\n\n# Create and assign materials\nmat_trunk = bpy.data.materials.new(name=\"TrunkMaterial\")\nmat_trunk.use_nodes = False\nmat_trunk.diffuse_color = (0.25, 0.15, 0.08, 1.0) # Warm brown\ntrunk.data.materials.append(mat_trunk)\n\nmat_canopy = bpy.data.materials.new(name=\"CanopyMaterial\")\nmat_canopy.use_nodes = False\nmat_canopy.diffuse_color = (0.12, 0.45, 0.18, 1.0) # Stylized green\ncanopy.data.materials.append(mat_canopy)\n\n# Join objects into a single stylized tree mesh to keep it clean and unified\nbpy.ops.object.select_all(action='DESELECT')\ntrunk.select_set(True)\ncanopy.select_set(True)\nbpy.context.view_layer.objects.active = trunk\nbpy.ops.object.join()\n\ntree = trunk\ntree.name = \"StylizedLowPolyTree\"\n\n# Set shading to flat for the low-poly aesthetic\nbpy.ops.object.shade_flat()\n```",
+  "finish_reason": "stop",
+  "prompt_tokens": 151,
+  "completion_tokens": 604,
+  "reasoning_tokens": 0,
+  "cost_usd_est": 0.0015553,
+  "latency_s": 2.21,
+  "served_model": "google/gemini-3.5-flash-lite",
+  "params_sent": {
+    "temperature": 0.7,
+    "max_tokens": 32000
+  }
+}
